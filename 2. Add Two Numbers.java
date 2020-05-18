@@ -19,3 +19,4 @@ class Solution {
 		return dummyHead.next;
 	}
 }
+// 全加器的链表实现
