@@ -26,6 +26,11 @@ Output: "bb"
     }
 
     // 马拉车算法
+    /* 
+    C 前置最长子串的对称中心
+    R C的半径
+    P 存储n个节点的子串长度
+     */
     public String longestPalindrome(String s) {
         String T = preProcess(s);
         int n = T.length();
@@ -39,7 +44,7 @@ Output: "bb"
                 P[i] = 0;// 等于 R 的情况
             }
 
-            // 碰到之前讲的三种情况时候，需要利用中心扩展法
+            // 利用中心扩展法
             while (T.charAt(i + 1 + P[i]) == T.charAt(i - 1 - P[i])) {
                 P[i]++;
             }
@@ -61,10 +66,10 @@ Output: "bb"
                 centerIndex = i;
             }
         }
-        int start = (centerIndex - maxLen) / 2; //最开始讲的求原字符串下标
+        int start = (centerIndex - maxLen) / 2; //求原字符串下标
         return s.substring(start, start + maxLen);
     }
 }
 
 // Manacher's Algorithm: 辅助填充动态规划
-// 计算当前节点的字串长度并更新极值
+// 计算当前节点的子串长度并更新极值
