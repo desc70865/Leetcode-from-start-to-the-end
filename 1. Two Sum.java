@@ -11,3 +11,4 @@ class Solution {
         throw new IllegalArgumentException("No two sum solution");
     }
 }
+// 利用 hash 表(牺牲内存换取的)索引存储优势,同时进行查找和插入操作的循环
