@@ -75,5 +75,5 @@ class Solution {
     }
 }
 
-// 使用 Integer.MAX_VALUE - digit 跳过了一层判断
+// 使用 Integer.MAX_VALUE - digit 跳过了一层 if 判断
 // 持续判断异常,简化符号分支
