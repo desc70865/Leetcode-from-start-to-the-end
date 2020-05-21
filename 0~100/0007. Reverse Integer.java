@@ -60,4 +60,8 @@ const char* convert(char buf[], int value)
 }
  */
  
+<<<<<<< HEAD
  // 32-bit 整数 => 数组
+=======
+ // 32-bit 整数=>数组
+>>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71

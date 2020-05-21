@@ -1,5 +1,6 @@
 /* 
 There are two sorted arrays nums1 and nums2 of size m and n respectively.
+<<<<<<< HEAD
 Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
 You may assume nums1 and nums2 cannot be both empty.
 Example 1:
@@ -9,6 +10,25 @@ The median is 2.0
 Example 2:
 nums1 = [1, 2]
 nums2 = [3, 4]
+=======
+
+Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+
+You may assume nums1 and nums2 cannot be both empty.
+
+Example 1:
+
+nums1 = [1, 3]
+nums2 = [2]
+
+The median is 2.0
+
+Example 2:
+
+nums1 = [1, 2]
+nums2 = [3, 4]
+
+>>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71
 The median is (2 + 3)/2 = 2.5
  */
 
@@ -49,4 +69,8 @@ class Solution {
     }
 }
 
+<<<<<<< HEAD
 // 同步搜索两个数组的分割点以确定中位数
+=======
+// 同步搜索两个数组的分割点以确定中位数
+>>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71

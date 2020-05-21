@@ -1,9 +1,14 @@
 /* 
 The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71
 P   A   H   N
 A P L S I I G
 Y   I   R
 And then read line by line: "PAHNAPLSIIGYIR"
+<<<<<<< HEAD
 Write the code that will take a string and make this conversion given a number of rows:
 string convert(string s, int numRows);
 Example 1:
@@ -13,6 +18,23 @@ Example 2:
 Input: s = "PAYPALISHIRING", numRows = 4
 Output: "PINALSIGYAHRPI"
 Explanation:
+=======
+
+Write the code that will take a string and make this conversion given a number of rows:
+
+string convert(string s, int numRows);
+Example 1:
+
+Input: s = "PAYPALISHIRING", numRows = 3
+Output: "PAHNAPLSIIGYIR"
+
+Example 2:
+
+Input: s = "PAYPALISHIRING", numRows = 4
+Output: "PINALSIGYAHRPI"
+Explanation:
+
+>>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71
 P     I    N
 A   L S  I G
 Y A   H R
@@ -41,4 +63,8 @@ P     I
 
 // 当然在Z字两端判断 step *= -1 也是简洁的写法
 // 可惜输出不含空格,不然会有趣很多
+<<<<<<< HEAD
 // 可以先求转置数组再转置输出,大致可节省一半的插入时间
+=======
+// 可以先求转置数组再转置输出,大致可节省一半的插入时间
+>>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71

@@ -47,4 +47,8 @@ Coud you solve it without converting the integer to a string?
 }
 
 // 进制转换~
+<<<<<<< HEAD
 // 仅翻转一半,需额外判断奇偶
+=======
+// 仅翻转一半,需额外判断奇偶
+>>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71
