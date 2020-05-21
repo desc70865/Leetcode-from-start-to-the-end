@@ -6,6 +6,7 @@ Example 1:
 Input: "babad"
 Output: "bab"
 Note: "aba" is also a valid answer.
+
 Example 2:
 
 Input: "cbbd"
@@ -73,3 +74,4 @@ Output: "bb"
 
 // Manacher's Algorithm: 辅助填充动态规划
 // 计算当前节点的子串长度并更新极值
+// 若当前节点关于当前最值的对称节点半径在最大半径范围内,可节省此扩张过程
