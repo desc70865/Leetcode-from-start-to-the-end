@@ -11,6 +11,7 @@ nums1 = [1, 3]
 nums2 = [2]
 
 The median is 2.0
+
 Example 2:
 
 nums1 = [1, 2]
@@ -29,8 +30,8 @@ class Solution {
         }
         int iMin = 0, iMax = m, halfLen = (m + n + 1) / 2;
         while (iMin <= iMax) {
-            int i = (iMin + iMax) / 2;
-            int j = halfLen - i;
+            int i = (iMin + iMax) / 2; // 更新 A 中点近似
+            int j = halfLen - i; // ~ B
             if (i < iMax && B[j-1] > A[i]){
                 iMin = i + 1; // i is too small
             }
@@ -42,7 +43,7 @@ class Solution {
                 if (i == 0) { maxLeft = B[j-1]; }
                 else if (j == 0) { maxLeft = A[i-1]; }
                 else { maxLeft = Math.max(A[i-1], B[j-1]); }
-                if ( (m + n) % 2 == 1 ) { return maxLeft; }
+                if ( (m + n) % 2 == 1 ) { return maxLeft; } // length odd, maxLeft == mid
 
                 int minRight = 0;
                 if (i == m) { minRight = B[j]; }
