@@ -1,6 +1,6 @@
 /* 
 Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
-<<<<<<< HEAD
+
 Example 1:
 Input: "babad"
 Output: "bab"
@@ -16,7 +16,6 @@ Note: "aba" is also a valid answer.
 
 Example 2:
 
->>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71
 Input: "cbbd"
 Output: "bb"
  */
@@ -82,8 +81,4 @@ Output: "bb"
 
 // Manacher's Algorithm: 辅助填充动态规划
 // 计算当前节点的子串长度并更新极值
-<<<<<<< HEAD
 // 若当前节点关于当前最值的对称节点半径在最大半径范围内,可节省此扩张过程
-=======
-// 若当前节点关于当前最值的对称节点半径在最大半径范围内,可节省此扩张过程
->>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71

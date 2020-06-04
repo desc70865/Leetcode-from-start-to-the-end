@@ -30,8 +30,4 @@ public class Solution {
     }
 }
 
-<<<<<<< HEAD
 // 收缩就完事了...
-=======
-// 收缩就完事了...
->>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71

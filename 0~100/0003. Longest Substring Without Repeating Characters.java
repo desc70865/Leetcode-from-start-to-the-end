@@ -1,38 +1,21 @@
-<<<<<<< HEAD
-
-/*
-Given a string, find the length of the longest substring without repeating characters.
-Example 1:
-Input: "abcabcbb"
-Output: 3 
-Explanation: The answer is "abc", with the length of 3. 
-Example 2:
-Input: "bbbbb"
-Output: 1
-Explanation: The answer is "b", with the length of 1.
-Example 3:
-=======
 /*
 Given a string, find the length of the longest substring without repeating characters.
 
 Example 1:
-
 Input: "abcabcbb"
 Output: 3 
 Explanation: The answer is "abc", with the length of 3. 
 
 Example 2:
-
 Input: "bbbbb"
 Output: 1
 Explanation: The answer is "b", with the length of 1.
 
 Example 3:
-
->>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71
 Input: "pwwkew"
 Output: 3
 Explanation: The answer is "wke", with the length of 3. 
+
 Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 */
 
@@ -53,8 +36,4 @@ public class Solution {
 }
 
 // 插入hash表，更新最大非重复区间:检测更新左边界,比较更新后的区间大小
-<<<<<<< HEAD
 // 循环包含 if 判断和赋值
-=======
-// 循环包含 if 判断和赋值
->>>>>>> 53a3b336f8b1900d5cb2aa776824caccfd0dcd71
