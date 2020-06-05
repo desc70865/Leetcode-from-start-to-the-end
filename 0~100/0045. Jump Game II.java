@@ -22,7 +22,7 @@ class Solution {
         while (cur < n - 1) { // 当前坐标
             ++res; // 次数
             int pre = cur; // 上一个 cur
-            for (; i <= pre; ++i) { // i 无须重置,因其必然不是最优解
+            for (; i <= pre; ++i) { // i 无须重置, 最优 nums[i] 已更新至 cur 中
                 cur = cur > (i + nums[i]) ? cur : (i + nums[i]); // 更新
             }
             if (pre == cur) return -1; // May not need this
