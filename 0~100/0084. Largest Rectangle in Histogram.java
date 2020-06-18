@@ -1,17 +1,14 @@
 /* 
 Given n non-negative integers representing the histogram's bar height where the width of each bar is 1, find the area of largest rectangle in the histogram.
 
- 
 
 
 Above is a histogram where width of each bar is 1, given height = [2,1,5,6,2,3].
 
- 
 
 
 The largest rectangle is shown in the shaded area, which has area = 10 unit.
 
- 
 
 Example:
 
@@ -21,9 +18,8 @@ Output: 10
 
 class Solution {
     public int largestRectangleArea(int[] heights) {
-        int[] left = new int[heights.length];
-        int[] right = new int[heights.length];
-        for (int i = 0; i < heights.length; i++) {
+        int[] left = new int[heights.length], right = new int[heights.length];
+        for (int i=0; i < heights.length; i++) {
             int pre = i - 1;
             while (pre >= 0 && heights[i] <= heights[pre]) pre = left[pre] - 1; // 核心
             left[i] = pre + 1;
@@ -34,7 +30,7 @@ class Solution {
             right[i] = pre - 1;
         }
         int max = 0;
-        for (int i = 0; i < heights.length; i++) 
+        for (int i=0; i < heights.length; i++) 
             max = Math.max(max, (right[i] - left[i] + 1) * heights[i]);
         return max;
     }

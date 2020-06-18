@@ -16,7 +16,7 @@ A solution set is:
 ]
  */
 
-class Solution { 
+class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> ret = new ArrayList<>();
  
