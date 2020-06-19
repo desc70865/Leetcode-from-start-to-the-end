@@ -35,16 +35,17 @@ class Solution {
     private List<List<Integer>> res;
     public List<List<Integer>> levelOrder(TreeNode root) {
         res = new ArrayList<>();
-        levelorder(root, 0);
+        if (root == null) return res;
+        levelorder(root, 1);
         return res;
     }
     
     private void levelorder(TreeNode node, int level) {
         if (node == null) return;
-        if (res.size() == level) res.add(null);
-        // res.get(level).add(node.val); // ???
-        if (node.left != null) levelorder(node.left, level + 1);
-        if (node.right != null) levelorder(node.right, level + 1);
+        if (res.size() < level) res.add(new ArrayList<Integer>());
+        res.get(level-1).add(node.val);
+        levelorder(node.left, level+1);
+        levelorder(node.right, level+1);
     }
 }
 
@@ -57,8 +58,9 @@ class Solution {
         if (root != null) q.offer(root);
         TreeNode cur;
         while (!q.isEmpty()) {
+            int size = q.size();
             List<Integer> subAns = new LinkedList<Integer>();
-            for (int i = 0; i < q.size(); ++i) {
+            for (int i = 0; i < size; ++i) {
                 cur = q.poll();
                 subAns.add(cur.val);
                 if (cur.left != null) q.offer(cur.left);
