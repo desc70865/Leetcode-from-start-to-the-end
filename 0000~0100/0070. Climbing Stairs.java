@@ -23,7 +23,7 @@ Explanation: There are three ways to climb to the top.
  */
 
 class Solution {
-    public static int climbStairs(int n) {
+    public int climbStairs(int n) {
         if (n <= 1) return 1;
         int[] dp = new int[n];
         dp[0] = 1; dp[1] = 2;
@@ -35,6 +35,22 @@ class Solution {
 }
 
 // 有个屁用
+
+class Solution {
+    public int climbStairs(int n) {
+        return Jump(n, 2);
+    }
+    private int Jump(int n, int k) {
+        int[] dp = new int[n+1];
+        dp[0] = 1; dp[1] = 1;
+        for (int i=2; i < n+1; i++) {
+            for (int j=1; (i - j) >= 0 && j <= k; j++) {
+                dp[i] += dp[i - j];
+            }
+        }
+        return dp[n];
+    }
+}
 
 class Solution {
     public static int climbStairs(int n) {
