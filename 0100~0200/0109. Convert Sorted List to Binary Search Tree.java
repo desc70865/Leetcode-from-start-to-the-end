@@ -47,7 +47,7 @@ class Solution {
 
     private int findSize(ListNode head) {
         ListNode ptr = head;
-        int c = 0;
+        int c = -1;
         while (ptr != null) {
             ptr = ptr.next;
             c += 1;
@@ -75,6 +75,6 @@ class Solution {
 
         this.head = head;
 
-        return convertListToBST(0, size - 1);
+        return convertListToBST(0, size);
     }
 }
