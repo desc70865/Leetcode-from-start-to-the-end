@@ -23,7 +23,8 @@ Your algorithm should run in O(n) time and uses constant extra space.
 class Solution {
     public static int firstMissingPositive(int[] nums) {
         for (int i = 0; i < nums.length; i++) {
-            while (nums[i] > 0 && nums[i] <= nums.length && nums[i] != nums[nums[i]-1]) // 可能包含重复项, 卑鄙
+            while (0 < nums[i] && nums[i] <= nums.length && nums[i] != nums[nums[i]-1])
+                // 可能包含重复项, 卑鄙
                 swap(nums, i, nums[i]-1);
         }
         int i = 0;
@@ -53,3 +54,22 @@ if x != i+1; then swap(nums[i], nums[nums[i]-1]);
 // 算法的本质是遍历递增搜索,直到无结果或结束返回
 // 在第二个循环中while即可
 // 最坏的情况似乎最多交换 n-1 次
+
+
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        boolean[] mark = new boolean[nums.length];
+        for (int num : nums) {
+            if (num > 0 && num <= nums.length) {
+                mark[num-1] = true;
+            }
+        }
+        
+        for (int i = 0; i < nums.length; i++) {
+            if (!mark[i]) {
+                return i+1;
+            }
+        }
+        return nums.length+1;
+    }
+}

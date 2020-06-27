@@ -41,25 +41,19 @@ class Solution {
 
 class Solution {
     public boolean isHappy(int n) {
-        if (n == 1 || n == 7)
-            return true;
-        int sum = n, x = n;
+        int sum = n, x;
         
         while (sum > 9) {
+            x = sum;
             sum = 0;
-
             while (x > 0) {
                 int d = x % 10;
                 sum += d * d;
                 x /= 10;
             }
-            if (sum == 1)
-                return true;
-            x = sum;
         }
-        if (sum == 7)
-            return true;
-        return false;
+        
+        return sum == 1 || sum == 7;
     }
 }
 
