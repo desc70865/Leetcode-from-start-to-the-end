@@ -36,7 +36,31 @@ p and q are different and both values will exist in the binary tree.
  * }
  */
 class Solution {
+
+    private TreeNode ans;
+    private int cnt;
+    private TreeNode p, q;
+
+    public Solution() {
+        this.ans = null;
+        this.cnt = 0;
+    }
+
+    private boolean dfs(TreeNode root) {
+        if (root == null || cnt == 2) return false;
+        boolean self = root.val == p.val || root.val == q.val;
+        if (self) this.cnt++;
+        boolean rson = dfs(root.right);
+        boolean lson = dfs(root.left);
+        if ((lson && rson) || self) {
+            ans = root;
+        } 
+        return lson || rson || self;
+    }
+
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        
+        this.p = p; this.q = q;
+        this.dfs(root);
+        return this.ans;
     }
 }

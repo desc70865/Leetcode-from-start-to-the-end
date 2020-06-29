@@ -20,28 +20,6 @@ Explanation: The square root of 8 is 2.82842..., and since
 
 class Solution {
     public static int mySqrt(int x) {
-        if (x == 1)
-            return 1;
-        double _max = x; //此处一定为浮点数，不要用整数
-        double _min = 0.0;
-        double p = 1e-5; //此处为精度，当满足该精度时，返回该近似值
-        double  mid = (_max + _min) / 2.0;
-        while(Math.abs(mid * mid - x) > p)//此处是浮点数之差的绝对值与精度进行比较
-        {
-            if(mid * mid < x)
-                _min = mid;
-            else if(mid * mid > x)
-                _max = mid;
-            else
-                return (int)mid;
-            mid = (_max + _min) / 2.0;
-        }
-        return (int)mid;
-    }
-}
-
-class Solution {
-    public static int mySqrt(int x) {
         double n = x/2 + 1; // 设置初值
         double p = 0.9; // 设置精度
         while(Math.abs(n*n - x) > p)
