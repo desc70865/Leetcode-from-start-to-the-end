@@ -20,19 +20,7 @@ Input: "cbbd"
 Output: "bb"
  */
  
- class Solution {
-    public String preProcess(String s) {
-        int n = s.length();
-        if (n == 0) {
-            return "^$";
-        }
-        String ret = "^";
-        for (int i = 0; i < n; i++)
-            ret += "#" + s.charAt(i);
-        ret += "#$";
-        return ret;
-    }
-
+class Solution {
     // 马拉车算法
     /* 
     C 前置最长子串的对称中心
@@ -76,6 +64,18 @@ Output: "bb"
         }
         int start = (centerIndex - maxLen) / 2; //求原字符串下标
         return s.substring(start, start + maxLen);
+    }
+    
+    public String preProcess(String s) {
+        int n = s.length();
+        if (n == 0) {
+            return "^$";
+        }
+        String ret = "^";
+        for (int i = 0; i < n; i++)
+            ret += "#" + s.charAt(i);
+        ret += "#$";
+        return ret;
     }
 }
 

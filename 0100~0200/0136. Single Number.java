@@ -18,7 +18,9 @@ Output: 4
 class Solution {
     public int singleNumber(int[] nums) {
         int res = 0;
-        for (int num : nums) res ^= num;
+        for (int num : nums) {
+            res ^= num;
+        }
         return res;
     }
 }
@@ -26,9 +28,11 @@ class Solution {
 
 class Solution {
     public int singleNumber(int[] nums) {
-        if(nums.length == 1) return nums[0];
+        if (nums.length == 1) {
+            return nums[0];
+        }
         int result = 0;
-        for(int i = 0; i<nums.length; i++) {
+        for (int i = 0; i < nums.length; i++) {
             result ^= nums[i];
         }
         return result;
