@@ -43,7 +43,6 @@ public class NestedIterator implements Iterator<Integer> {
         for (NestedInteger i : nestedList) {
             helper(i);
         }
-        
     }
     private void helper(NestedInteger i) {
         if (i.isInteger()) {

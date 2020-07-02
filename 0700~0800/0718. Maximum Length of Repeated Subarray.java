@@ -81,9 +81,11 @@ class Solution {
         }
         Set<Long> bucketA = new HashSet<Long>();
         bucketA.add(hashA);
+        
+        // 滑窗 更新 hash 对比
         long mult = qPow(base, len - 1);
         for (int i = len; i < A.length; i++) {
-            hashA = ((hashA - A[i - len] * mult % mod + mod) % mod * base + A[i]) % mod;
+            hashA = hash(hashA, A, i, len, mult);
             bucketA.add(hashA);
         }
         long hashB = 0;
@@ -94,7 +96,7 @@ class Solution {
             return true;
         }
         for (int i = len; i < B.length; i++) {
-            hashB = ((hashB - B[i - len] * mult % mod + mod) % mod * base + B[i]) % mod;
+            hashB = hash(hashB, B, i, len, mult);
             if (bucketA.contains(hashB)) {
                 return true;
             }
@@ -102,7 +104,13 @@ class Solution {
         return false;
     }
     
-    // 使用快速幂计算 x^n % mod 的值
+    // 将S[a:b](b-a == len) 视作 base 进制数滑窗
+    // hash(S[1:len+1]) = (hash(S[0:len]) − base^len−1 × S[0]) × base + S[len]
+    private long hash(long hash, int[] X, int i, int len, long mult) {
+        return ((hash - X[i - len] * mult % mod + mod) % mod * base + X[i]) % mod;
+    }
+    
+    // 使用快速幂计算 x^n % mod 的值: x^n + tmp % mod
     public long qPow(long x, long n) {
         long ret = 1;
         while (n != 0) {
