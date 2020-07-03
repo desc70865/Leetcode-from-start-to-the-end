@@ -37,6 +37,7 @@ class Solution {
         }
         numList.add(num);
         int N = numList.size();
+        // ↑ 数值与操作符分离
 
         ArrayList<Integer>[][] dp = (ArrayList<Integer>[][]) new ArrayList[N][N];
         for (int i = 0; i < N; i++) {
@@ -146,5 +147,79 @@ class Solution {
     private int comp(int n1, int n2, char op) {
         return op == '+' ? (n1 + n2) :
             (op == '-' ? (n1 - n2) : (n1 * n2));
+    }
+}
+
+
+
+// ...
+
+class Solution {
+    public List<Integer> diffWaysToCompute(String input) {
+        List<Integer> numList = new ArrayList<>();
+        List<Character> opList = new ArrayList<>();
+        
+        int tmp = 0;
+        char tmd;
+        for (int i = 0; i < input.length(); i++) {
+            if (isOperation(tmd = input.charAt(i))) {
+                numList.add(stringToInt(input, tmp, i));
+                opList.add(tmd);
+                tmp = i + 1;
+            }
+        }
+        numList.add(stringToInt(input, tmp, input.length()));
+        int lenMax = numList.size();
+        // ↑ 数值与操作符分离
+
+        ArrayList<Integer>[][] dp = (ArrayList<Integer>[][]) new ArrayList[lenMax][lenMax];
+        for (int i = 0; i < lenMax; i++) {
+            ArrayList<Integer> result = new ArrayList<>();
+            result.add(numList.get(i));
+            dp[i][i] = result;
+        }
+        
+        for (int n = 2; n <= lenMax; n++) {
+            for (int i = 0; i < lenMax; i++) {
+                int j = i + n - 1; // len = j - i + 1
+                if (j >= lenMax) {
+                    break;
+                }
+                ArrayList<Integer> result = new ArrayList<>();
+                for (int s = i; s < j; s++) {
+                    ArrayList<Integer> result1 = dp[i][s]; // s ∈ [i, j]
+                    ArrayList<Integer> result2 = dp[s + 1][j];
+                    for (int x = 0; x < result1.size(); x++) {
+                        for (int y = 0; y < result2.size(); y++) {
+                            char op = opList.get(s);
+                            result.add(caculate(result1.get(x), op, result2.get(y)));
+                        }
+                    }
+                }
+                dp[i][j] = result;
+            }
+        }
+        return dp[0][lenMax-1];
+    }
+
+    private int caculate(int num1, char c, int num2) {
+        switch (c) {
+            case '+':
+                return num1 + num2;
+            case '-':
+                return num1 - num2;
+            case '*':
+                return num1 * num2;
+            default:
+                return -1;
+        }
+    }
+
+    private boolean isOperation(char c) {
+        return c == '+' || c == '-' || c == '*';
+    }
+    
+    private int stringToInt(String s, int start, int end) {
+        return Integer.parseInt(s.substring(start, end));
     }
 }
