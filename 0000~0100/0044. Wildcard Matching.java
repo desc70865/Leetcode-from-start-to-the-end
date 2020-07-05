@@ -51,8 +51,9 @@ Output: false
 
 class Solution {
     public boolean isMatch(String s, String p) {
-        if (s == null || p == null)
+        if (s == null || p == null) {
             return false;
+        }
         int i = 0, j = 0, iStar = -1, jStar = -1, m = s.length(), n = p.length();
         while (i < m) {
             if (j < n && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '?')) {
@@ -63,9 +64,13 @@ class Solution {
             } else if (iStar >= 0) { // 从上一个 * 开始重新匹配
                 i = ++iStar; // i 和 iStar 同时右移
                 j = jStar + 1; // j 重置于 jStar 右侧
-            } else return false;
+            } else {
+                return false;
+            }
         }
-        while (j < n && p.charAt(j) == '*') ++j;
+        while (j < n && p.charAt(j) == '*') {
+            ++j;
+        }
         return j == n;
     }
 }
