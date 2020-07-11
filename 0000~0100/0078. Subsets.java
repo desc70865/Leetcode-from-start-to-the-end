@@ -61,27 +61,6 @@ class Solution {
     }
 }
 
-
-class Solution {
-    private List<List<Integer>> res = new ArrayList<>();
-    public List<List<Integer>> subsets(int[] nums) {
-        Arrays.sort(nums);
-        helper(nums, 0, new Stack<Integer>());
-        return this.res;
-    }
-    private void helper(int[] nums, int i, Stack<Integer> p) {
-        if (i == nums.length) {
-            this.res.add(new ArrayList<>(p));
-            return;
-        } else {
-            helper(nums, i+1, p);
-            p.push(nums[i]);
-            helper(nums, i+1, p);
-            p.pop();
-        }
-    }
-}
-
 class Solution {
     private List<List<Integer>> res = new ArrayList<>();
     public List<List<Integer>> subsets(int[] nums) {
@@ -95,6 +74,25 @@ class Solution {
             return;
         } else {
             helper(nums, i+1, p);
+            p.add(nums[i]);
+            helper(nums, i+1, p);
+            p.remove(p.size() - 1);
+        }
+    }
+}
+
+
+
+class Solution {
+    private List<List<Integer>> res = new ArrayList<>();
+    public List<List<Integer>> subsets(int[] nums) {
+        // Arrays.sort(nums);
+        helper(nums, 0, new ArrayList<Integer>());
+        return res;
+    }
+    private void helper(int[] nums, int index, ArrayList<Integer> p) {
+        res.add(new ArrayList<>(p));
+        for (int i = index; i < nums.length; i++) {
             p.add(nums[i]);
             helper(nums, i+1, p);
             p.remove(p.size() - 1);

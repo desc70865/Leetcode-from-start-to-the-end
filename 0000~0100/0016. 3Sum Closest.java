@@ -22,7 +22,7 @@ class Solution {
                 int sum = nums[i] + nums[j] + nums[k];
                 int diff = Math.abs(sum - target);
      
-                if(diff == 0) return sum;
+                if (diff == 0) return sum;
      
                 if (diff < min) {
                     min = diff;
