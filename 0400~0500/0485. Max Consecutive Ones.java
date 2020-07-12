@@ -27,3 +27,31 @@ class Solution {
         return res;
     }
 }
+
+
+
+class Solution {
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int i = 0, K = 0;
+        for (int num: nums) {
+            if ((K -= 1 - num) < 0) {
+                K += 1 - nums[i++];
+            }
+        }
+        return nums.length - i;
+    }
+}
+
+
+
+class Solution {
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int i = 0, j = 0, K = 0;
+        while (j < nums.length) {
+            if ((K -= 1 - nums[j++]) < 0) {
+                K += 1 - nums[i++];
+            }
+        }
+        return j - i;
+    }
+}
