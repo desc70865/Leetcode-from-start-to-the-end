@@ -51,3 +51,24 @@ class Solution {
         return second;
     }
 }
+
+// 1st, 2nd before
+
+class Solution {
+    public int rob(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int LEN = nums.length, aux = nums[0];
+        if (LEN == 1) {
+            return aux;
+        }
+        int res = Math.max(aux, nums[1]);
+        for (int i = 2; i < LEN; i++) {
+            int temp = res;
+            res = Math.max(aux + nums[i], res);
+            aux = temp;
+        }
+        return res;
+    }
+}

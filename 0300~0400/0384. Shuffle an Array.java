@@ -79,6 +79,7 @@ class Solution {
         int[] clone = new int[nums.length];
         Random random = new Random();
         for (int i = 0; i < nums.length; i++) {
+            // [0, i]
             j = random.nextInt(i+1);
             clone[i] = clone[j];
             clone[j] = nums[i];

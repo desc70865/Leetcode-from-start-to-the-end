@@ -76,6 +76,8 @@ class Solution {
     }
 }
 
+
+
 class Solution {
     public int romanToInt(String s) {
         if (s == null || s.length() == 0) {
@@ -131,3 +133,120 @@ class Solution {
 }
 
 // 从右往左读取,遇4,9则相减
+
+class Solution {
+    public int romanToInt(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        
+        char[] str = s.toCharArray();
+        int LEN = str.length, curr = 0;
+        int prev = romanTable(str[LEN-1]);
+        int result = prev;
+        for (int i = s.length() - 2; i >= 0; i --) {
+            curr = romanTable(str[i]);
+            if (curr < prev) {
+                result -= curr;
+                prev = 0;
+            } else {
+                result += curr;
+                prev = curr;
+            }
+        }
+        return result;
+    }
+
+    public int romanTable(char c){
+        int num = 0;
+        switch(c){
+            case 'I':
+                num = 1;
+                break;
+            case 'V':
+                num = 5;
+                break;
+             case 'X':
+                num = 10;
+                break;
+             case 'L':
+                 num = 50;
+                 break;
+             case 'C':
+                 num = 100;
+                 break;
+             case 'D':
+                 num = 500;
+                 break;
+             case 'M':
+                 num = 1000;
+                 break;
+             default:
+                 num = 0;
+                 break;
+        }
+        return num;
+    }
+}
+
+
+
+class Solution {
+    public int romanToInt(String s) {
+        char ch[] = s.toCharArray();
+        int ans = 0;
+        for(int i=0;i<ch.length;i++){
+            switch(ch[i]){
+                case 'I':
+                    ans = ans + 1;
+                    break;
+                case 'V':
+                    if(i>0 && ch[i-1] == 'I'){
+                        ans = ans -1 + 4;
+                    }
+                    else
+                        ans = ans + 5;
+                    break;
+                case 'X':
+                    if(i>0 && ch[i-1] == 'I'){
+                        ans = ans -1 + 9;
+                    }
+                    else
+                        ans = ans + 10;
+                    break;
+                case 'L':
+                    if(i>0 && ch[i-1] == 'X'){
+                        ans = ans -10 + 40;
+                    }
+                    else
+                        ans = ans + 50;
+                    break;
+                case 'C':
+                    if(i>0 && ch[i-1] == 'X'){
+                        ans = ans - 10 + 90;
+                    }
+                    else
+                        ans = ans + 100;
+                    break;
+                case 'D':
+                    if(i>0 && ch[i-1] == 'C'){
+                        ans = ans -100 + 400;
+                    }
+                    else
+                        ans = ans + 500;
+                    break;
+                case 'M':
+                    if(i>0 && ch[i-1] == 'C'){
+                        ans = ans -100 + 900;
+                    }
+                    else
+                        ans = ans + 1000;
+                    break;
+                default:
+                    ans = ans + 0;
+                    break;
+            }
+        }
+        return ans;
+    }
+}
