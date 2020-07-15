@@ -21,6 +21,7 @@ class Solution {
         return nums[n];
     }
 }
+
 // 查表
 
 class Solution {
@@ -31,6 +32,7 @@ class Solution {
         return (int)(res / (n + 1));
     }
 }
+
 // 通项
 
 class Solution {
@@ -45,6 +47,7 @@ class Solution {
         return dp[n];
     }
 }
+
 // 递推
 
 class Solution {
