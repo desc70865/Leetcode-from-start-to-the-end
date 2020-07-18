@@ -104,3 +104,101 @@ class Solution {
         return false;
     }
 }
+
+
+
+class Solution {
+    private char[] c1;
+    private char[] c2;
+    private char[] c3;
+    private int LEN1;
+    private int LEN2;
+    private int LEN3;
+    private boolean[][] dp;
+
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if (s1.length() + s2.length() != s3.length()) {
+            return false;
+        }
+        
+        c1 = s1.toCharArray();
+        c2 = s2.toCharArray();
+        c3 = s3.toCharArray();
+        LEN1 = c1.length;
+        LEN2 = c2.length;
+        LEN3 = c3.length;
+        dp = new boolean[LEN1 + 1][LEN2 + 1];
+
+        return helper(0, 0, 0);
+    }
+
+    private boolean helper(int i, int j, int k) {
+        if (i > LEN1 || j > LEN2 || dp[i][j]) {
+            return false;
+        }
+        
+        dp[i][j] = true;
+        
+        return i < LEN1 && c1[i] == c3[k] && helper(i+1, j, k+1) 
+            || j < LEN2 && c2[j] == c3[k] && helper(i, j+1, k+1)
+            || k == LEN3;
+    }
+}
+
+
+
+class Solution {
+    private boolean[][] dp;
+    private char[] s1, s2, s3;
+
+    private boolean helper(int i, int j, int k) {
+        if (i == s1.length && j == s2.length) return true;
+        if (i > s1.length || j > s2.length || dp[i][j]) return false;
+        if (i < s1.length && s1[i] == s3[k] && helper(i + 1, j, k + 1)) {
+            return true;
+        }
+        if (j < s2.length && s2[j] == s3[k] && helper(i, j + 1, k + 1)) {
+            return true;
+        }
+        dp[i][j] = true;
+        return false; // s1[i] != s3[k] && s2[j] != s3[k]
+    }
+    
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if (s1.length() + s2.length() != s3.length()) return false;
+        dp = new boolean[s1.length()+1][s2.length()+1];
+        this.s1 = s1.toCharArray();
+        this.s2 = s2.toCharArray();
+        this.s3 = s3.toCharArray();
+        return helper(0,0,0);
+    }
+}
+
+
+
+class Solution {
+    private boolean[][] dp;
+    
+    public boolean isInterleave(String s1, String s2, String s3) {
+        return s1.length() + s2.length() == s3.length()
+            && isInterleave(s1.toCharArray(), s2.toCharArray(), s3.toCharArray());
+    }
+    
+    public boolean isInterleave(char[] s1, char[] s2, char[] s3) {
+        dp = new boolean[s1.length + 1][s2.length + 1];
+        
+        return helper(0, 0, 0, s1, s2, s3);
+    }
+
+    private boolean helper(int i, int j, int k, char[] s1, char[] s2, char[] s3) {
+        if (i > s1.length || j > s2.length || dp[i][j]) {
+            return false;
+        }
+        
+        dp[i][j] = true;
+        
+        return i < s1.length && s1[i] == s3[k] && helper(i+1, j, k+1, s1, s2, s3) 
+            || j < s2.length && s2[j] == s3[k] && helper(i, j+1, k+1, s1, s2, s3)
+            || k == s3.length;
+    }
+}

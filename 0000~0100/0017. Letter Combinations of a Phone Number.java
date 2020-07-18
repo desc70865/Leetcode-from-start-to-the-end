@@ -27,7 +27,7 @@ class Solution {
         dict.put('9',new char[]{'w','x','y','z'});
      
         List<String> result = new ArrayList<String>();
-        if(digits==null||digits.length()==0){
+        if (digits == null || digits.length() == 0) {
             return result;
         }
      
@@ -38,15 +38,15 @@ class Solution {
     }
      
     private void helper(String digits, int index, HashMap<Character, char[]> dict, List<String> result, char[] arr){
-        if(index==digits.length()){
+        if (index == digits.length()) {
             result.add(new String(arr));
             return;
         }
      
         char number = digits.charAt(index);
         char[] candidates = dict.get(number);
-        for(int i=0; i<candidates.length; i++){
-            arr[index]=candidates[i];
+        for (int i = 0; i < candidates.length; i++) {
+            arr[index] = candidates[i];
             helper(digits, index+1, dict, result, arr);
         }
     }
