@@ -102,3 +102,159 @@ class Solution {
 
 
 
+class Solution {
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        if(buildings.length == 0){
+            return  new ArrayList<>();
+        }
+        return merge(buildings, 0, buildings.length - 1);
+    }
+
+    private List<List<Integer>> merge(int[][] buildings, int start, int end) {
+
+        List<List<Integer>> res = new ArrayList<>();
+        //只有一个建筑, 将 [x, h], [y, 0] 加入结果
+        if (start == end) {
+            List<Integer> temp = new ArrayList<>();
+            temp.add(buildings[start][0]);
+            temp.add(buildings[start][2]);
+            res.add(temp);
+
+            temp = new ArrayList<>();
+            temp.add(buildings[start][1]);
+            temp.add(00);
+            res.add(temp);
+            return res;
+        }
+        int mid = (start + end) >>> 1;
+        //第一组解
+        List<List<Integer>> Skyline1  = merge(buildings, start, mid);
+        //第二组解
+        List<List<Integer>> Skyline2  = merge(buildings, mid + 1, end);
+        //下边将两组解合并
+        int h1 = 0;
+        int h2 = 0;
+        int i = 0;
+        int j = 0;
+        while (i < Skyline1 .size() || j < Skyline2 .size()) {
+            long x1 = i < Skyline1 .size() ? Skyline1 .get(i).get(0) : Long.MAX_VALUE;
+            long x2 = j < Skyline2 .size() ? Skyline2 .get(j).get(0) : Long.MAX_VALUE;
+            long x = 0;
+            //比较两个坐标
+            if (x1 < x2) {
+                h1 = Skyline1 .get(i).get(1);
+                x = x1;
+                i++;
+            } else if (x1 > x2) {
+                h2 = Skyline2 .get(j).get(1);
+                x = x2;
+                j++;
+            } else {
+                h1 = Skyline1 .get(i).get(1);
+                h2 = Skyline2 .get(j).get(1);
+                x = x1;
+                i++;
+                j++;
+            }
+            //更新 height
+            int height = Math.max(h1, h2);
+            //重复的解不要加入
+            if (res.isEmpty() || height != res.get(res.size() - 1).get(1)) {
+                List<Integer> temp = new ArrayList<>();
+                temp.add((int) x);
+                temp.add(height);
+                res.add(temp);
+            }
+        }
+        return res;
+    }
+}
+
+
+
+class Solution {
+    static class Sky {
+        int x1, x2, y;
+        Sky next;
+        public Sky(int _x1, int _x2,int _y) {
+            x1 = _x1;
+            x2 = _x2;
+            y = _y;
+        }
+    }
+
+    Sky origin = new Sky(-1, Integer.MAX_VALUE, 0);
+
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        List<List<Integer>> result = new LinkedList<List<Integer>>();
+        if (buildings.length == 0) return result;
+
+        origin.next = new Sky(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
+        Sky current = origin, p, newp, prevp = current;
+        int x1, x2, y;
+        
+        for (int[] building: buildings) {
+            x1 = building[0];
+            x2 = building[1];
+            y = building[2];
+
+            while (current.x2 < x1) {
+                prevp = current;
+                current = current.next;
+            }
+
+            p = current;
+
+            while (x2 > x1) {
+                newp = p;
+                if (y > p.y) {
+                    if (x2 < p.x2) {
+                        newp = new Sky(x1, x2, y);
+                        newp.next = new Sky(x2, p.x2, p.y);
+                        newp.next.next = p.next;
+                        p.next = newp;
+                    } else {
+                        newp = new Sky(x1, p.x2, y);
+                        newp.next = p.next;
+                        p.next = newp;
+
+                    }
+
+                    if (x1 == p.x1) {
+                        prevp.next = newp;
+                    } else {
+                        p.x2 = x1;
+                    }
+
+                    prevp = newp;
+                } else {
+                    prevp = p;
+                }
+
+                if (x2 > newp.x2) {
+                    x1 = newp.x2;
+                    p = newp.next;
+                } else {
+                    x1 = x2;
+                }
+            }
+        }
+
+        current = origin.next;
+        y = -1;
+        x2 = 0;
+
+        while (current != null) {
+            if (current.y != y && current.x1 < current.x2) {
+                result.add(Arrays.asList(current.x1, current.y));
+                y = current.y;
+                x2 = current.x2;
+            }
+
+            current = current.next;
+        }
+
+        if (y > 0) result.add(Arrays.asList(x2, 0));
+        return result;
+    }
+}

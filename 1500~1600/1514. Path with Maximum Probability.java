@@ -59,9 +59,11 @@ class Solution {
             graph[edges[i][0]].add(new double[] { edges[i][1], succProb[i] });
             graph[edges[i][1]].add(new double[] { edges[i][0], succProb[i] });
         }
-        PriorityQueue<double[]> queue = new PriorityQueue<>((a, b) -> Double.compare(b[1], a[1]));
         boolean[] visited = new boolean[n];
-        queue.add(new double[] { start, 1 });
+        
+        PriorityQueue<double[]> queue = new PriorityQueue<>((a, b) -> Double.compare(b[1], a[1]));
+        queue.add(new double[] { start, 1.0 });
+        
         while (!queue.isEmpty()) {
             double[] head = queue.remove();
             if (head[0] == end) {
@@ -74,5 +76,103 @@ class Solution {
             }
         }
         return 0.0;
+    }
+}
+
+
+
+class Solution {
+    private ArrayList<double[]>[] graph;
+    private boolean[] visited;
+    
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+        graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < edges.length; i++) {
+            graph[edges[i][0]].add(new double[] { edges[i][1], succProb[i] });
+            graph[edges[i][1]].add(new double[] { edges[i][0], succProb[i] });
+        }
+        visited = new boolean[n];
+        
+        Map<Double, Double> startMap = new HashMap<>();
+        startMap.put((double) start, 1.0);
+        Map<Double, Double> endMap = new HashMap<>();
+        endMap.put((double) end, 1.0);
+        
+        return bfs(startMap, endMap);
+    }
+    
+    private double bfs(Map<Double, Double> startMap, Map<Double, Double> endMap) {
+        if (startMap.size() == 0) {
+            return 0.0;
+        }
+        
+        Map<Double, Double> curMap = new HashMap<>();
+        for (Map.Entry<Double, Double> entry: startMap.entrySet()) {
+            double key = entry.getKey();
+            double val = entry.getValue();
+            if (visited[(int) key]) {
+                continue;
+            }
+            if (endMap.containsKey(key)) {
+                return val * endMap.get(key);
+            }
+            visited[(int) key] = true;
+            for (double[] next: graph[(int) key]) {
+                curMap.put(next[0], val * next[1]);
+            }
+        }
+        return bfs(curMap, endMap);
+        // return (curMap.size() < endMap.size()) ? bfs(curMap, endMap) : bfs(endMap, curMap);
+    }
+}
+
+
+
+class Solution {
+    private ArrayList<double[]>[] graph;
+    private boolean[] visited;
+    
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+        graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < edges.length; i++) {
+            graph[edges[i][0]].add(new double[] { edges[i][1], succProb[i] });
+            graph[edges[i][1]].add(new double[] { edges[i][0], succProb[i] });
+        }
+        
+        visited = new boolean[n];
+        
+        
+        Map<Double, Double> startMap = new HashMap<>();
+        startMap.put((double) start, 1.0);
+        
+        return bfs(startMap, end);
+    }
+    
+    private double bfs(Map<Double, Double> startMap, double end) {
+        if (startMap.size() == 0) {
+            return 0.0;
+        }
+        Map<Double, Double> curMap = new HashMap<>();
+        for (Map.Entry<Double, Double> entry : startMap.entrySet()) {
+            double key = entry.getKey();
+            double val = entry.getValue();
+            if (visited[(int) key]) {
+                continue;
+            }
+            if (key == end) {
+                return val;
+            }
+            visited[(int) key] = true;
+            for (double[] next: graph[(int) key]) {
+                curMap.put(next[0], val * next[1]);
+            }
+        }
+        return bfs(curMap, end);
     }
 }
