@@ -6,7 +6,7 @@ The geometric information of each building is represented by a triplet of intege
 
 For instance, the dimensions of all buildings in Figure A are recorded as: [ [2 9 10], [3 7 15], [5 12 12], [15 20 10], [19 24 8] ] .
 
-The output is a list of "key points" (red dots in Figure B) in the format of [ [x1,y1], [x2, y2], [x3, y3], ... ] that uniquely defines a skyline. A key point is the left endpoint of a horizontal line segment. Note that the last key point, where the rightmost building ends, is merely used to mark the termination of the skyline, and always has zero height. Also, the ground in between any two adjacent buildings should be considered part of the skyline contour.
+The output is a list of "key points" (red dots in Figure B) in the format of [ [x,y1], [y, y2], [x3, y3], ... ] that uniquely defines a skyline. A key point is the left endpoint of a horizontal line segment. Note that the last key point, where the rightmost building ends, is merely used to mark the termination of the skyline, and always has zero height. Also, the ground in between any two adjacent buildings should be considered part of the skyline contour.
 
 For instance, the skyline in Figure B should be represented as:[ [2 10], [3 15], [7 12], [12 0], [15 10], [20 8], [24, 0] ].
 
@@ -137,22 +137,22 @@ class Solution {
         int i = 0;
         int j = 0;
         while (i < Skyline1 .size() || j < Skyline2 .size()) {
-            long x1 = i < Skyline1 .size() ? Skyline1 .get(i).get(0) : Long.MAX_VALUE;
-            long x2 = j < Skyline2 .size() ? Skyline2 .get(j).get(0) : Long.MAX_VALUE;
+            long x = i < Skyline1 .size() ? Skyline1 .get(i).get(0) : Long.MAX_VALUE;
+            long y = j < Skyline2 .size() ? Skyline2 .get(j).get(0) : Long.MAX_VALUE;
             long x = 0;
             //比较两个坐标
-            if (x1 < x2) {
+            if (x < y) {
                 h1 = Skyline1 .get(i).get(1);
-                x = x1;
+                x = x;
                 i++;
-            } else if (x1 > x2) {
+            } else if (x > y) {
                 h2 = Skyline2 .get(j).get(1);
-                x = x2;
+                x = y;
                 j++;
             } else {
                 h1 = Skyline1 .get(i).get(1);
                 h2 = Skyline2 .get(j).get(1);
-                x = x1;
+                x = x;
                 i++;
                 j++;
             }
@@ -174,12 +174,13 @@ class Solution {
 
 class Solution {
     static class Sky {
-        int x1, x2, y;
+        int x, y, z;
         Sky next;
-        public Sky(int _x1, int _x2,int _y) {
-            x1 = _x1;
-            x2 = _x2;
+        
+        public Sky(int _x, int _y, int _z) {
+            x = _x;
             y = _y;
+            z = _z;
         }
     }
 
@@ -191,70 +192,66 @@ class Solution {
 
         origin.next = new Sky(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
         Sky current = origin, p, newp, prevp = current;
-        int x1, x2, y;
+        int x, y, z;
         
         for (int[] building: buildings) {
-            x1 = building[0];
-            x2 = building[1];
-            y = building[2];
-
-            while (current.x2 < x1) {
+            x = building[0];
+            y = building[1];
+            z = building[2];
+            
+            while (current.y < x) {
                 prevp = current;
                 current = current.next;
             }
 
             p = current;
 
-            while (x2 > x1) {
+            while (y > x) {
                 newp = p;
-                if (y > p.y) {
-                    if (x2 < p.x2) {
-                        newp = new Sky(x1, x2, y);
-                        newp.next = new Sky(x2, p.x2, p.y);
+                if (z > p.z) {
+                    if (y < p.y) {
+                        newp = new Sky(x, y, z);
+                        newp.next = new Sky(y, p.y, p.z);
                         newp.next.next = p.next;
                         p.next = newp;
                     } else {
-                        newp = new Sky(x1, p.x2, y);
+                        newp = new Sky(x, p.y, z);
                         newp.next = p.next;
                         p.next = newp;
 
                     }
-
-                    if (x1 == p.x1) {
+                    if (x == p.x) {
                         prevp.next = newp;
                     } else {
-                        p.x2 = x1;
+                        p.y = x;
                     }
-
                     prevp = newp;
                 } else {
                     prevp = p;
                 }
-
-                if (x2 > newp.x2) {
-                    x1 = newp.x2;
+                if (y > newp.y) {
+                    x = newp.y;
                     p = newp.next;
                 } else {
-                    x1 = x2;
+                    x = y;
                 }
             }
         }
 
         current = origin.next;
-        y = -1;
-        x2 = 0;
+        z = -1;
+        y = 0;
 
         while (current != null) {
-            if (current.y != y && current.x1 < current.x2) {
-                result.add(Arrays.asList(current.x1, current.y));
+            if (current.z != z && current.x < current.y) {
+                result.add(Arrays.asList(current.x, current.z));
+                z = current.z;
                 y = current.y;
-                x2 = current.x2;
             }
-
             current = current.next;
         }
-
-        if (y > 0) result.add(Arrays.asList(x2, 0));
+        
+        if (z > 0) result.add(Arrays.asList(y, 0));
         return result;
     }
 }
