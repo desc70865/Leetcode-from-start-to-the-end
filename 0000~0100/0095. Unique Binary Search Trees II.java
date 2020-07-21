@@ -49,48 +49,19 @@ Constraints:
 
 class Solution {
     public List<TreeNode> generateTrees(int n) {
-        List<TreeNode> ans = new ArrayList<>();
-        if (n == 0) return ans;
-        helper(1, n, ans);
-        return ans;
-    }
-    private void helper(int start, int end, List<TreeNode> ans){
-        if (start > end) {
-            ans.add(null);
-            return;
-        }
-        for (int i = start; i <= end; i++) {
-            List<TreeNode> left = new ArrayList<>();
-            List<TreeNode> right = new ArrayList<>();
-            helper(start, i-1, left);
-            helper(i+1, end, right);
-            for (int j=0; j < left.size(); j++) {
-                for (int k=0; k < right.size(); k++) {
-                    TreeNode root = new TreeNode(i);
-                    root.left = left.get(j);
-                    root.right = right.get(k);
-                    ans.add(root);
-                }
-            }
-        }
-    }
-}
-
-class Solution {
-    public List<TreeNode> generateTrees(int n) {
         if (n == 0) return new ArrayList<>();
-        return helper(1, n);
+        return generateTrees(1, n);
     }
 
-    private List<TreeNode> helper(int start, int end) {
+    private List<TreeNode> generateTrees(int start, int end) {
         List<TreeNode> res = new ArrayList<>();
         if (start > end) { // add null
         	res.add(null);
         	return res;
         }
         for (int i = start; i <= end; i++) {
-            List<TreeNode> left = helper(start, i - 1), right = helper(i + 1, end);
-            for (TreeNode leftNode : left) {
+            List<TreeNode> left = generateTrees(start, i - 1), right = generateTrees(i + 1, end);
+            for (TreeNode leftNode: left) {
                 for (TreeNode rightNode: right) {
                     TreeNode root = new TreeNode(i);
                     root.left = leftNode;
@@ -99,6 +70,8 @@ class Solution {
                 }
             }
         }
+        // 返回List中包含[i, j]中 j-i+1 个节点生成树全排列的根节点;
+        // 在[i, j]中选取k作为根节点,对[i, k-1]&[k+1, j]进行递归;
         return res;
     }
 }

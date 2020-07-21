@@ -184,14 +184,14 @@ class Solution {
         }
     }
 
-    Sky origin = new Sky(-1, Integer.MAX_VALUE, 0);
+    Sky dummy = new Sky(-1, Integer.MAX_VALUE, 0);
 
     public List<List<Integer>> getSkyline(int[][] buildings) {
         List<List<Integer>> result = new LinkedList<List<Integer>>();
         if (buildings.length == 0) return result;
 
-        origin.next = new Sky(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
-        Sky current = origin, p, newp, prevp = current;
+        dummy.next = new Sky(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
+        Sky cur = dummy, p, newp, prevp = cur;
         int x, y, z;
         
         for (int[] building: buildings) {
@@ -199,12 +199,12 @@ class Solution {
             y = building[1];
             z = building[2];
             
-            while (current.y < x) {
-                prevp = current;
-                current = current.next;
+            while (cur.y < x) {
+                prevp = cur;
+                cur = cur.next;
             }
 
-            p = current;
+            p = cur;
 
             while (y > x) {
                 newp = p;
@@ -237,18 +237,18 @@ class Solution {
                 }
             }
         }
-
-        current = origin.next;
+        
+        cur = dummy.next;
         z = -1;
         y = 0;
 
-        while (current != null) {
-            if (current.z != z && current.x < current.y) {
-                result.add(Arrays.asList(current.x, current.z));
-                z = current.z;
-                y = current.y;
+        while (cur != null) {
+            if (cur.z != z && cur.x < cur.y) {
+                result.add(Arrays.asList(cur.x, cur.z));
+                z = cur.z;
+                y = cur.y;
             }
-            current = current.next;
+            cur = cur.next;
         }
         
         if (z > 0) result.add(Arrays.asList(y, 0));
