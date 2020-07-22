@@ -52,3 +52,25 @@ class Solution {
         return nums[low];
     }
 }
+
+
+
+class Solution {
+    public int findMin(int[] nums) {
+        return biSearch(nums, 0, nums.length-1);
+    }
+
+    private int biSearch(int[] nums, int l, int r) {
+        if (l == r) {
+            return nums[l];
+        }
+        int mid = (l + r) / 2;
+        if (nums[mid] < nums[r]) {
+            return biSearch(nums, l, mid);
+        } else if (nums[mid] > nums[r]) {
+            return biSearch(nums, mid + 1, r);
+        } else {
+            return biSearch(nums, l, r - 1);
+        }
+    }
+}

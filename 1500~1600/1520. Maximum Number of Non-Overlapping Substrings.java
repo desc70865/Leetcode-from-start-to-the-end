@@ -48,35 +48,87 @@ class Solution {
 class Solution {
     public List<String> maxNumOfSubstrings(String s) {
         List<String> res = new LinkedList<>();
-        int[][] interval = new int[26][3];
+        char[] str = s.toCharArray();
+        int[][] index = new int[26][3];
+        for (int[] l: index)
+            Arrays.fill(l, -1);
+        
+        // initialize
+        for (int i = 0; i < str.length; i++) {
+            int j = str[i] - 'a';
+            if (-1 == index[j][0]) index[j][0] = i;
+            index[j][2] = i;
+        }
+        
+        
+        // correctify -> remove intersection
         for (int i = 0; i < 26; i++) {
-            interval[i][0] = s.indexOf('a' + i);
-            interval[i][1] = s.lastIndexOf('a' + i);
-            interval[i][2] = i;
+            if (-1 == index[i][0]) continue;
+            index[i][1] = index[i][2];
+            for (int j = index[i][0]+1; j < index[i][1]; j++) {
+                int k = str[j] - 'a';
+                if (index[k][0] < index[i][0]) {
+                    index[i][1] = -1;
+                    break;
+                }
+                index[i][1] = Math.max(index[i][1], index[k][2]);
+            }
         }
-        Arrays.sort(interval, (a, b) -> (a[0] - b[0]));
-        int start = 0;
-        while (interval[start][0] < 0) start++;
-        int pos = -1, tmp;
-        for (int i = start; i < 26; i++) {
-            int[] cur = interval[i];
-            int[] next = interval[i+1];
-            tmp = pos;
-            pos = cur[1];
-            if (i < 25 && cur[1] > next[0]) continue;
-            if (cur[1] > tmp && cur[0] < tmp) continue;
-            
-            // System.out.print((char)('a' + cur[2]) + "-> ");
-            // System.out.print("[" + cur[0] + ", ");
-            // System.out.print(cur[1] + "]: ");
-            // System.out.println(s.substring(cur[0], cur[1]+1));
-            
-            res.add(s.substring(cur[0], cur[1]+1));
+        
+        // simple order
+        Arrays.sort(index, (a, b) -> (Math.abs(a[0]) * sig(a[1]) - Math.abs(b[0]) * sig(b[1])));
+        
+        // for (int[] arr: index)
+        //     System.out.println(Arrays.toString(arr));
+        
+        // while does not contains behind
+        for (int i = 0; i < 26; i++) {
+            if (index[i][1] < 0 || i < 25 && index[i][1] > index[i+1][0]) continue;
+            res.add(s.substring(index[i][0], index[i][1]+1));
         }
-        if (res.size() == 0) res.add(s);
+        
         return res;
+    }
+    
+    private int sig(int x) {
+        return x < 0 ? -1 : 1;
     }
 }
 
 
 
+class Solution {
+    public List<String> maxNumOfSubstrings(String s) {
+        char[] cs = s.toCharArray();
+        int[] lo = new int[26], hi = new int[26], trueHi = new int[26];
+        Arrays.fill(lo, -1);
+        for (int i = 0; i < cs.length; i++) {
+            int idx = cs[i] - 'a';
+            if (lo[idx] == -1) lo[idx] = i;
+            hi[idx] = i;
+        }
+        for (int i = 0; i < 26; i++) {
+            if (lo[i] == -1) continue;
+            trueHi[i] = hi[i];
+            for (int d = lo[i]+1; d < trueHi[i]; d++) {
+                if (lo[cs[d]-'a'] < lo[i]) {
+                    trueHi[i] = -1;
+                    break;
+                }
+                trueHi[i] = Math.max(trueHi[i], hi[cs[d]-'a']);
+            }
+        }
+        List<int[]> list = new ArrayList(26);
+        for (int i = 0; i < 26; i++) {
+            if (lo[i] != -1 && trueHi[i] != -1) list.add(new int[] {lo[i], trueHi[i]});
+        }
+        Collections.sort(list, (a, b) -> (a[0] - b[0]));
+        List<String> ret = new LinkedList();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i)[1] < 0 
+            || i < list.size()-1 && list.get(i)[1] > list.get(i+1)[0]) continue;
+            ret.add(s.substring(list.get(i)[0],list.get(i)[1] + 1));
+        }
+        return ret;
+    }
+}
