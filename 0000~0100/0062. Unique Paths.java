@@ -37,10 +37,10 @@ class Solution {
         double sum = 1;
         int small = m > n ? n : m;
         for (int i = 1; i <= small - 1; ++i) {
-        	System.out.print(sum);
+        	// System.out.print(sum);
             sum = sum / i * (m + n - i - 1);
         }
-        return (int)sum;
+        return (int) sum;
     }
 }
 
