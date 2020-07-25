@@ -44,3 +44,49 @@ class Solution {
         
     }
 }
+
+// 起点 -> 终点
+// 遍历 -> 回溯 -> 标记
+
+class Solution {
+    int[][] dirs = new int[][]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+    int res = 0;
+    public int uniquePathsIII(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int startX = -1, startY = -1, endX = -1, endY = -1;
+        int steps = 1;
+        boolean[][] visited = new boolean[m][n];
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (grid[i][j] == 1) {
+                    startX = i;
+                    startY = j;
+                } else if (grid[i][j] == 2) {
+                    endX = i;
+                    endY = j;
+                } else if (grid[i][j] == 0) {
+                    steps++;
+                }
+            }
+        }
+        
+        helper(grid, startX, startY, endX, endY, steps, visited);
+        return res;
+    }
+    
+    private void helper(int[][] grid, int x, int y, int endX, int endY, int steps, boolean[][] visited) {
+        if (x == endX && y == endY) {
+            if (steps == 0) res++;
+            return;
+        }
+        visited[x][y] = true;
+        for (int[] dir: dirs) {
+            int nextX = x + dir[0], nextY = y + dir[1];
+            if (0 <= nextX && nextX < grid.length && 0 <= nextY && nextY < grid[0].length 
+            && grid[nextX][nextY] != -1 && !visited[nextX][nextY]) {
+                helper(grid, nextX, nextY, endX, endY, steps - 1, visited);
+            }
+        }
+        visited[x][y] = false;
+    }
+}
