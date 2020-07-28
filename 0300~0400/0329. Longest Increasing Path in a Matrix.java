@@ -26,34 +26,32 @@ Explanation: The longest increasing path is [3, 4, 5, 6]. Moving diagonally is n
  */
 
 class Solution {
+    private int[][] matrix;
+    
     public int longestIncreasingPath(int[][] matrix) {
-        if(matrix == null || matrix.length == 0 || matrix[0] == null || matrix[0].length == 0){
-            return 0;
-        }
+        if (matrix.length == 0 || matrix[0].length == 0) return 0;
+        this.matrix = matrix;
         int max = 0;
         int[][] steps = new int[matrix.length][matrix[0].length];
-        for(int i = 0; i < matrix.length; i++){
-            for(int j = 0; j < matrix[0].length; j++){
-                if(steps[i][j] != 0) continue;
-                int curr = helper(matrix, i, j, Integer.MIN_VALUE, steps);
-                if(max < curr){
-                    max = curr;
-                }
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (steps[i][j] != 0) continue;
+                int curr = helper(i, j, Integer.MIN_VALUE, steps);
+                max = Math.max(max, curr);
             }
         }
         return max;
     }
-    public int helper(int[][] matrix, int i, int j, int last, int[][] steps){
-        if(i < 0 || j >= matrix[0].length || i >= matrix.length || j < 0 || last >= matrix[i][j]){
+    public int helper(int i, int j, int pre, int[][] steps){
+        if (i < 0 || i >= matrix.length || j < 0 || j >= matrix[0].length || matrix[i][j] <= pre) {
             return 0;
         }
-        if(steps[i][j] != 0){
-            return steps[i][j];
+        if (steps[i][j] == 0) {
+            int curr = matrix[i][j];
+            int a = Math.max(helper(i + 1, j, curr, steps), helper(i - 1, j, curr, steps));
+            int b = Math.max(helper(i, j + 1, curr, steps), helper(i, j - 1, curr, steps));
+            steps[i][j] = 1 + Math.max(a, b);
         }
-        int curr = matrix[i][j];
-        int a = Math.max(helper(matrix, i + 1, j, curr, steps), helper(matrix, i - 1, j, curr, steps));
-        int b = Math.max(helper(matrix, i, j + 1, curr, steps), helper(matrix, i, j - 1, curr, steps));
-        steps[i][j] = 1 + Math.max(a, b);
-        return 1 + Math.max(a, b);
+        return steps[i][j];
     }
 }

@@ -34,20 +34,21 @@ n == rating.length
 
 class Solution {
     public int numTeams(int[] rating) {
-        Node[] arr = new Node[rating.length];
-        for (int i = 0; i < rating.length; i++) {
+        int len = rating.length;
+        Node[] arr = new Node[len];
+        for (int i = 0; i < len; i++) {
             arr[i] = new Node(rating[i], i);
         }
         
-        mergeSort(arr, 0, arr.length - 1, new Node[arr.length]);
+        mergeSort(arr, 0, len - 1, new Node[len]);
         
         int answer = 0;
-        for (int i = 0; i < arr.length; i++) {
-            int right = rating.length - 1 - arr[i].index;
+        for (int i = 0; i < len; i++) {
+            int right = len - 1 - arr[i].index;
             int rightSmaller = arr[i].rightSmaller;
             int rightLarger = right - rightSmaller;
             
-            int larger = rating.length - 1 - i;
+            int larger = len - 1 - i;
             int smaller = i;
             int leftLarger = larger - rightLarger;
             int leftSmaller = smaller - rightSmaller;
@@ -59,16 +60,12 @@ class Solution {
     }
     
     private void mergeSort(Node[] arr, int left, int right, Node[] aux) {
-        if (left == right) {
-            return;
-        }
+        if (left == right) return;
         
         int mid = left + (right - left) / 2;
         mergeSort(arr, left, mid, aux);
         mergeSort(arr, mid + 1, right, aux);
-        for (int i = left; i <= right; i++) {
-            aux[i] = arr[i];
-        }
+        for (int i = left; i <= right; i++) aux[i] = arr[i];
         
         int lp = left;
         int rp = mid + 1;
@@ -109,6 +106,7 @@ class Solution {
         int val;
         int index;
         int rightSmaller;
+        
         Node(int val, int index) {
             this.val = val;
             this.index = index;
