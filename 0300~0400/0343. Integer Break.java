@@ -16,19 +16,15 @@ Note: You may assume that n is not less than 2 and not larger than 58.
 
 class Solution {
     public int integerBreak(int n) {
-        if (n <= 3) {
-            return n-1;
-        }
-        int a = n / 3, b = n % 3;
-        return pow(3, a-1) * (3 + b * (b+1) / 2);
+        if (n <= 3) return n-1;
+        int[] aux = new int[] { 3, 4, 6 };
+        return pow(3, n / 3 - 1) * (aux[n % 3]);
     }
     
     private int pow(int x, int n) {
         int res = 1;
         while (n != 0) {
-            if ((n & 1) != 0) {
-                res *= x;
-            }
+            if ((n & 1) != 0) res *= x;
             x *= x;
             n >>= 1;
         }
@@ -39,38 +35,8 @@ class Solution {
 
 
 class Solution {
+    private int[] aux = new int[] { 3, 4, 6 };
     public int integerBreak(int n) {
-        if (n <= 3) {
-            return n-1;
-        }
-        int a = n / 3, b = n % 3;
-        // switch b: ...
-        return (int) (Math.pow(3, a-1) * (3 + b * (b+1) / 2));
-    }
-}
-
-
-
-class Solution {
-    int[] res;
-    public int integerBreak(int n) {
-        res = new int[n + 1];
-        return getMaxProduct(n);
-    }
-    
-    private int getMaxProduct(int n) {
-        if (res[n] != 0) {
-            return res[n];
-        }
-        if (n == 1) {
-            return 1;
-        }
-        
-        int max = 0;
-        for (int i = 1; i < n; i++) {
-            max = Math.max(max, Math.max(i * (n - i), i * getMaxProduct(n - i)));
-        }
-        res[n] = max;
-        return max;
+        return n <= 3 ? n-1 : (int) Math.pow(3, n / 3 - 1) * aux[n % 3];
     }
 }
