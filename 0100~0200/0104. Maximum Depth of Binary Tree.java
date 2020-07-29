@@ -34,18 +34,28 @@ return its depth = 3.
  */
 class Solution {
     public int maxDepth(TreeNode root) {
-        return helper(root, 1);
-    }
-    private int helper(TreeNode node, int depth) {
-        if (node == null) return depth-1;
-        return Math.max(helper(node.left, depth+1), helper(node.right, depth+1));
+        if (root == null) return 0;
+        return 1 + Math.max (maxDepth(root.left), maxDepth(root.right));
     }
 }
+
 
 
 class Solution {
     public int maxDepth(TreeNode root) {
         if (root == null) return 0;
-        return 1 + Math.max (maxDepth(root.left), maxDepth(root.right));
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        int level = 0;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            while (size-- > 0) {
+                TreeNode n = q.poll();
+                if (n.left != null) q.offer(n.left);
+                if (n.right != null) q.offer(n.right);
+            }
+            level++;
+        }
+        return level;
     }
 }
