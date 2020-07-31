@@ -74,6 +74,53 @@ class Solution {
 
 class Solution {
     public int getKth(int lo, int hi, int k) {
-        
+        int len = hi - lo + 1;
+        if (len == 1) return lo;
+        int idx = lo == 1 ? 1 : 0, n = 0;
+        int[] res = new int[len];
+        for (int i = 0; i < len; i++) res[i] = lo + i;
+        while (idx < k) {
+            for (n = 0; n < len && idx < k; n++) {
+                if (res[n] == 1) continue;
+                res[n] = power(res[n]);
+                if (res[n] == 1) idx++;
+            }
+        }
+        return n + lo - 1;
+    }
+    
+    private int power(int n) {
+        return n % 2 == 0 ? n / 2 : n * 3 + 1;
+    }
+}
+
+
+
+class Solution {
+    static final int N = 1001;
+    static final Integer[] power = new Integer[N];
+    
+    static { calc(); }
+    private static void calc() {
+        int[] arr = new int[N];
+        Arrays.fill(arr, Integer.MAX_VALUE);
+        arr[1] = 0;
+        for (int i = 2; i < N; ++i) run(arr, i);
+        for (int i = 0; i < N; ++i) power[i] = i;
+        Arrays.sort(power, (A, B) -> Integer.compare(arr[A], arr[B]));
+    }
+    
+    private static int run(int[] arr, int pos) {
+        if (0 < pos && pos < N && arr[pos] != Integer.MAX_VALUE) return arr[pos];
+        int out = 1;
+        out += run(arr, pos % 2 == 0 ? pos / 2 : pos * 3 + 1);
+        if (0 < pos && pos < N) arr[pos] = out;
+        return out;
+    }
+    
+    public int getKth(int lo, int hi, int k) {
+        int i = -1;
+        while (++i < N) if (lo <= power[i] && power[i] <= hi && --k == 0) return power[i];
+        return -1;
     }
 }
