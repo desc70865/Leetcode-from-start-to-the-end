@@ -45,3 +45,25 @@ class Solution {
         
     }
 }
+
+
+
+class Solution {
+    public int maxVowels(String s, int k) {
+        int len = s.length(), idx = 0, cnt = 0;
+        int[] N = new int[len];
+        for (char c: s.toCharArray()) N[idx++] = f(c);
+        // System.out.println(Arrays.toString(N));
+        for (idx = 0; idx < k; idx++) cnt += N[idx];
+        int res = cnt;
+        while (idx < len && cnt < k) {
+            cnt += N[idx] - N[idx++ - k];
+            res = Math.max(res, cnt);
+        }
+        return res;
+    }
+
+    private int f(char c) {
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' ? 1 : 0;
+    }
+}
