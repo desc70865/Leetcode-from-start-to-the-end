@@ -67,14 +67,9 @@ class Solution {
         int[] res = new int[] { minVal, maxVal };
         
         //Do until we cover anyone list completely
-        boolean done = false;
-        while (!done) {
+        while (true) {
             List<Integer> nextNums = nums.get(minK);
-            dp[minK]++;
-            if (dp[minK] == nextNums.size()) {
-                done = true;
-                continue;
-            }
+            if (++dp[minK] == nextNums.size()) break;
             int next = nextNums.get(dp[minK]);
             minVal = next;
             
