@@ -98,8 +98,7 @@ class Solution {
         
         for (int i=0; i < numCourses; i++) {
             if (visited[i] == 0) {
-                if (dfs(i))
-                    return false;
+                if (dfs(i)) return false;
             }
         }
         
@@ -112,8 +111,7 @@ class Solution {
         visited[course] = -1; // lock
         for (int i=0; i < list[course].size(); i++) {
             if (visited[list[course].get(i)] != 1) {
-                if (dfs(list[course].get(i)))
-                    return true;
+                if (dfs(list[course].get(i))) return true;
             }
         }
         visited[course] = 1;
