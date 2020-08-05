@@ -42,3 +42,33 @@ class Solution {
         
     }
 }
+
+
+
+class Solution {
+    public int[] distributeCandies(int candies, int num_people) {
+        int[] res = new int[num_people];
+        int n = 1;
+        while (candies >= n) {
+            res[(n-1) % num_people] += n;
+            candies -= n++;
+        }
+        res[(n-1) % num_people] += candies;
+        return res;
+    }
+}
+
+
+
+class Solution {
+    public int[] distributeCandies(int candies, int num_people) {
+        int[] res = new int[num_people];
+        int n = 0;
+        while (candies > n) {
+            res[n % num_people] += (n + 1);
+            candies -= ++n;
+        }
+        res[n % num_people] += candies;
+        return res;
+    }
+}
