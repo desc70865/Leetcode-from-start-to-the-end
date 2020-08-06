@@ -33,3 +33,69 @@ class Solution {
         
     }
 }
+
+
+
+import java.util.AbstractList;
+import java.util.List;
+
+class Solution extends AbstractList<String> {
+    int[] as;
+	int[] bs;
+	int size = 0;
+	
+	@Override
+	public String get(int index) {
+		return as[index] + "/" + bs[index];
+	}
+
+	@Override
+	public int size() {
+		return size;
+	}
+
+	public List<String> simplifiedFractions(int n) {
+        // 首项+末项的和乘项数除以2
+        int len = n * (n-1) >>> 1;
+		this.as = new int[len];
+		this.bs = new int[len];
+        // a1 = 0, a2 = 1, b1 = 1, b2 = 1
+		walk(n, 0, 1, 1, 1);
+        // 直接返回这个继承了抽象链表的Solution类
+		return this;
+	}
+
+    //把分子和分母放进as和bs
+    //用walk方法决定size
+	void walk(int max, int a1, int b1, int a2, int b2) {
+        //a1+a2变成下一个分子
+        //？？？
+        //1，2，3，5，8，13，21
+		int am = a1 + a2;
+        //b1+b2变成下一个分母
+        //？？？
+        //2，3，5，8，13，21，34
+		int bm = b1 + b2;
+		if (bm <= max) {
+            //递归递归递归递归递归递归递归递归递归递归
+            //把a2,b2换成了am,bm
+            //进去之后新的am=a1+am，新的bm=b1+bm
+            //b1+bm比max小的时候吧bm就一直加
+            //分母不变，分子递归
+            //a1=0,b1=1
+            //第一轮，分子a不变，分母递增1
+			walk(max, a1, b1, am, bm);
+            //am放进as，bm放进bs
+            //size用作放进去的下标，也是总的分数的个数
+			as[size] = am;
+			bs[size] = bm;
+			size ++;
+            //把a1,b1换成了am,bm
+            //进去之后新的am=am+a2，新的bm=bm+b2
+            //bm+b2比max小的时候吧bm就一直加
+            //分母变了，递归进if的第一个walk
+            //a2=1,b2=1
+			walk(max, am, bm, a2, b2);
+		}
+	}
+}
