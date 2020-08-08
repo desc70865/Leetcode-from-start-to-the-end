@@ -66,18 +66,20 @@ class Solution {
     }
     
     private void inOrder(TreeNode node) {
-        if (node != null) {
-            inOrder(node.left);
-            if (pre == null) pre = node;
-            else {
-                if (pre.val > node.val) {
-                    if (first == null) first = pre;
-                    second = node;
-                }
-                pre = node;
+        if (node == null) return;
+        
+        inOrder(node.left);
+        
+        if (pre == null) pre = node;
+        else {
+            if (pre.val > node.val) {
+                if (first == null) first = pre;
+                second = node;
             }
-            inOrder(node.right);
+            pre = node;
         }
+        
+        inOrder(node.right);
     }
     
     private void swap(TreeNode i, TreeNode j) {

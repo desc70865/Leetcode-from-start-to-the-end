@@ -54,3 +54,31 @@ class Solution {
         
     }
 }
+
+
+
+class Solution {
+    public int maxSum(int[] nums1, int[] nums2) {
+        long s1 = 0, s2 = 0, res = 0, module = 1000000007;
+        int i = 0, j = 0;
+        int n1 = nums1.length, n2 = nums2.length;
+        while (i < n1 && j < n2) {
+            if (nums1[i] < nums2[j]) {
+                s1 += nums1[i++];
+            } else if (nums1[i] > nums2[j]){
+                s2 += nums2[j++];
+            } else {
+                res += Math.max(s1, s2) + nums1[i];
+                s1 = 0;
+                s2 = 0;
+                i++;
+                j++;
+            }
+        }
+        while (i < n1) s1 += nums1[i++];
+        while (j < n2) s2 += nums2[j++];
+        
+        res += Math.max(s1, s2);
+        return (int) (res % module);
+    }
+}
