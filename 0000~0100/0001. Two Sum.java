@@ -70,16 +70,13 @@ class Solution {
 
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        int volume = 2048;
-        int bitMode = volume - 1;
-        int [] result = new int[volume];
-
+        int bitMode = 2047, c = 0;
+        int[] res = new int[bitMode + 1];
+        
         for (int i = 0; i < nums.length; i++) {
-            int c = (target - nums[i]) & bitMode;
-            if (result[c] != 0) {
-                return new int[]{result[c]-1, i};
-            }
-            result[nums[i] & bitMode] = i + 1;
+            c = (target - nums[i]) & bitMode;
+            if (res[c] > 0) return new int[]{ res[c]-1, i };
+            res[nums[i] & bitMode] = i + 1;
         }
         return null;
     }
@@ -93,23 +90,20 @@ class Solution {
             arr[i][0] = nums[i];
             arr[i][1] = i;
         }
-        Arrays.sort(arr, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] x, int[] y) {
-                return x[0] - y[0];
-            }
-        });
+        Arrays.sort(arr, (x, y) -> (x[0] - y[0]));
+        // Arrays.sort(arr, new Comparator<int[]>() {
+        //     @Override
+        //     public int compare(int[] x, int[] y) {
+        //         return x[0] - y[0];
+        //     }
+        // });
         // sort(arr, 0, LEN - 1);
         int i = 0, j = LEN - 1;
         while (i < j) {
             int sum = arr[i][0] + arr[j][0];
-            if (sum < target) {
-                i++;
-            } else if (sum > target) {
-                j--;
-            } else {
-                return new int[] {arr[i][1], arr[j][1]};
-            }
+            if (sum < target) i++;
+            else if (sum > target) j--;
+            else return new int[] { arr[i][1], arr[j][1] };
         }
         throw new IllegalArgumentException("No two sum solution");
     }

@@ -61,21 +61,21 @@ class Solution {
 
 class Solution {
 
-    private List<String> results;
+    private List<String> res;
     private StringBuilder sb;
     private char[] chars;
 
     public List<String> restoreIpAddresses(String s) {
-        results = new ArrayList<>();
+        res = new ArrayList<>();
         sb = new StringBuilder();
         chars = s.toCharArray();
         dfs(0, 0);
-        return this.results;
+        return this.res;
     }
     
     private void dfs(int count, int i) {
         if (count == 4) {
-            results.add(sb.toString());
+            res.add(sb.toString());
             return;
         } // 终止
 
@@ -117,45 +117,45 @@ class Solution {
 
 
 class Solution {
-
-    private List<String> results;
+    private int LEN;
+    private List<String> res;
     private StringBuilder sb;
     private char[] chars;
 
     public List<String> restoreIpAddresses(String s) {
-        results = new ArrayList<>();
-        if (s == null || s.length() < 4 || s.length() > 12) {
-            return results;
+        LEN = s.length();
+        res = new ArrayList<>();
+        if (s == null || LEN < 4 || LEN > 12) {
+            return res;
         }
         sb = new StringBuilder();
         chars = s.toCharArray();
-        dfs(0, 0);
-        return results;
+        dfs(4, 0);
+        return res;
     }
     
     private void dfs(int count, int i) {
-        if (count == 4) {
-            results.add(sb.toString());
+        if (count == 0) {
+            res.add(sb.delete(LEN+3, LEN+4).toString());
             return;
-        } // 终止
-
-        int x = 3 - count;
-        int y = chars.length - i;
-        int start = (y-3*x)>1 ? y-3*x : 1;
-        int end = (y-x)<3 ? y-x : 3;
-        if (chars[i] == '0') end = 1;
+        }
+        int x = count - 1;
+        int y = LEN - i;
+        int l = Math.max(y-3*x, 1);
+        int r = Math.min(y-x, 3);
+        if (chars[i] == '0') r = 1;
         
         int len = sb.length();
-        for (int j = start; j <= end; j++) {
+        for (int j = l; j <= r; j++) {
             if (j == 3 && isNotValid(chars, i)) return;
             for (int k = 0; k < j; k++) sb.append(chars[i + k]);
-            if (count < 3) sb.append('.');
-            dfs(count + 1, i + j);
-            sb.delete(len, count < 3 ? len + j + 1 : len + j);
+            sb.append('.');
+            dfs(x, i + j);
+            sb.delete(len, len + j + 1);
         }
     }
     
-    private boolean isNotValid(char[] chars, int index) {
-        return ((chars[index] - '0') * 100 + (chars[index + 1] - '0') * 10 + chars[index + 2] - '0') > 255;
+    private boolean isNotValid(char[] c, int i) {
+        return ((c[i] - '0') * 100 + (c[i + 1] - '0') * 10 + c[i + 2] - '0') > 255;
     }
 }
