@@ -24,8 +24,7 @@ class Solution {
     private int m, n;
     private char[][] board;
     public void solve(char[][] board) {
-        
-        if(board == null || board.length == 0 || board[0].length == 0) return;
+        if (board == null || board.length == 0 || board[0].length == 0) return;
         
         this.board = board;
         m = board.length-1; n = board[0].length-1;
@@ -50,7 +49,6 @@ class Solution {
     }
     
     private void helper(int x, int y) {
-        
         if (x < 0 || x > m || y < 0 || y > n) return;
         if (board[x][y] == 'O') {
             board[x][y] = 'F';
