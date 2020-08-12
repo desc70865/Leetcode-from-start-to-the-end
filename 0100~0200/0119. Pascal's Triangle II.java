@@ -40,15 +40,31 @@ class Solution {
     public List<Integer> getRow(int rowIndex) {
         List<Integer> res = new ArrayList<>();
         int[] dp = new int[rowIndex+1];
-        dp[0] = 1; res.add(dp[0]);
+        dp[0] = 1;
         for (int i = 1; i <= rowIndex; i++) {
             for (int j = i; j > 0; j--) {
                 dp[j] += dp[j-1];
                 if (i == rowIndex) {
-                    res.add(1, dp[j]);
+                    res.add(dp[j]);
                 }
             }
         }
+        res.add(dp[0]);
+        return res;
+    }
+}
+
+
+
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> res = new ArrayList<>();
+        int[] dp = new int[rowIndex+1];
+        dp[0] = 1;
+        for (int i=0; i < rowIndex; i++) for (int j = i; j > 0; j--) dp[j] += dp[j-1];
+        for (int k = rowIndex; k > 0; k--) res.add(dp[k] + dp[k-1]);
+        res.add(dp[0]);
+        // Collections.reverse(res);
         return res;
     }
 }
