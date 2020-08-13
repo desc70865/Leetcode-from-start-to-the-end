@@ -68,37 +68,10 @@ class Solution {
 	}
 }
 
-// 如果垂直遍历可以加速
+// 垂直遍历加速
 // 从后往前,累加 num1[j] * num2[k] 并进位
 // j 从 min(m,i) 开始循环
 // 显然 j + k = i; 同时满足 k ∈ [0,n]
-
-class Solution {
-	public static String multiply(String num1, String num2) {
-		int m = num1.length() - 1, n = num2.length() - 1;
-        int length = m + n, carry = 0;
-		int[] pos = new int[length+2];
-		for (int i = length; i >= 0; i--) {
-            int j = (i > m ? m : i); // k = i - j
-            int sum = 0;
-			while (i - j <= n && j >= 0) {
-                sum += (num1.charAt(j) - '0')
-					* (num2.charAt(i - j) - '0'); // num1[j] * num2[k]
-                j--;
-            }
-            pos[i+1] = (sum + carry) % 10;
-            carry = (sum + carry) / 10;
-		}
-		pos[0] = carry;
-		StringBuilder sb = new StringBuilder();
-		for (int p : pos)
-			if (!(sb.length() == 0 && p == 0))
-				sb.append(p);
-		return sb.length() == 0 ? "0" : sb.toString();
-	}
-}
-
-// 辣鸡反转
 
 class Solution {
 	public static String multiply(String num1, String num2) {
@@ -122,4 +95,28 @@ class Solution {
             sb.append(carry);
 		return sb.reverse().toString();
 	}
+}
+
+
+
+class Solution {
+    public String multiply(String num1, String num2) {
+        return multiply(num1.toCharArray(), num2.toCharArray());
+    }
+
+    public String multiply(char[] a, char[] b) {
+        if (a[0] == '0' || b[0] == '0') return "0";
+        int carry = 0, m = a.length-1, n = b.length-1;
+        StringBuilder sb = new StringBuilder();
+        for (int i = m + n; i >= 0; i--) {
+            int j = Math.min(i, m), sum = carry;
+            while (i - j <= n && j >= 0) {
+                sum += (a[j] - '0') * (b[i - j--] - '0');
+            }
+            sb.append(sum % 10);
+            carry = sum / 10;
+        }
+        if (carry != 0) sb.append(carry);
+        return sb.reverse().toString();
+    }
 }
