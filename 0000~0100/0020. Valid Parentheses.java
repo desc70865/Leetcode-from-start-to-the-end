@@ -30,43 +30,28 @@ Output: true
  */
 
 class Solution {
-
-    // Hash table that takes care of the mappings.
     private HashMap<Character, Character> mappings;
-
-    // Initialize hash map with mappings. This simply makes the code easier to read.
+    
     public Solution() {
         this.mappings = new HashMap<Character, Character>();
         this.mappings.put(')', '(');
         this.mappings.put('}', '{');
         this.mappings.put(']', '[');
     }
-
+    
     public boolean isValid(String s) {
-
-        // Initialize a stack to be used in the algorithm.
         Stack<Character> stack = new Stack<Character>();
-
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-
-            // If the current character is a closing bracket.
             if (this.mappings.containsKey(c)) {
-
-                // Get the top element of the stack. If the stack is empty, set a dummy value of '#'
                 char topElement = stack.empty() ? '#' : stack.pop();
-
-                // If the mapping for this bracket doesn't match the stack's top element, return false.
                 if (topElement != this.mappings.get(c)) {
                     return false;
                 }
             } else {
-                // If it was an opening bracket, push to the stack.
                 stack.push(c);
             }
         }
-
-        // If the stack still contains elements, then it is an invalid expression.
         return stack.isEmpty();
     }
 }
@@ -74,30 +59,12 @@ class Solution {
 // 很容易想到应用后进先出实现
 // 将配对括号存储在HashMap中,实现区分左value右key并判断的依据
 
-// re: 
-
 class Solution {
-    private HashMap<Character, Character> mappings;
-    
-    public Solution() {
-        this.mappings = new HashMap<Character, Character>();
-        this.mappings.put(')', '(');
-        this.mappings.put('}', '{');
-        this.mappings.put(']', '[');
-    }
-    
     public boolean isValid(String s) {
-        Stack<Character> stack = new Stack<Character>();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (this.mappings.containsKey(c)) {
-                char topElement = stack.empty() ? '#' : stack.pop();
-                if (topElement != this.mappings.get(c)) {
-                    return false;
-                }
-            } else {
-                stack.push(c);
-            }
+        Stack<Character> stack = new Stack<>();
+        for (char c: s.toCharArray()) {
+            if (c == '(' || c == '[' || c == '{') stack.push(c);
+            else if (stack.isEmpty() || Math.abs(c - stack.pop()) > 2) return false;
         }
         return stack.isEmpty();
     }

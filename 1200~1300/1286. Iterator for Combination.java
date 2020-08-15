@@ -46,3 +46,80 @@ class CombinationIterator {
  * String param_1 = obj.next();
  * boolean param_2 = obj.hasNext();
  */
+
+
+
+class CombinationIterator {
+    char[] cur, dic;
+    boolean hasNext;
+    int n;
+    public CombinationIterator(String characters, int L) {
+        cur = characters.substring(0, L).toCharArray();
+        dic = characters.toCharArray();
+        n = dic.length;
+        hasNext = true;
+    }
+    
+    public String next() {
+        // if (! hasNext) return "";
+        String res = new String(cur);
+        int L = cur.length;
+        int i = cur.length - 1, j = dic.length - 1;
+        while (i >= 0 && cur[i] == dic[j]) {
+            i--;
+            j--;
+        }
+        if (i == -1) {
+            hasNext = false;
+        } else {
+            int index = String.valueOf(dic).indexOf(cur[i]);
+            for (int k = i; k < L; k++) {
+                cur[k] = dic[++index];
+            }
+        }
+        return res;
+    }
+    
+    public boolean hasNext() {
+        return hasNext;
+    }
+}
+
+// ->
+
+class CombinationIterator {
+    char[] cur, dic;
+    boolean hasNext;
+    int M, L;
+    String origin;
+
+    public CombinationIterator(String characters, int L) {
+        cur = characters.substring(0, L).toCharArray();
+        dic = characters.toCharArray();
+        origin = characters;
+        this.M = dic.length;
+        this.L = L;
+        hasNext = true;
+    }
+    
+    public String next() {
+        // if (! hasNext) return "";
+        String res = new String(cur);
+        int i = L - 1, j = M - 1;
+        while (i >= 0 && cur[i] == dic[j]) {
+            i--;
+            j--;
+        }
+        if (i == -1) {
+            hasNext = false;
+        } else {
+            int k = origin.indexOf(cur[i]);
+            while (i < L) cur[i++] = dic[++k];
+        }
+        return res;
+    }
+    
+    public boolean hasNext() {
+        return hasNext;
+    }
+}

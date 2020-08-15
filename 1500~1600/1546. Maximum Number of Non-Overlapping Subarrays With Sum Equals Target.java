@@ -38,3 +38,23 @@ class Solution {
         
     }
 }
+
+
+
+class Solution {
+    public int maxNonOverlapping(int[] nums, int target) {
+        int sum = 0, count = 0;
+        HashSet<Integer> set = new HashSet<>();
+        for (int num: nums) {
+            sum += num;
+            if (set.contains(sum - target) || sum == target) {
+                count++;
+                set.clear();
+                sum = 0;
+            } else {
+                set.add(sum);
+            }
+        }
+        return count;
+    }
+}
