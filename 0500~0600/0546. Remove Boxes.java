@@ -32,25 +32,25 @@ class Solution {
 
 
 class Solution {
+    int[][][] dp;
     public int removeBoxes(int[] boxes) {
         int n = boxes.length;
-        int[][][] dp = new int[n][n][n];
-        return removeBoxesSub(boxes, 0, n - 1, 0, dp);
+        dp = new int[n][n][n];
+        return removeBoxesSub(boxes, 0, n - 1, 0);
     }
     
-    private int removeBoxesSub(int[] boxes, int i, int j, int k, int[][][] dp) {
+    private int removeBoxesSub(int[] A, int i, int j, int k) {
         if (i > j) return 0;
         if (dp[i][j][k] > 0) return dp[i][j][k];
         
-        for (; i + 1 <= j && boxes[i + 1] == boxes[i]; i++, k++) ;
+        for (; i + 1 <= j && A[i + 1] == A[i]; i++, k++) ;
         
-        int res = (k + 1) * (k + 1) + removeBoxesSub(boxes, i + 1, j, 0, dp);    
+        int s = (k + 1) * (k + 1) + removeBoxesSub(A, i + 1, j, 0);    
         for (int m = i + 1; m <= j; m++) {
-            if (boxes[i] == boxes[m]) {
-                res = Math.max(res, removeBoxesSub(boxes, i + 1, m - 1, 0, dp) + removeBoxesSub(boxes, m, j, k + 1, dp));
+            if (A[i] == A[m]) {
+                s = Math.max(s, removeBoxesSub(A, i + 1, m - 1, 0) + removeBoxesSub(A, m, j, k + 1));
             }
         }
-        dp[i][j][k] = res;
-        return res;
+        return dp[i][j][k] = s;
     }
 }
