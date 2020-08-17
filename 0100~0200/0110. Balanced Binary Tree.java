@@ -49,17 +49,11 @@ Return false.
  */
 class Solution {
     public boolean isBalanced(TreeNode root) {
-        if (root == null) {
-            return true;
-        }        
-        
         return getHeight(root) != -1;
     }
     
     private int getHeight(TreeNode node) {
-        if (node == null) {
-            return 0;
-        }
+        if (node == null) return 0;
         
         int left = getHeight(node.left);
         int right = getHeight(node.right);
