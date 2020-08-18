@@ -58,10 +58,9 @@ class Solution {
     private TreeNode convertListToBST(int l, int r) {
         // Invalid case
         if (l > r) return null;
-
-        int mid = l + (r - l) / 2;
         
         // 模拟中序遍历; 维护 head 节点;
+        int mid = l + (r - l) / 2;
         TreeNode left = this.convertListToBST(l, mid - 1);
         TreeNode node = new TreeNode(this.head.val);
         node.left = left;
@@ -72,9 +71,8 @@ class Solution {
 
     public TreeNode sortedListToBST(ListNode head) {
         int size = this.findSize(head);
-
         this.head = head;
-
+        
         return convertListToBST(0, size);
     }
-}
+} 

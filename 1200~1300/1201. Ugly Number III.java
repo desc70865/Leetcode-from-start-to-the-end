@@ -38,3 +38,32 @@ class Solution {
         
     }
 }
+
+
+
+class Solution {
+    public int nthUglyNumber(int n, int a, int b, int c) {
+        long l = 0, r = 2_000_000_000, res = 0;
+        long ab = lcm(a, b), ac = lcm(a, c), bc = lcm(b, c), abc = lcm(a, bc);
+        while (l < r) {
+            long mid = l + r >> 1;
+            if (count(mid, a, b, c, ab, ac, bc, abc) < n) l = mid + 1;
+            else r = mid;
+        }
+        return (int) l;
+    }
+    
+    private long count(long num, int a, int b, int c, long ab, long ac, long bc, long abc) {
+        return num / a + num / b + num / c 
+            - num / ab - num /ac - num / bc
+            + num / abc;
+    }
+    
+    private long lcm(long a, long b) {
+        return a * b / gcd(a, b);
+    }
+    
+    private long gcd(long x, long y) {
+        return x == 0 ? y : gcd(y % x, x);
+    }
+}
