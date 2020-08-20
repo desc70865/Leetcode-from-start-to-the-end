@@ -181,7 +181,10 @@ class Solution {
     }
 }
 
-
+// range -> [x - dp[T-1][K-1], x + dp[T-1][K]] sum = dp[T-1][K-1] + 1 + dp[T-1][K];
+// dp[T][K] = dp[T-1][K-1] + 1 + dp[T-1][K];
+// dp[a][b] b eggs for a times throw -> maximum range
+// in which we don't care where to throw.
 
 class Solution {
     int step = 0;
