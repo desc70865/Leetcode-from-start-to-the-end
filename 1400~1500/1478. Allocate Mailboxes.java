@@ -48,30 +48,71 @@ class Solution {
     }
 }
 
+// dp[i][j] = min(dp[k - 1][j - 1] + rec[k][i]) k -> [j-1, i]
+// rec[l][r] cost -> [l, r] by preprocess
+
+// time complexity O(n ^ 3 + n ^ 2 * k)
+class Solution {
+    public int minDistance(int[] houses, int k) {
+        int n = houses.length;
+            Arrays.sort(houses);
+            // dp[i][j]表示前i个房子摆j个邮筒时的最短距离
+            int[][] dp = new int[n + 1][k + 1];
+            for (int i = 0; i <= n; i++) {
+                Arrays.fill(dp[i], -1);
+            }
+            // dis[i][j] 表示范围[i,j]的房子共用一个邮筒时的最短距离
+            int[][] dis = new int[n + 1][n + 1];
+            for (int i = 1; i <= n; i++) {
+                for (int j = i; j <= n; j++) {
+                    for (int x = i, y = j; x < y; x++, y--) {
+                        dis[i][j] += houses[y - 1] - houses[x - 1];
+                    }
+                }
+            }
+            dp[0][0] = 0;
+            // 求解DP，进行状态转移
+            for (int i = 1; i <= n; i++) {
+                for (int j = 1; j <= i && j <= k; j++) {
+                    for (int p = i; p >= 1; p--) {
+                        if (dp[p - 1][j - 1] != -1 && (dp[i][j] == -1 || dp[i][j] > dp[p - 1][j - 1] + dis[p][i])) {
+                            dp[i][j] = dp[p - 1][j - 1] + dis[p][i];
+                        }
+                    }
+                }
+            }
+        return dp[n][k];
+    }
+}
+
 
 
 class Solution {
-    public int minDistance(int[] houses, int K) {
-        Arrays.sort(houses);
+    public int minDistance(int[] houses, int k) {
         int n = houses.length;
-        int[][] rec = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = i; j < n; j++) {
-                int mid = i + j >> 1;
-                for (int k = i; k <= j; k++) {
-                    rec[i][j] += Math.abs(houses[k] - houses[mid]);
-                }
+        if (n == k) return 0;
+        Arrays.sort(houses);
+        int[][] dis = new int[n][n];
+        for(int len = 2; len <= n; len++) {
+            for(int l = 0; l + len - 1 < n; l++) {
+                int r = l + len - 1;
+                dis[l][r] = houses[r] - houses[l] + dis[l+1][r-1];
             }
         }
-        int[][] dp = new int[n][K+1];
-        for (int i = 0; i < n; i++) dp[i][1] = rec[0][i];
-        for (int i = 0; i < n; i++) {
-            for (int j = 2; j < Math.min(i+1, K); j++) {
-                for (int k = j - 1; k <= i; k++) {
-                    dp[i][j] = Math.min(dp[i][j], dp[k-1][j-1] + rec[k][i]);
-                }
-            }
+        return dfs(0, k, houses, dis, new int[n][k+1]);
+    }
+    
+    private int dfs(int i, int k, int[] houses, int[][] dis, int[][] dp) {
+        int n = houses.length;
+        if (i == n) return 0;
+        if (k == 1) return dis[i][n-1];
+        if (dp[i][k] > 0) return dp[i][k]-1;
+        
+        int min = Integer.MAX_VALUE;
+        for(int j = i; j < n && n-j >= k; j++) {
+            int result = dfs(j+1, k-1, houses, dis, dp);
+            if (result >= 0) min = Math.min(min, dis[i][j] + result);
         }
-        return dp[n-1][K];
+        return (dp[i][k] = min+1)-1;
     }
 }

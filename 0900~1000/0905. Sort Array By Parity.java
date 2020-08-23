@@ -39,3 +39,37 @@ class Solution {
         nums[j] = temp;
     }
 }
+
+
+
+class Solution {
+    public int[] sortArrayByParity(int[] A) {
+        int l = 0, r = A.length-1;
+        while (l < r) {
+            while (l < r && A[l] % 2 == 0) l++;
+            while (l < r && A[r] % 2 == 1) r--;
+            if (l < r) swap(A, l, r);
+        }
+        return A;
+    }
+
+    private void swap(int[] A, int i, int j) {
+        int temp = A[i];
+        A[i] = A[j];
+        A[j] = temp;
+    }
+}
+
+
+
+class Solution {
+    public int[] sortArrayByParity(int[] A) {
+        int N = A.length, l = 0, r = N - 1;
+        int[] B = new int[N];
+        for (int num: A) {
+            if (num % 2 == 0) B[l++] = num;
+            else B[r--] = num;
+        }
+        return B;
+    }
+}

@@ -45,3 +45,13 @@ class Solution {
         return Math.min(Depth(node.left, depth+1), Depth(node.right, depth+1));
     }
 }
+
+
+
+class Solution {
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        int l = minDepth(root.left), r = minDepth(root.right);
+        return 1 + (l * r == 0 ? Math.max(l, r) : Math.min(l, r));
+    }
+}
