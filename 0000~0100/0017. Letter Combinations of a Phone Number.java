@@ -26,20 +26,20 @@ class Solution {
         dict.put('8',new char[]{'t','u','v'});
         dict.put('9',new char[]{'w','x','y','z'});
      
-        List<String> result = new ArrayList<String>();
+        List<String> res = new ArrayList<String>();
         if (digits == null || digits.length() == 0) {
-            return result;
+            return res;
         }
      
         char[] arr = new char[digits.length()];
-        helper(digits, 0, dict, result, arr);
+        helper(digits, 0, dict, res, arr);
      
-        return result;
+        return res;
     }
      
-    private void helper(String digits, int index, HashMap<Character, char[]> dict, List<String> result, char[] arr){
+    private void helper(String digits, int index, HashMap<Character, char[]> dict, List<String> res, char[] arr){
         if (index == digits.length()) {
-            result.add(new String(arr));
+            res.add(new String(arr));
             return;
         }
      
@@ -47,10 +47,46 @@ class Solution {
         char[] candidates = dict.get(number);
         for (int i = 0; i < candidates.length; i++) {
             arr[index] = candidates[i];
-            helper(digits, index+1, dict, result, arr);
+            helper(digits, index+1, dict, res, arr);
         }
     }
 }
 
 // 递归/迭代
 // 深度优先,广度优先
+
+class Solution {
+    Map<Character, char[]> dict = new HashMap<>();
+    List<String> res = new ArrayList<String>();
+    
+    public List<String> letterCombinations(String digits) {
+        if (digits == null || digits.length() == 0) return res;
+
+        dict.put('2', new char[]{'a','b','c'});
+        dict.put('3', new char[]{'d','e','f'});
+        dict.put('4', new char[]{'g','h','i'});
+        dict.put('5', new char[]{'j','k','l'});
+        dict.put('6', new char[]{'m','n','o'});
+        dict.put('7', new char[]{'p','q','r','s'});
+        dict.put('8', new char[]{'t','u','v'});
+        dict.put('9', new char[]{'w','x','y','z'});
+        
+        helper(digits.toCharArray(), 0, new char[digits.length()]);
+        
+        return res;
+    }
+    
+    private void helper(char[] digits, int index, char[] arr){
+        if (index == digits.length) {
+            res.add(new String(arr));
+            return ;
+        }
+        
+        char num = digits[index];
+        char[] candidates = dict.get(num);
+        for (int i = 0; i < candidates.length; i++) {
+            arr[index] = candidates[i];
+            helper(digits, index+1, arr);
+        }
+    }
+}
