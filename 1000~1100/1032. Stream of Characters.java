@@ -78,8 +78,8 @@ class StreamChecker {
     
     private void insert(String s) {
         TrieNode c = root;
-        for(int i=0; i<s.length(); i++) {
-            if(c.ch[s.charAt(i) - 'a'] == null) {
+        for (int i=0; i<s.length(); i++) {
+            if (c.ch[s.charAt(i) - 'a'] == null) {
                 c.ch[s.charAt(i) - 'a'] = new TrieNode();
             }
             c = c.ch[s.charAt(i) - 'a'];
@@ -89,34 +89,34 @@ class StreamChecker {
     
     private void buildAutomaton() {
         Queue<Pair> q = new LinkedList<>();
-        for(int i=0; i<26; i++) {
-            if(root.ch[i] == null) {
+        for (int i=0; i<26; i++) {
+            if (root.ch[i] == null) {
                 root.ch[i] = root;
             } else {
                 q.add(new Pair(root.ch[i], root));
             }
         }
         
-        while(!q.isEmpty()) {
+        while (!q.isEmpty()) {
             Pair p = q.poll();
             TrieNode n1 = p.n1;
             TrieNode n2 = p.n2;
-            for(int i=0; i<26; i++) {
+            for (int i=0; i<26; i++) {
                 if(n1.ch[i] == null) {
                     n1.ch[i] = n2.ch[i];
                 } else {
                     q.add(new Pair(n1.ch[i], n2.ch[i]));
                 }
             }
-            if(n2.isEnd) n1.setEnd();
+            if (n2.isEnd) n1.setEnd();
         }
     }
     
     TrieNode curNode;
-
+    
     public StreamChecker(String[] words) {
         root = new TrieNode();
-        for(String s : words) insert(s);
+        for (String s: words) insert(s);
         buildAutomaton();
         curNode = root;
     }

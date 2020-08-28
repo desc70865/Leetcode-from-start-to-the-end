@@ -46,24 +46,21 @@ class Solution {
     public int mincostTickets(int[] days, int[] costs) {
         // MG
         // dp[i]: min cost until day i
-        int[] dp = new int[days[days.length - 1] + 1];
+        int len = days[days.length - 1] + 1, index = 0;
+        int[] dp = new int[len];
         dp[0] = 0;
-        int index = 0;
-        for (int i = 1; i < dp.length; i++) {
-            if (days[index] == i) {
-                // buy month
+        for (int i = 1; i < len; i++) {
+            if (days[index] > i) {
+                dp[i] = dp[i-1];
+            } else {
                 int month = dp[Math.max(0, i - 30)] + costs[2];
-                // buy week
                 int week = dp[Math.max(0, i - 7)] + costs[1];
-                // buy day
                 int day = dp[i - 1] + costs[0];
                 
                 dp[i] = Math.min(day, Math.min(week, month));
                 index++;
-            } else {
-                dp[i] = dp[i-1];
             }
         }
-        return dp[dp.length - 1];
+        return dp[len - 1];
     }
 }
