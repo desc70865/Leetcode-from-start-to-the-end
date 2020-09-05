@@ -30,20 +30,20 @@ class Solution {
         return res < 0 ? "" : print(res / 100, res % 100);
     }
     
-    private String print(int a, int b) {
+    private String print(int hour, int min) {
         StringBuilder sb = new StringBuilder();
-        if (a < 10) sb.append('0');
-        sb.append(a);
-        sb.append(":");
-        if (b < 10) sb.append('0');
-        sb.append(b);
+        sb.append(hour / 10);
+        sb.append(hour % 10);
+        sb.append(':');
+        sb.append(min / 10);
+        sb.append(min % 10);
         return sb.toString();
     }
     
     private void dfs(int[] A, int i) {
         if (i == 4) {
             int k = calc(A);
-            if (check(k)) res = Math.max(res, k);
+            if (isValidTime(k)) res = Math.max(res, k);
         }
         for (int j = i; j < 4; j++) {
             swap(A, i, j);
@@ -58,7 +58,7 @@ class Solution {
         return res;
     }
     
-    private boolean check(int N) {
+    private boolean isValidTime(int N) {
         return N < 2400 && N % 100 < 60;
     }
     

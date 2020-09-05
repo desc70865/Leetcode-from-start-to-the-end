@@ -26,7 +26,7 @@ Output: "2314"
  */
 
 class Solution {
-    public static String getPermutation(int n, int k) {
+    public String getPermutation(int n, int k) {
         int[] totals = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880};
     	StringBuilder ans = new StringBuilder();
         ArrayList<String> s = new ArrayList<String>();
@@ -51,3 +51,27 @@ class Solution {
 }
 
 // 别忘了去掉测试
+
+class Solution {
+    public String getPermutation(int n, int k) {
+        int[] permutationNum = new int[n + 1]; // 存放 i 个数有多少种排列
+        permutationNum[0] = 1;
+        StringBuilder sortChars = new StringBuilder(); // 初始化为递增的排列，然后依次删掉用过的字符
+        for (int i = 1; i < n + 1; i++) {
+            permutationNum[i] = permutationNum[i - 1] * i;
+            sortChars.append(i);
+        }
+        StringBuilder result = new StringBuilder();
+        // 循环计算第j个位置应该填放哪个字符
+        int index = k - 1;
+        for (int i = n - 1; i >= 1; i--) {
+            int select = index / permutationNum[i];
+            result.append(sortChars.charAt(select));
+            index %= permutationNum[i];
+            sortChars.deleteCharAt(select);
+        }
+        result.append(sortChars.charAt(0));
+        
+        return result.toString();
+    }
+}

@@ -71,3 +71,22 @@ class Solution {
         levelorder(node.right, level+1);
     }
 }
+
+
+
+class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        dfs(root, 0);
+        Collections.reverse(res);
+        return res;
+    }
+    
+    private void dfs(TreeNode node, int depth) {
+        if (node == null) return ;
+        if (res.size() <= depth) res.add(new ArrayList<>());
+        res.get(depth).add(node.val);
+        dfs(node.left, depth + 1);
+        dfs(node.right, depth + 1);
+    }
+}
