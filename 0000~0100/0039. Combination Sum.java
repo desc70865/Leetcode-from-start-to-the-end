@@ -27,44 +27,26 @@ A solution set is:
  */
 
 class Solution {
-	public List<List<Integer>> combinationSum(int[] candidates, int target) {
-		List<List<Integer>> res = new ArrayList<List<Integer>>();
-		List<Integer> tmp = new ArrayList<>();
-		// 排序去重
-		Arrays.sort(candidates);
-		dfsCore(res, 0, 0, tmp, candidates, target);
-		return res;
-	}
+    int[] set;
+    List<List<Integer>> res = new ArrayList<>();
+    List<Integer> p = new ArrayList<>();
+    
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        this.set = candidates;
+        search(target, 0);
+        return res;
+    }
 
-	private void dfsCore(List<List<Integer>> res, 
-			int curIdx, int sum, List<Integer> tmp, int[] candidates,
-			int target) {
-        if (sum < target){
-            for (int i = curIdx; i < candidates.length; i++) {
-                // 剪枝
-                if (target < candidates[i])
-                    return;
-                sum += candidates[i];
-                if (target < sum)
-                    return;
-
-                tmp.add(candidates[i]);
-                // 可重复选取第 i 个元素
-                dfsCore(res, i, sum, tmp, candidates, target);
-                
-                // 回溯
-                tmp.remove(tmp.size() - 1);
-                sum -= candidates[i];
-            }
-        } else {
-            if (sum == target)
-                res.add(new ArrayList<Integer>(tmp));
-            return;
+    private void search(int t, int s) {
+        if (t == 0) {
+            res.add(new ArrayList<>(p));
+            return ;
         }
-	}
+        for (int i = s; i < set.length; i++) {
+            if (t < set[i]) continue;
+            p.add(set[i]);
+            search(t - set[i], i);
+            p.remove(p.size() - 1);
+        }
+    }
 }
-
-// 这不是背包问题吗? interesting
-// 除了dfs还有动态规划
-// 受oj用例影响剪枝未必最优,但dfs显然在空间复杂度上不占优势
-// java list类的声明及修改方法.

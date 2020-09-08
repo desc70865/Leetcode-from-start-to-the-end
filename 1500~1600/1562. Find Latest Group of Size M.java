@@ -57,29 +57,6 @@ class Solution {
 
 
 class Solution {
-    int target = -1;
-    List<Integer> aux = new ArrayList<>();
-    
-    public int findLatestStep(int[] arr, int m) {
-        int len = arr.length;
-        if (len == m) return len;
-        target = m;
-        
-        for (int i = len - 1; i >= 0; i--) if (check(arr[i] - 1)) return i;
-        return -1;
-    }
-    
-    private boolean check(int k) {
-        aux.insert(k);
-        int i = aux.indexOf(k);
-        int a = aux.get(i - 1), b = aux.get(i + 1);
-        return k - a == target || b - k == target;
-    }
-}
-
-
-
-class Solution {
     public int findLatestStep(int[] arr, int k) {
         int N = arr.length;
         int[] set = new int[N], sz = new int[N];
@@ -105,6 +82,7 @@ class Solution {
         }
         return ans;
     }
+    
     int find(int[] set, int u){
         return set[u] = (set[u] == u?u:find(set, set[u]));
     }

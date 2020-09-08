@@ -55,3 +55,15 @@ class Solution {
         return new int[] {arr[2] - arr[1] <= 2 || arr[1] - arr[0] <= 2 ? 1 : 2, arr[2] - arr[0] - 2};
     }
 }
+
+
+
+class Solution {
+    public int[] numMovesStones(int a, int b, int c) {
+        int[] aux = new int[] {a, b, c};
+        Arrays.sort(aux);
+        int x = aux[1] - aux[0] - 1, y = aux[2] - aux[1] - 1, z = Math.min(x, 1) + Math.min(y, 1);
+        if (x == 1 || y == 1) z = 1;
+        return new int[] {z, x + y};
+    }
+}

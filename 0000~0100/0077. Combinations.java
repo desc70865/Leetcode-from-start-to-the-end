@@ -18,7 +18,7 @@ Output:
 // 全排列更新逻辑: 逆次+1 & 重置
 
 class Solution {
-    public static List<List<Integer>> combine(int n, int k) {
+    public List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> result = new ArrayList<>();
         if (k <= 0 || n < k) return result; // 可删
         ArrayList<Integer> nums = new ArrayList<Integer>();
@@ -43,7 +43,7 @@ class Solution {
 
 
 class Solution {
-    public static List<List<Integer>> combine(int n, int k) {
+    public List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> result = new ArrayList<>();
         if (k <= 0 || n < k) return result; // 可删
         int[] nums = new int[k];
@@ -63,7 +63,7 @@ class Solution {
         return result;
     }
 
-    private static List<Integer> arrayToList(int[] array) {
+    private List<Integer> arrayToList(int[] array) {
     	List<Integer> list = new ArrayList<Integer>(array.length);
     	for (int i : array) list.add(i);
     	return list;
@@ -73,27 +73,24 @@ class Solution {
 // ...傻逼代码の傻逼注释
 // 使用前请刷新
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
-public class Solution {
+class Solution {
     private List<List<Integer>> result = new ArrayList<>();
+    private Stack<Integer> p = new Stack<>();
 
     public List<List<Integer>> combine(int n, int k) {
         if (k <= 0 || n < k) return result;
-        findCombinations(n, k, 1, new Stack<>());
+        findCombinations(n, k, 1);
         return result;
     }
     
-    private void findCombinations(int n, int k, int index, Stack<Integer> p) {
+    private void findCombinations(int n, int k, int index) {
         if (p.size() == k) {
             result.add(new ArrayList<>(p));
             return;
         }
         for (int i = index; i <= n - (k - p.size()) + 1; i++) {
             p.push(i);
-            findCombinations(n, k, i + 1, p);
+            findCombinations(n, k, i + 1);
             p.pop();
         }
     }
