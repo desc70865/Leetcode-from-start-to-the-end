@@ -60,30 +60,30 @@ class Solution {
     public int findLatestStep(int[] arr, int k) {
         int N = arr.length;
         int[] set = new int[N], sz = new int[N];
-        for(int i = 0; i< N; i++)set[i] = i;
+        for (int i = 0; i< N; i++) set[i] = i;
         int ans = -1;
         
         int[] f = new int[1+N];
-        for(int i = 0; i< N; i++){
+        for (int i = 0; i< N; i++) {
             int pos = arr[i]-1;
             sz[pos] = 1;
-            if(pos > 0 && sz[find(set, pos-1)] > 0){
+            if (pos > 0 && sz[find(set, pos-1)] > 0) {
                 f[sz[find(set, pos-1)]]--;
                 sz[find(set, pos)] += sz[find(set, pos-1)];
                 set[find(set, pos-1)] = find(set, pos);
             }
-            if(pos+1 < N && sz[find(set, pos+1)] > 0){
+            if (pos+1 < N && sz[find(set, pos+1)] > 0) {
                 f[sz[find(set, pos+1)]]--;
                 sz[find(set, pos)] += sz[find(set, pos+1)];
                 set[find(set, pos+1)] = find(set, pos);
             }
             f[sz[find(set, pos)]]++;
-            if(f[k] > 0)ans = i+1;
+            if (f[k] > 0) ans = i+1;
         }
         return ans;
     }
     
-    int find(int[] set, int u){
-        return set[u] = (set[u] == u?u:find(set, set[u]));
+    int find(int[] set, int u) {
+        return set[u] = (set[u] == u ? u : find(set, set[u]));
     }
 }
