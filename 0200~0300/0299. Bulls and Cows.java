@@ -24,95 +24,23 @@ Note: You may assume that the secret number and your friend's guess only contain
 
 class Solution {
     public String getHint(String secret, String guess) {
-        int[] d1 = new int[10];
-        int[] d2 = new int[10];
-        int bulls = 0;
-        char[] s = secret.toCharArray();
-        char[] g = guess.toCharArray();
-        for (int i = 0; i < secret.length(); i++) {
-            if (s[i] == g[i]) {
-                bulls++;
-            } else {
-                d1[s[i] - '0']++;
-                d2[g[i] - '0']++;
+        int[] cnt = new int[10];
+        char[] s1 = secret.toCharArray(), s2 = guess.toCharArray();
+        int a = 0;
+        for (int i = 0; i < s1.length; i++) {
+            if (s1[i] == s2[i]) a++;
+            else {
+                cnt[s1[i] - '0']++;
+                cnt[s2[i] - '0']--;
             }
         }
-        int cows = 0;
-        for (int i = 0; i < 10; i++) {
-            if (d1[i] > 0 && d2[i] > 0) {
-                cows += Math.min(d1[i], d2[i]);
-            }
+        int b = s1.length - a;
+        for (int num: cnt) {
+            if (num > 0) b -= num;
         }
         
-        StringBuilder ret = new StringBuilder(Integer.toString(bulls));
-        ret.append('A');
-        ret.append(Integer.toString(cows));
-        ret.append('B');
-        return ret.toString();
-    }
-}
-
-
-
-class Solution {
-    public String getHint(String secret, String guess) {
-        char[] s = secret.toCharArray();
-        char[] g = guess.toCharArray();
-        int bulls = 0, cows = 0;
-        int[] numbers = new int[10];
-        
-        for (int i = 0; i < secret.length(); i++) {
-            int S = s[i] - '0';
-            int G = g[i] - '0';
-            if (S == G) {
-                bulls++;
-            } else {
-                if (numbers[S]++ < 0) {
-                    cows++;
-                }
-                if (numbers[G]-- > 0) {
-                    cows++;
-                }
-            }
-        }
-        
-        StringBuilder ret = new StringBuilder(Integer.toString(bulls));
-        ret.append('A');
-        ret.append(Integer.toString(cows));
-        ret.append('B');
-        return ret.toString();
-    }
-}
-
-
-
-class Solution {
-    public String getHint(String secret, String guess) {
-        char[] s = secret.toCharArray();
-        char[] g = guess.toCharArray();
-        int bulls = 0;
-        int[][] index = new int[10][2];
-        
-        for (int i = 0; i < s.length; i++) {
-            if (s[i] == g[i]) {
-                bulls++;
-            } else {
-                index[s[i] - '0'][0]++;
-                index[g[i] - '0'][1]++;
-            }
-        }
-        
-        int cows = 0;
-        for (int j = 0; j < 10; j++) {
-            if (index[j][0] > 0 && index[j][1] > 0) {
-                cows += Math.min(index[j][0], index[j][1]);
-            }
-        }
-        
-        StringBuilder ret = new StringBuilder(Integer.toString(bulls));
-        ret.append('A');
-        ret.append(Integer.toString(cows));
-        ret.append('B');
-        return ret.toString();
+        StringBuilder res = new StringBuilder();
+        res.append(a).append('A').append(b).append('B');
+        return res.toString();
     }
 }

@@ -16,68 +16,22 @@ Output: [[1,2,6], [1,3,5], [2,3,4]]
  */
 
 class Solution {
-    List<List<Integer>> lists = new ArrayList<>();
+    List<List<Integer>> res = new ArrayList<>();
     public List<List<Integer>> combinationSum3(int k, int n) {
-        if (n < k) {
-            return lists;
-        }
-        
-        helper(k, n, 1, new ArrayList<Integer>());
-        
-        return lists;
+        dfs(k, n, 1, new ArrayList<>());
+        return res;
     }
-    
-    public void helper(int k, int n, int start, List<Integer> list){
-        if (n < 0) {
-            return;
-        }
-        
+
+    private void dfs(int k, int n, int idx, ArrayList<Integer> p) {
         if (k == 0) {
-            if (n == 0) {
-                lists.add(new ArrayList<Integer>(list));
-            }
-            return;
+            if (n == 0) res.add(new ArrayList<>(p));
+            return ;
         }
-        
-        for (int i = start; i <= 9; i++) {
-            list.add(i);
-            helper(k - 1, n - i, i + 1, list);
-            list.remove(list.size() - 1);
-        }
-    }
-}
-
-// 排列组合
-// if end: add.tmp return;
-// for:
-// add
-// recursion
-// remove
-
-class Solution {
-    List<List<Integer>> ans = new ArrayList<>();
-    Deque<Integer> path = new ArrayDeque<>();
-    
-    public List<List<Integer>> combinationSum3(int k, int n) {
-        dfs(k, n, 1);
-        return ans;
-    }
-    
-    private void dfs(int k, int n, int start) {
-        if (k < 0 || n < 0) {
-            return;
-        }
-        
-        if (k == 0 && n == 0) {
-            if (!path.isEmpty())
-                ans.add(new ArrayList<>(path));
-            return;
-        }
-        
-        for (int i = start; i < 10; i++) {
-            path.push(i);
-            dfs(k - 1, n - i, ++start);
-            path.pop();
+        for (int i = idx; i < 10; i++) {
+            if (i > n) return ;
+            p.add(i);
+            dfs(k - 1, n - i, i + 1, p);
+            p.remove(p.size() - 1);
         }
     }
 }

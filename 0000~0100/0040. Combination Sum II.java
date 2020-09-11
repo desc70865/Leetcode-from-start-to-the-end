@@ -28,43 +28,25 @@ A solution set is:
  */
 
 class Solution {
-	public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-		List<List<Integer>> res = new ArrayList<List<Integer>>();
-		List<Integer> tmp = new ArrayList<>();
-		// 排序去重
-		Arrays.sort(candidates);
-		dfsCore(res, 0, 0, tmp, candidates, target);
-		return res;
-	}
+    List<List<Integer>> res = new ArrayList<>();
 
-	private void dfsCore(List<List<Integer>> res, 
-			int curIdx, int sum, List<Integer> tmp, int[] candidates,
-			int target) {
-        if (sum < target){
-            for (int i = curIdx; i < candidates.length; i++) {
-                // 剪枝
-                if (i > curIdx && candidates[i] == candidates[i - 1]) // 去重
-                    continue;
-                if (target < candidates[i])
-                    return;
-                sum += candidates[i];
-                if (target < sum)
-                    return;
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        dfs(candidates, target, 0, new ArrayList<>());
+        return res;
+    }
 
-                tmp.add(candidates[i]);
-                // 不可重复选取第 i 个元素
-                dfsCore(res, i+1, sum, tmp, candidates, target);
-                
-                // 回溯
-                tmp.remove(tmp.size() - 1);
-                sum -= candidates[i];
-            }
-        } else {
-            if (sum == target)
-                res.add(new ArrayList<Integer>(tmp));
-            return;
+    private void dfs(int[] A, int t, int idx, List<Integer> p) {
+        if (t == 0) {
+            res.add(new ArrayList<>(p));
+            return ;
         }
-	}
+        for (int i = idx; i < A.length; i++) {
+            if (A[i] > t) return ;
+            if (i > idx && A[i] == A[i - 1]) continue;
+            p.add(A[i]);
+            dfs(A, t - A[i], i + 1, p);
+            p.remove(p.size() - 1);
+        }
+    }
 }
-
-// 需要去重

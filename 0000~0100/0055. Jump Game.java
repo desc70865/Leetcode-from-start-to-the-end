@@ -28,13 +28,13 @@ Constraints:
 class Solution {
     public boolean canJump(int[] nums) {
         int res = 0, n = nums.length, i = 0, cur = 0;
-        while (cur < n - 1) { // 当前坐标
-            ++res; // 次数
-            int pre = cur; // 上一个 cur
-            for (; i <= pre; ++i) { // i 无须重置, 最优 nums[i] 已更新至 cur 中
-                cur = cur > (i + nums[i]) ? cur : (i + nums[i]); // 更新
+        while (cur < n - 1) {
+            ++res;
+            int pre = cur;
+            for (; i <= pre; ++i) {
+                cur = Math.max(cur, i + nums[i]);
             }
-            if (pre == cur) return false; // May not need this
+            if (pre == cur) return false;
         }
         return true;
     }
