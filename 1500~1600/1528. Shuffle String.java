@@ -51,3 +51,17 @@ class Solution {
         return String.valueOf(res);
     }
 }
+
+
+
+class Solution {
+    public String restoreString(String s, int[] indices) {
+        int N = s.length();
+        char[] aux = new char[N];
+        int idx = 0;
+        for (char c: s.toCharArray()) {
+            aux[indices[idx++]] = c;
+        }
+        return String.valueOf(aux);
+    }
+}
