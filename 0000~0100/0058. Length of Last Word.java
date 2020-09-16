@@ -19,3 +19,13 @@ class Solution {
 
 // trim = s.trim()
 // last_space = trim.lastIndexOf(" ")
+
+class Solution {
+    public int lengthOfLastWord(String s) {
+        String[] aux = s.split(" ");
+        for (int i = aux.length - 1; i >= 0; i--) {
+            if (aux[i].length() > 0) return aux[i].length();
+        }
+        return 0;
+    }
+}

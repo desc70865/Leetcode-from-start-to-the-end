@@ -69,3 +69,21 @@ class Solution {
         return root;
     }
 }
+
+
+
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) return root;
+        invertTree(root.left);
+        invertTree(root.right);
+        swap(root);
+        return root;
+    }
+
+    private void swap(TreeNode node) {
+        TreeNode t = node.left;
+        node.left = node.right;
+        node.right = t;
+    }
+}
