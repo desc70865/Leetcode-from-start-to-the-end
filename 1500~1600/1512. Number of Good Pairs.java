@@ -64,7 +64,7 @@ class Solution {
         int res = 0, cnt = 0;
         for (int i = 1; i < nums.length; i++) {
             if (nums[i] == nums[i-1]) {
-                res += ++cnt; 
+                res += ++cnt;
             } else {
                 cnt = 0;
             }

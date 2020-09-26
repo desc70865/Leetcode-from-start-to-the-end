@@ -38,62 +38,23 @@ Return:
  * }
  */
 class Solution {
-    private List<List<Integer>> list;
+    List<List<Integer>> res;
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
-        this.list = new ArrayList<>();
-        dfs(new ArrayList<Integer>(), root, sum);
-        return list;
+        res = new ArrayList<>();
+        helper(root, sum, new ArrayList<>());
+        return res;
     }
-    
-    private void dfs(List<Integer> tmp, TreeNode node, int sum) {
-        if (node == null) {
-            return;
-        }
-        
-        tmp.add(node.val);
-        sum -= node.val;
-        
-        if (node.left == null && node.right == null && 0 == sum) {
-            list.add(new ArrayList<>(tmp));
+
+    private void helper(TreeNode node, int sum, List<Integer> p) {
+        if (node == null) return;
+        int k = node.val;
+        p.add(k);
+        if (sum == k && node.left == null && node.right == null) {
+            res.add(new ArrayList<>(p));
         } else {
-            dfs(tmp, node.left, sum);
-            dfs(tmp, node.right, sum);
+            helper(node.left, sum - k, p);
+            helper(node.right, sum - k, p);
         }
-        
-        tmp.remove(tmp.size()-1);
-        return;
-    }
-}
-
-// ???
-
-class Solution {
-    public List<List<Integer>> pathSum(TreeNode root, int sum) {
-        return addPath(root, sum, new ArrayList<>(), new int[height(root)], 0);
-    }
-    
-    int height(TreeNode root) {
-        return root == null ? 0 : 1 + Math.max(height(root.left), height(root.right));
-    }
-    
-    List<List<Integer>> addPath(TreeNode root, int sum, List<List<Integer>> result, int[] path, int level) {
-        if (root == null) {
-            return result;
-        }
-        
-        sum -= root.val;
-        path[level++] = root.val;
-        
-        if (root.left == null && root.right == null && sum == 0) {
-            List<Integer> list = new ArrayList<>();
-            for (int i = 0; i < level; i++) {
-                list.add(path[i]);
-            }
-            result.add(list);
-        }
-        addPath(root.left, sum, result, path, level);
-        addPath(root.right, sum, result, path, level);
-        
-        return result;
+        p.remove(p.size() - 1);
     }
 }
