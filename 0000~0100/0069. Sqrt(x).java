@@ -19,7 +19,7 @@ Explanation: The square root of 8 is 2.82842..., and since
  */
 
 class Solution {
-    public static int mySqrt(int x) {
+    public int mySqrt(int x) {
         double n = x/2 + 1; // 设置初值
         double p = 0.9; // 设置精度
         while(Math.abs(n*n - x) > p)
@@ -32,7 +32,7 @@ class Solution {
 // 平方根倒数算法精确设定初始值
 
 class Solution {
-    public static int mySqrt(int x) {
+    public int mySqrt(int x) {
         long i = Double.doubleToLongBits((double)x);
         i = 0x5fe6ec85e7de30daL - (i >> 1);
         double n = 1/Double.longBitsToDouble(i)+1;
@@ -42,22 +42,17 @@ class Solution {
     }
 }
 
-// test
 
-public class Solution {
-    public static int mySqrt(int x) {
-        long i = Double.doubleToLongBits((double)x);
-        i = 0x5fe6ec85e7de30daL - (i >> 1);
-        double n = 1/Double.longBitsToDouble(i)+1;
-        System.out.println(n);
-        while(Math.abs(n*n - x) >= 1) {
-            n = (n + x / n) / 2.0;
-        	System.out.println(n);
+
+class Solution {
+    public int mySqrt(int x) {
+        if (x == 1) return 1;
+        int l = 1, r = x / 2;
+        while (l <= r) {
+            int m = l + r >> 1;
+            if ((long) m * m > x) r = m - 1;
+            else l = m + 1;
         }
-        return (int)n;
-    }
-	
-    public static void main(String[] args) {
-    	System.out.println(mySqrt(375920568));
+        return l - 1;
     }
 }

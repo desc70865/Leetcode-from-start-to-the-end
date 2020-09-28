@@ -58,32 +58,6 @@ class Node {
 */
 
 class Solution {
-    private List<Queue<Node>> list;
-    public Node connect(Node root) {
-        list = new ArrayList<>();
-        build(root, 0);
-        
-        
-    }
-    
-    private void build(Node node, int depth) {
-        if (node == null) {
-            return;
-        }
-        Queue<Node> queue;
-        if (list.get(depth) == null) {
-            
-        }
-        Queue<Node> queue = map.getOrDefault(depth, new LinkedList<>());
-        queue.offer(node);
-        build(node.left, depth + 1);
-        build(node.right, depth + 1);
-    }
-}
-
-
-
-class Solution {
     public Node connect(Node root) {
         
         if (root == null) {
@@ -145,7 +119,7 @@ class Solution {
         Q.add(root);
         while (Q.size() > 0) {
             int size = Q.size();
-            for(int i = 0; i < size; i++) {
+            for (int i = 0; i < size; i++) {
                 Node node = Q.poll();
                 if (i < size - 1) {
                     node.next = Q.peek();

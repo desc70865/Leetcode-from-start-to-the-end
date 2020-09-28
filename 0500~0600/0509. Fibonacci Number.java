@@ -46,7 +46,7 @@ class Solution {
 // ...0070
 
 class Solution {
-    public static int fib(int n) {
+    public int fib(int n) {
         if (n == 0 || n == 1) {
             return n;
         }
@@ -56,7 +56,7 @@ class Solution {
         return res[0][0];
     }
 
-    private static int[][] matrixMul(int[][] a, int[][] b) {
+    private int[][] matrixMul(int[][] a, int[][] b) {
         int row = a.length;
         int col = b[0].length;
         int[][] res = new int[row][col];
@@ -72,7 +72,7 @@ class Solution {
     }
 
     // 递归实现logN快速幂
-    private static int[][] matrixPow (int[][] m, int n) {
+    private int[][] matrixPow (int[][] m, int n) {
         if (n == 1) {
             return m;
         }
@@ -81,7 +81,7 @@ class Solution {
     }
 
     // 位运算实现logN快速幂
-    private static int[][] matrixPow (int[][] m, int n) {
+    private int[][] matrixPowX (int[][] m, int n) {
         int[][] res = new int[][] {{1, 0}, {0, 1}};
         while (n > 0) {
             if ((n & 1) == 1) {
@@ -91,5 +91,14 @@ class Solution {
             m = matrixMul(m, m);
         }
         return res;
+    }
+}
+
+
+
+class Solution {
+    public int fib(int N) {
+        if (N <= 1) return N;
+        return fib(N - 1) + fib(N - 2);
     }
 }

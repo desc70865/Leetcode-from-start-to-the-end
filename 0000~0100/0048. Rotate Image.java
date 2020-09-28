@@ -64,3 +64,20 @@ class Solution {
 }
 
 // 旋转,真无聊
+
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length - 1;
+        if (n < 1) return;
+        int k = n / 2 + 1;
+        for (int i = 0; i < k; i++) {
+            for (int j = 0; j < n + 1 - k; j++) {
+                int t = matrix[i][j];
+                matrix[i][j] = matrix[n - j][i];
+                matrix[n - j][i] = matrix[n - i][n - j];
+                matrix[n - i][n - j] = matrix[j][n - i];
+                matrix[j][n - i] = t;
+            }
+        }
+    }
+}
