@@ -58,17 +58,20 @@ class Solution {
     }
 }
 
+
+
 class Solution {
+    List<Integer> p;
     public List<Integer> rightSideView(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        if(root == null) return result;
-        dfs(root, 0, result);
-        return result;
+        p = new ArrayList<>();
+        dfs(root, 0);
+        return p;
     }
-    
-    private void dfs(TreeNode node, int level, List<Integer> result) {
-        if (level == result.size()) result.add(node.val);
-        if (node.right != null) dfs(node.right, level+1, result);
-        if (node.left != null) dfs(node.left, level+1, result);
+
+    private void dfs(TreeNode node, int depth) {
+        if (node == null) return;
+        if (p.size() == depth) p.add(node.val);
+        dfs(node.right, depth + 1);
+        dfs(node.left, depth + 1);
     }
 }

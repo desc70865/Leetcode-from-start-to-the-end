@@ -58,18 +58,10 @@ if x != i+1; then swap(nums[i], nums[nums[i]-1]);
 
 class Solution {
     public int firstMissingPositive(int[] nums) {
-        boolean[] mark = new boolean[nums.length];
-        for (int num : nums) {
-            if (num > 0 && num <= nums.length) {
-                mark[num-1] = true;
-            }
-        }
-        
-        for (int i = 0; i < nums.length; i++) {
-            if (!mark[i]) {
-                return i+1;
-            }
-        }
-        return nums.length+1;
+        int N = nums.length;
+        int[] c = new int[N + 1];
+        for (int num: nums) if (0 < num && num <= N) c[num]++;
+        for (int i = 1; i <= N; i++) if (c[i] == 0) return i;
+        return N + 1;
     }
 }

@@ -32,3 +32,11 @@ class Solution {
         else return k * (k + 1);
     }
 }
+
+
+
+class Solution {
+    public int minOperations(int n) {
+        return n * n / 4;
+    }
+}

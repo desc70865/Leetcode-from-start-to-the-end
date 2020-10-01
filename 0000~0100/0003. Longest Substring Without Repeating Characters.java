@@ -35,5 +35,21 @@ public class Solution {
 	}
 }
 
-// 插入hash表，更新最大非重复区间:检测更新左边界,比较更新后的区间大小
+// 插入hash表，更新最大非重复区间:检测左边界,比较更新后的区间
 // 循环包含 if 判断和赋值
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int[] cnt = new int[128];
+        char[] str = s.toCharArray();
+        int N = str.length;
+        int l = 0, r = 0;
+        int res = 0;
+        for (; r < N; r++) {
+            if (++cnt[str[r]] == 1) continue;
+            res = Math.max(res, r - l);
+            while (cnt[str[r]] > 1) cnt[str[l++]]--;
+        }
+        return Math.max(res, r - l);
+    }
+}

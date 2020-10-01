@@ -16,30 +16,28 @@ Output:
  */
 
 class Solution {
+    List<List<Integer>> res;
+    boolean[] v;
     public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        if (nums == null || nums.length == 0) {
-            return res;
-        }
-        boolean [] used = new boolean[nums.length];
-        helper(nums,used,new ArrayList<Integer>(), res);
+        res = new ArrayList<>();
+        int N = nums.length;
+        v = new boolean[N];
+        helper(nums, N, new ArrayList<>());
         return res;
     }
-    private void helper(int[] nums, boolean [] used, List<Integer> item, List<List<Integer>> res){
-        if (item.size() == nums.length) {
-            res.add(new ArrayList<Integer>(item));
+
+    private void helper(int[] nums, int rem, ArrayList<Integer> p) {
+        if (rem == 0) {
+            res.add(new ArrayList<>(p));
             return;
         }
-        for (int i = 0; i<nums.length; i++) {
-            if(!used[i]){
-                used[i] = true; // 遍历
-                item.add(nums[i]);
-                helper(nums,used,item,res);
-                item.remove(item.size()-1); // 移除最后一个(本次循环添加的)元素 # 从后往前移除
-                used[i] = false; // 还原
-            }
+        for (int i = 0; i < nums.length; i++) {
+            if (v[i]) continue;
+            v[i] = true;
+            p.add(nums[i]);
+            helper(nums, rem - 1, p);
+            p.remove(p.size() - 1);
+            v[i] = false;
         }
     }
 }
-
-// 计算排列组合实际考虑的是遍历,DFS递归实现是通用解

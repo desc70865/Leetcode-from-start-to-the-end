@@ -38,10 +38,7 @@ class Solution {
     public int diagonalSum(int[][] mat) {
         int sum = 0;
         int N = mat.length;
-        for (int i = 0; i < N; i++) {
-            sum += mat[i][i];
-            sum += mat[i][N - 1 - i];
-        }
+        for (int i = 0; i < N; i++) sum += mat[i][i] + mat[i][N - 1 - i];
         if (N % 2 == 1) sum -= mat[N / 2][N / 2];
         return sum;
     }
