@@ -26,3 +26,15 @@ class Solution {
         return res;
     }
 }
+
+
+
+class Solution {
+    public int numJewelsInStones(String J, String S) {
+        boolean[] isJewels = new boolean[128];
+        for (char c: J.toCharArray()) isJewels[c] = true;
+        int res = 0;
+        for (char c: S.toCharArray()) if (isJewels[c]) res++;
+        return res;
+    }
+}
