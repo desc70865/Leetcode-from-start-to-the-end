@@ -32,6 +32,27 @@ class Solution {
 
 
 class Solution {
+    List<Integer> p;
+    public int countPrimes(int n) {
+        p = new ArrayList<>();
+        int res = 0;
+        for (int i = 2; i < n; i++) if (isPrime(i)) res++;
+        return res;
+    }
+
+    private boolean isPrime(int k) {
+        for (Integer i: p) {
+            if (i * i > k) break;
+            if (k % i == 0) return false;
+        }
+        p.add(k);
+        return true;
+    }
+}
+
+
+
+class Solution {
     public int countPrimes(int n) {
         if (n == 499979) return(41537);
         if (n == 999983) return(78497);

@@ -34,8 +34,7 @@ Constraints:
 class Solution {
     public int maxProfit(int[] prices) {
         int sum = 0;
-        for (int i=1; i < prices.length; i++) 
-            sum += (prices[i] > prices[i-1]) ? prices[i] - prices[i-1] : 0;
+        for (int i = 1; i < prices.length; i++) sum += Math.max(prices[i] - prices[i-1], 0);
         return sum;
     }
 }
@@ -43,13 +42,13 @@ class Solution {
 
 class Solution {
     public int maxProfit(int[] prices) {
-        int n = prices.length;
-        int dp_i_0 = 0, dp_i_1 = Integer.MIN_VALUE;
-        for (int i = 0; i < n; i++) {
-            int temp = dp_i_0;
-            dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
-            dp_i_1 = Math.max(dp_i_1, temp - prices[i]);
+        int out = 0;
+        int in = Integer.MIN_VALUE;
+        for (int p: prices) {
+            int t = out;
+            out = Math.max(out, in + p);
+            in = Math.max(in, out - p);
         }
-        return dp_i_0;
+        return out;
     }
 }

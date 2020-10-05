@@ -61,3 +61,20 @@ const char* convert(char buf[], int value)
  */
 
 // 32-bit 整数 => 数组
+
+class Solution {
+    public int reverse(int x) {
+        if (x == 0) return 0;
+        long y = Math.abs(x);
+        int p = (int) (y / x);
+        long res = 0;
+        while (y > 0) {
+            res *= 10;
+            res += (int) (y % 10);
+            y /= 10;
+        }
+        res *= p;
+        if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE) return 0;
+        return (int) res;
+    }
+}

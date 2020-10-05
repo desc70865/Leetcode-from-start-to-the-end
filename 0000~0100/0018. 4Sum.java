@@ -18,46 +18,63 @@ A solution set is:
  */
 
 class Solution {
+    List<List<Integer>> res;
     public List<List<Integer>> fourSum(int[] nums, int target) {
-        List<List<Integer>> ret = new ArrayList<>();
-
-        if (nums == null || nums.length < 3)
-            return ret;
-        int len = nums.length;
+        res = new ArrayList<>();
         Arrays.sort(nums);
-        
-        for (int i = 0; i < len; i++) {
-            if (i > 0 && nums[i] == nums[i - 1])
-                continue;
-            for (int j = i + 1; j < len; j++) {
-                if (j > i + 1 && nums[j] == nums[j - 1])
-                    continue;
-                int begin = j + 1;
-                int end = len - 1;
-                while (begin < end) {
-                    int sum = nums[i] + nums[j] + nums[begin] + nums[end];
-                    if (sum == target) {
-                        List<Integer> list = new ArrayList<>();
-                        list.add(nums[i]);
-                        list.add(nums[j]);
-                        list.add(nums[begin]);
-                        list.add(nums[end]);
-                        ret.add(list);
-                        begin++;
-                        end--;
-                        while (begin < end && nums[begin] == nums[begin - 1])
-                            begin++;
-                        while (begin < end && nums[end] == nums[end + 1])
-                            end--;
-                    } else if (sum > target)
-                        end--;
-                    else
-                        begin++;
-                }
+        int N = nums.length;
+        for (int i = 0; i < N; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            for (int j = i + 1; j < N; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+                helper(nums, i, j, target, j + 1, N - 1);
             }
         }
-        return ret;
+        return res;
+    }
+
+    private void helper(int[] A, int i, int j, int target, int l, int r) {
+        target -= A[i] + A[j];
+        List<Integer> p = new ArrayList<>();
+        p.add(A[i]);
+        p.add(A[j]);
+        while (l < r) {
+            if (A[l] + A[r] == target) {
+                p.add(A[l++]);
+                p.add(A[r--]);
+                res.add(new ArrayList<>(p));
+                p.remove(3);
+                p.remove(2);
+                while (l < r && A[l] == A[l - 1]) l++;
+                while (l < r && A[r] == A[r + 1]) r--;
+            } else if (A[l] + A[r] < target) l++;
+            else r--;
+        }
     }
 }
 
-// 我都困了
+
+
+class Solution {
+    List<List<Integer>> res;
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        res = new ArrayList<>();
+        Arrays.sort(nums);
+        dfs(nums, 0, 4, target, new ArrayList<>());
+        return res;
+    }
+
+    private void dfs(int[] A, int idx, int rem, int target, List<Integer> p) {
+        if (rem == 0) {
+            if (target == 0) res.add(new ArrayList<>(p));
+            return;
+        }
+        for (int i = idx; i < A.length; i++) {
+            if (i > idx && A[i] == A[i - 1]) continue;
+            if (A[i] > 0 && target < A[i]) return;
+            p.add(A[i]);
+            dfs(A, i + 1, rem - 1, target - A[i], p);
+            p.remove(p.size() - 1);
+        }
+    }
+}
