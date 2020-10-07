@@ -24,24 +24,12 @@ class Solution {
 
 class Solution {
     public int majorityElement(int[] nums) {
-       return findMajority(nums, 0);
-    }
-    
-    public int findMajority(int[] nums, int startIndex){
-        int pivot = nums[startIndex];
-        int count = 1;
-        
-        for (int i = startIndex+1; i < nums.length; i++) {
-            if (nums[i] == pivot) {
-                count++;
-            } else {
-                count--;
-            }
-            
-            if (count == 0) {
-                return findMajority(nums, i+1); 
-            }
+        int cnt = 0, p = nums[0];
+        for (int num: nums) {
+            if (num == p) cnt++;
+            else if (cnt == 0) p = num;
+            else cnt--;
         }
-        return pivot;
+        return p;
     }
 }

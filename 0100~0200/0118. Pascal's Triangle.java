@@ -25,11 +25,12 @@ class Solution {
         dp[0] = 1;
         for (int i=0; i < numRows; i++) {
             List<Integer> tmp = new ArrayList<>();
-            tmp.add(dp[0]);
             for (int j = i; j > 0; j--) {
                 dp[j] += dp[j-1];
-                tmp.add(1, dp[j]);
+                tmp.add(dp[j]);
             }
+            tmp.add(dp[0]);
+            // Collections.reverse(tmp);
             res.add(tmp);
         }
         return res;

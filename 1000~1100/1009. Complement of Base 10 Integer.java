@@ -33,15 +33,12 @@ This question is the same as 476: https://leetcode.com/problems/number-complemen
 class Solution {
     public int bitwiseComplement(int N) {
         if (N == 0) return 1;
-        return binaryLen(N) ^ N;
-    }
-
-    private int binaryLen(int N) {
-        int res = 1;
-        while (N > 0) {
-            N >>= 1;
-            res <<= 1;
+        int k = N;
+        int len = 0;
+        while (k > 0) {
+            k >>= 1;
+            len++;
         }
-        return res - 1;
+        return N ^ (1 << len) - 1;
     }
 }

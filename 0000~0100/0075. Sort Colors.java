@@ -21,20 +21,36 @@ class Solution {
         int red = 0, blue = nums.length - 1;
         for (int i = 0; i <= blue; ++i) {
             if (nums[i] == 0) {
-                swap2(nums, i, red++);
+                swap(nums, i, red++);
             } else if (nums[i] == 2) {
-                swap2(nums, i--, blue--);
+                swap(nums, i--, blue--);
             }
         }
     }
+    
     private static void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
-    }
-    private static void swap2(int[] nums, int i, int j) {
         nums[i] = nums[i] + nums[j] - (nums[j] = nums[i]); 
     }
 }
 
 // 双指针
+
+class Solution {
+    public void sortColors(int[] nums) {
+        int l = 0, r = nums.length - 1, i = 0;
+        while (i <= r) {
+            switch (nums[i]) {
+                case 0: swap(nums, i++, l++); break;
+                case 1: i++; break;
+                case 2: swap(nums, i, r--); break;
+            }
+        }
+    }
+
+    private void swap(int[] A, int i, int j) {
+        if (i == j) return;
+        int t = A[i];
+        A[i] = A[j];
+        A[j] = t;
+    }
+}

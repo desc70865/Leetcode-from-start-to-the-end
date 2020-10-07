@@ -55,7 +55,7 @@ class Solution {
 // 应该可以加入 k == n 的判定减少某些情况至 l
 
 class Solution {
-    public static ListNode rotateRight(ListNode head, int k) {
+    public ListNode rotateRight(ListNode head, int k) {
         if (head == null || head.next == null) {
             return head;
         }
@@ -65,11 +65,9 @@ class Solution {
             len++;
             p = p.next;
         }
-        p.next = head; // form a loop
         k = k % len;
-        if (k == 0) {
-            return head;
-        }
+        if (k == 0) return head;
+        p.next = head; // form a loop
         for (int i = 0; i < len - k; i++) {
             p = p.next;
         } // now p points to the prev of the new head

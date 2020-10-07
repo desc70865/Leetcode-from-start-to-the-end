@@ -50,3 +50,21 @@ public class Solution {
         return carry == 0 ? digits : res;
     }
 }
+
+
+
+class Solution {
+    public int[] plusOne(int[] digits) {
+        List<Integer> list = new ArrayList<>();
+        int c = 1;
+        int sum = 0;
+        for (int i = digits.length - 1; i >= 0; i--) {
+            sum = c + digits[i];
+            list.add(sum % 10);
+            c = sum / 10;
+        }
+        if (c > 0) list.add(c);
+        Collections.reverse(list);
+        return list.stream().mapToInt(Integer::valueOf).toArray();
+    }
+}

@@ -32,20 +32,19 @@ return its level order traversal as:
  * }
  */
 class Solution {
-    private List<List<Integer>> res;
+    List<List<Integer>> res;
     public List<List<Integer>> levelOrder(TreeNode root) {
         res = new ArrayList<>();
-        if (root == null) return res;
-        levelorder(root, 1);
+        dfs(root, 0);
         return res;
     }
-    
-    private void levelorder(TreeNode node, int level) {
+
+    private void dfs(TreeNode node, int h) {
         if (node == null) return;
-        if (res.size() < level) res.add(new ArrayList<Integer>());
-        res.get(level-1).add(node.val);
-        levelorder(node.left, level+1);
-        levelorder(node.right, level+1);
+        if (h == res.size()) res.add(new ArrayList<>());
+        res.get(h).add(node.val);
+        dfs(node.left, h + 1);
+        dfs(node.right, h + 1);
     }
 }
 

@@ -65,6 +65,43 @@ class Solution {
     }
 }
 
+// -?
+
+class Solution {
+    int m;
+    int n;
+    int x = 0;
+    int y = 0;
+    int idx = 0;
+
+    public int[] spiralOrder(int[][] matrix) {
+        m = matrix.length;
+        if (matrix == null || m == 0) return new int[0];
+        n = matrix[0].length;
+        int[] res = new int[m * n];
+        int count = Math.min(m, n);
+        helper(matrix, res, m, n, count);
+        return res;
+    }
+
+    private void helper (int[][] matrix, int[] res, int m, int n, int count) {
+        if (count == 0) {
+            return;
+        } else if (count == 1) {
+            if (m > n) for (int i = 0; i < m; i++) res[idx++] = matrix[x++][y];
+            else for (int i = 0; i < n; i++) res[idx++] = matrix[x][y++];
+            return;
+        }
+        for (int i = 0; i < n-1; i++) res[idx++] = matrix[x][y++];
+        for (int i = 0; i < m-1; i++) res[idx++] = matrix[x++][y];
+        for (int i = 0; i < n-1; i++) res[idx++] = matrix[x][y--];
+        for (int i = 0; i < m-1; i++) res[idx++] = matrix[x--][y];
+        x++;
+        y++;
+        helper(matrix, res, m-2, n-2, count-2);
+    }
+}
+
 // 设置 helper 传 count 参数
 // 每次打印一圈
 

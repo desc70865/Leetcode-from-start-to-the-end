@@ -20,7 +20,7 @@ For the purpose of this problem, we will return 0 when needle is an empty string
 
 class Solution {
     public int strStr(String haystack, String needle) {
-        if(needle.length() == 0)
+        if (needle.length() == 0)
             return 0;
         for (int i = 0; ; ++i) {
             for (int j = 0; ; ++j) {
@@ -33,3 +33,9 @@ class Solution {
 }
 
 // charAt(), length()...
+
+class Solution {
+    public int strStr(String haystack, String needle) {
+        return haystack.indexOf(needle);
+    }
+}

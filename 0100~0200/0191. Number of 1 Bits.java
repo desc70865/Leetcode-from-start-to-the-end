@@ -34,7 +34,16 @@ If this function is called many times, how would you optimize it?
 public class Solution {
     // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
-        
+        int res = 0;
+        while (n != 0) {
+            n ^= lowbit(n);
+            res++;
+        }
+        return res;
+    }
+
+    private int lowbit(int n) {
+        return n & (-n);
     }
 }
 
