@@ -20,45 +20,12 @@ Output: ["h","a","n","n","a","H"]
 class Solution {
     public void reverseString(char[] s) {
         int l = 0, r = s.length - 1;
-        while (l < r) {
-            swap(s, l++, r--);
-        }
+        while (l < r) swap(s, l++, r--);
     }
-    
-    private void swap(char[] nums, int i, int j) {
-        if (nums[i] == nums[j]) {
-            return;
-        }
-        char temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
-    }
-}
 
-
-
-class Solution {
-    public void reverseString(char[] s) {
-        int i = -1, j = s.length;
-        while(++i < --j) {
-            if (s[i] != s[j]) {
-                char temp = s[i] ;
-                s[i] = s[j] ;
-                s[j] = temp ;
-            }
-        }
-    }
-}
-
-
-
-class Solution {
-    public void reverseString(char[] s) {
-        int i = -1, j = s.length;
-        while(++i < --j) {
-            char temp = s[i] ;
-            s[i] = s[j] ;
-            s[j] = temp ;
-        }
+    private void swap(char[] s, int i, int j) {
+        char c = s[i];
+        s[i] = s[j];
+        s[j] = c;
     }
 }

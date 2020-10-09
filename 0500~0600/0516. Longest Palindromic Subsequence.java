@@ -25,32 +25,6 @@ Constraints:
 s consists only of lowercase English letters.
  */
 
-class Solution {
-    public int longestPalindromeSubseq(String s) {
-        if (s == null) {
-            return 0;
-        }
-        int len = s.length();
-        int[][] dp = new int[len][];
-        for (int i = 0; i < len; i++) {
-            dp[i] = new int[i+2];
-            dp[i][i] = 1;
-        }
-        
-        for (int i = len-2; i >= 0; i--) {
-            for (int j = i+1; j < len; j++) {
-                if (s.charAt(i) == s.charAt(j)) {
-                    dp[j][i] = dp[j-1][i+1] + 2;
-                } else {
-                    dp[j][i] = Math.max(dp[j][i+1], dp[j-1][i]);
-                }
-            }
-        }
-        
-        return dp[len-1][0];
-    }
-}
-
 // 转移状态 charAt i == j
 // 状态转移 tmp += 2
 
@@ -72,32 +46,28 @@ class Solution {
 // 单次遍历
 // 多次随机访问
 
+// attention
+// subsequence is not subarray
 
 class Solution {
     public int longestPalindromeSubseq(String s) {
-        if (s == null) {
-            return 0;
-        }
-        int len = s.length(), max = 0;
-        int[] dp = new int[len];
+        if (s == null) return 0;
+        int N = s.length(), max = 0;
         char[] str = s.toCharArray();
+        int[] dp = new int[N];
+        Arrays.fill(dp, 1);
         
-        for (int i = len-1; i >= 0; i--) {
-            dp[i] = 1;
+        for (int i = N-1; i >= 0; i--) {
             int preMax = 0;
-            for (int j = i+1; j < len; j++) {
+            for (int j = i+1; j < N; j++) {
                 int tmp = dp[j];
-                if (str[i] == str[j]) {
-                    dp[j] = preMax + 2;
-                }
+                if (str[i] == str[j]) dp[j] = preMax + 2;
                 preMax = Math.max(tmp, preMax);
             }
         }
         
-        for (int e : dp) {
-            max = Math.max(max, e);
-        }
-        
+        for (int e: dp) max = Math.max(max, e);
+        // System.out.println(Arrays.toString(dp));
         return max;
     }
 }
@@ -105,8 +75,6 @@ class Solution {
 // ith dp[j] -> dp[i][j]
 // preMax: 维护 dp[i+1][k] k ∈ [i+1, j-1] 中的 Max
 // str[i] == str[j] dp[j] = preMax + 2;
-
-
 
 class Solution {
     public int longestPalindromeSubseq(String s) {
@@ -132,3 +100,5 @@ class Solution {
         return dp[0][n-1];
     }
 }
+
+// dp[i][j] longestPalindromeSubseq in [i, j]

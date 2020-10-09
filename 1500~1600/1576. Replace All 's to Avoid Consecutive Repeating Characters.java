@@ -53,3 +53,25 @@ class Solution {
         return c == 'z' ? 'a' : (char) (c + 1);
     }
 }
+
+
+
+class Solution {
+    public String modifyString(String s) {
+        char[] str = s.toCharArray();
+        int N = str.length;
+        for (int i = 0; i < N; i++) {
+            if (str[i] == '?') {
+                if (i == 0) str[i] = 'a';
+                else str[i] = next(str[i - 1]);
+            } else if (i > 0 && str[i] == str[i - 1]) {
+                str[i - 1] = next(str[i - 1]);
+            }
+        }
+        return new String(str);
+    }
+    
+    private char next(char c) {
+        return c == 'z' ? 'a' : (char) (c + 1);
+    }
+}

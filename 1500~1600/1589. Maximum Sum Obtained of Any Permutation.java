@@ -44,18 +44,19 @@ requests[i].length == 2
 class Solution {
     public int maxSumRangeQuery(int[] nums, int[][] requests) {
         int N = nums.length;
+        int M = 1000000007;
         Arrays.sort(nums);
-        int[] cnt = new int[N+1];
-        for (int[] p: requests) {
-            cnt[p[0]]++;
-            cnt[p[1] + 1]--;
+        int[] in = new int[N + 1];
+        for (int[] re: requests) {
+            in[re[0]]++;
+            in[re[1] + 1]--;
         }
-        for (int i = 1; i <= N; i++) cnt[i] += cnt[i - 1];
-        Arrays.sort(cnt);
+        for (int i = 1; i <= N; i++) in[i] += in[i - 1];
+        Arrays.sort(in);
         long res = 0;
-        for (int i = N - 1; i >= 0; i--) {
-            res += cnt[i + 1] * nums[i];
+        for (int i = N; i > 0 && in[i] > 0; i--) {
+            res += (long) in[i] * nums[i - 1];
         }
-        return (int) (res % 1_000_000_007);
+        return (int) (res % M);
     }
 }
