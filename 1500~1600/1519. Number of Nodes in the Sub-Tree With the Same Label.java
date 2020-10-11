@@ -108,14 +108,11 @@ class Solution {
 class Solution {
     public int[] countSubTrees(int n, int[][] edges, String labels) {
         ArrayList<Integer>[] graph = new ArrayList[n];
-        for (int i = 0; i < n; i++) {
-            graph[i] = new ArrayList<>();
-        }
+        for (int i = 0; i < n; i++) graph[i] = new ArrayList<>();
         for (int[] edge: edges) {
             graph[edge[0]].add(edge[1]);
             graph[edge[1]].add(edge[0]);
         }
-        
         int[] sum = new int[n];
         countSubTrees(0, new boolean[n], sum, graph, labels.toCharArray());
         return sum;
@@ -123,20 +120,16 @@ class Solution {
     
     private int[] countSubTrees(int index, boolean[] visited, int[] sum, ArrayList<Integer>[] graph, char[] labels) {
         int[] count = new int[26];
-        if (visited[index]) {
-            return count;
-        }
+        if (visited[index]) return count;
         visited[index] = true;
-        int local = labels[index] - 'a';
+        int cur = labels[index] - 97;
         for (int i: graph[index]) {
             int[] nextCount = countSubTrees(i, visited, sum, graph, labels);
-            for (int j = 0; j < 26; j++) {
-                count[j] += nextCount[j];
-            }
-            sum[index] += nextCount[local];
+            for (int j = 0; j < 26; j++) count[j] += nextCount[j];
+            sum[index] += nextCount[cur];
         }
         sum[index]++;
-        count[local]++;
+        count[cur]++;
         return count;
     }
 }

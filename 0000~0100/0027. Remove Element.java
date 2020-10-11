@@ -51,3 +51,21 @@ class Solution {
 }
 
 // 画风突然奇怪了起来...
+
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int N = nums.length;
+        int l = 0, r = N - 1;
+        while (l <= r) {
+            if (nums[l] == val) swap(nums, l, r--);
+            else l++;
+        }
+        return l;
+    }
+
+    private void swap(int[] A, int i, int j) {
+        int t = A[i];
+        A[i] = A[j];
+        A[j] = t;
+    }
+}

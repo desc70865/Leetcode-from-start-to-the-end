@@ -25,3 +25,16 @@ class Solution {
         return (high + 1) / 2 - low / 2;
     }
 }
+
+
+
+class Solution {
+    public int countOdds(int low, int high) {
+        return sum(high + 1) - sum(low);
+    }
+    
+    // @return odd nums before x
+    private int sum(int x) {
+        return x / 2;
+    }
+}

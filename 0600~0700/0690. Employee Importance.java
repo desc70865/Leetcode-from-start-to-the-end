@@ -45,6 +45,8 @@ class Solution {
     }
 }
 
+
+
 class Solution {
     private Map<Integer, Employee> map;
     public int getImportance(List<Employee> employees, int id) {
@@ -64,5 +66,27 @@ class Solution {
                 q.offer(subid);
         }
         return sum;
+    }
+}
+
+
+
+class Solution {
+    Map<Integer, List<Integer>> map;
+    int[] p;
+    public int getImportance(List<Employee> employees, int id) {
+        map = new HashMap<>();
+        p = new int[2001];
+        for (Employee e: employees) {
+            map.put(e.id, e.subordinates);
+            p[e.id] = e.importance;
+        }
+        return dfs(id);
+    }
+
+    private int dfs(int id) {
+        int res = p[id];
+        for (Integer k: map.get(id)) res += dfs(k);
+        return res;
     }
 }

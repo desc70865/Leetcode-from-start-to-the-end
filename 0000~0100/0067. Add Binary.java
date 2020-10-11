@@ -34,3 +34,26 @@ class Solution {
         return carry == 1 ? "1" + res : res;
     }
 }
+
+
+
+class Solution {
+    public String addBinary(String a, String b) {
+        StringBuilder sb = new StringBuilder();
+        char[] s1 = a.toCharArray(), s2 = b.toCharArray();
+        int m = s1.length - 1, n = s2.length - 1;
+        int c = 0;
+        while (m >= 0 || n >= 0) {
+            int sum = 0;
+            if (m >= 0) sum += s1[m--] == '1' ? 1 : 0;
+            if (n >= 0) sum += s2[n--] == '1' ? 1 : 0;
+            sum += c;
+            sb.append(sum % 2);
+            c = sum / 2;
+        }
+        if (c > 0) sb.append(c);
+
+        sb.reverse();
+        return sb.toString();
+    }
+}

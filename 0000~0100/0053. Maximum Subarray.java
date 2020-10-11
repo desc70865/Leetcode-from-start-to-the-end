@@ -11,39 +11,44 @@ Follow up:
 If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
  */
 
-public class Solution {
+class Solution {
     public int maxSubArray(int[] nums) {
-        int res = Integer.MIN_VALUE, curSum = 0;
-        for (int num : nums) {
-            curSum = Math.max(curSum + num, num);
-            res = Math.max(res, curSum);
+        int cur = 0, max = Integer.MIN_VALUE;
+        for (int num: nums) {
+            cur = Math.max(cur + num, num);
+            max = Math.max(cur, max);
         }
-        return res;
+        return max;
     }
 }
 
-public class Solution {
+// 1 ms
+
+class Solution {
     public int maxSubArray(int[] nums) {
-        if (nums.length == 0) return 0;
-        return helper(nums, 0, nums.length - 1);
+        int N = nums.length;
+        return N == 0 ? 0 : helper(nums, 0, N - 1);
     }
-    public int helper(int[] nums, int left, int right) {
-        if (left >= right) return nums[left];
-        int mid = left + (right - left) / 2;
-        int lmax = helper(nums, left, mid - 1);
-        int rmax = helper(nums, mid + 1, right);
-        int mmax = nums[mid], t = mmax;
-        for (int i = mid - 1; i >= left; --i) {
-            t += nums[i];
-            mmax = Math.max(mmax, t);
+
+    private int helper(int[] A, int l, int r) {
+        if (l >= r) return A[l];
+        int mid = l + r >> 1;
+        int L = helper(A, l, mid - 1);
+        int R = helper(A, mid + 1, r);
+        int M = A[mid];
+        int t = M;
+        for (int i = mid - 1; i >= l; i--) {
+            t += A[i];
+            M = Math.max(M, t);
         }
-        t = mmax;
-        for (int i = mid + 1; i <= right; ++i) {
-            t += nums[i];
-            mmax = Math.max(mmax, t);
+        t = M;
+        for (int i = mid + 1; i <= r; i++) {
+            t += A[i];
+            M = Math.max(M, t);
         }
-        return Math.max(mmax, Math.max(lmax, rmax));
+        return Math.max(M, Math.max(L, R));
     }
 }
 
-// zz分治
+// 3 ms
+

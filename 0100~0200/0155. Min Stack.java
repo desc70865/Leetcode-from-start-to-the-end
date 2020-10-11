@@ -33,23 +33,31 @@ Methods pop, top and getMin operations will always be called on non-empty stacks
  */
 
 class MinStack {
+    Stack<Integer> min, p;
     /** initialize your data structure here. */
     public MinStack() {
-        
+        min = new Stack<>();
+        p = new Stack<>();
     }
     
     public void push(int x) {
+        p.push(x);
+        if (min.isEmpty() || x <= getMin()) min.push(x);
     }
     
     public void pop() {
+        // if compare two Integer directly
+        // you must use equals
+        if (top() == getMin()) min.pop();
+        p.pop();
     }
     
     public int top() {
-        
+        return p.peek();
     }
     
     public int getMin() {
-        
+        return min.peek();
     }
 }
 
@@ -61,35 +69,6 @@ class MinStack {
  * int param_3 = obj.top();
  * int param_4 = obj.getMin();
  */
-
-
-class MinStack {
-    private Stack<Integer> stack;
-    private Stack<Integer> min_stack;
-    
-    public MinStack() {
-        stack = new Stack<>();
-        min_stack = new Stack<>();
-    }
-    public void push(int x) {
-        stack.push(x);
-        if (min_stack.isEmpty() || x <= min_stack.peek()) {
-            min_stack.push(x);
-        }
-    }
-    public void pop() {
-        if (stack.pop().equals(min_stack.peek())) {
-            min_stack.pop();
-        }
-    }
-    public int top() {
-        return stack.peek();
-    }
-    public int getMin() {
-        return min_stack.peek();
-    }
-}
-
 
 
 class MinStack {

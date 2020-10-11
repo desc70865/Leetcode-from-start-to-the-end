@@ -48,3 +48,13 @@ Coud you solve it without converting the integer to a string?
 
 // 进制转换~
 // 仅翻转一半,需额外判断奇偶
+
+class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        char[] s = String.valueOf(x).toCharArray();
+        int l = 0, r = s.length - 1;
+        while (l < r) if (s[l++] != s[r--]) return false;
+        return true;
+    }
+}

@@ -35,15 +35,18 @@ rounds[i] != rounds[i + 1] for 0 <= i < m
  */
 
 class Solution {
+    List<Integer> res;
     public List<Integer> mostVisited(int n, int[] rounds) {
-        int len = rounds.length;
-        List<Integer> res = new ArrayList<>();
-        int a = rounds[0], b = rounds[len -1];
-        if (a <= b) for (int i = a; i <= b; i++) res.add(i);
-        else {
-            for (int i = 1; i <= b; i++) res.add(i);
-            for (int i = a; i <= n; i++) res.add(i);
-        }
+        res = new ArrayList<>();
+        int start = rounds[0], end = rounds[rounds.length - 1];
+        if (end < start) {
+            add(1, end);
+            add(start, n);
+        } else add(start, end);
         return res;
+    }
+
+    private void add(int s, int e) {
+        for (int i = s; i <= e; i++) res.add(i);
     }
 }

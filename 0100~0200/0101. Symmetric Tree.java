@@ -37,14 +37,13 @@ But the following [1,2,2,null,3,null,3] is not:
 class Solution {
     public boolean isSymmetric(TreeNode root) {
         if (root == null) return true;
-        return isSymmetric(root.left, root.right);
+        return equals(root.left, root.right);
     }
-    
-    private boolean isSymmetric(TreeNode left, TreeNode right) {
-        if (left == null && right == null) return true;
-        else if (left == null && right != null || left != null && right == null
-                || left.val != right.val) return false;
-        else return 
-            isSymmetric(left.left, right.right) && isSymmetric(left.right, right.left);
+
+    private boolean equals(TreeNode l, TreeNode r) {
+        if (l == null ^ r == null) return false;
+        if (l == null && r == null) return true;
+        if (l.val != r.val) return false;
+        return equals(l.left, r.right) && equals(l.right, r.left);
     }
 }

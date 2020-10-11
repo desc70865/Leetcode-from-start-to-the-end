@@ -50,3 +50,34 @@ class Solution {
 }
 
 // 就这???
+
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int l = 0, r = 1;
+        int N = nums.length;
+        while (r < N) {
+            if (nums[r] == nums[l]) r++;
+            else swap(nums, ++l, r++);
+        }
+        // System.out.println(Arrays.toString(nums));
+        return l + 1;
+    }
+
+    private void swap(int[] A, int i, int j) {
+        if (i == j) return;
+        int t = A[i];
+        A[i] = A[j];
+        A[j] = t;
+    }
+}
+
+
+
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int l = 0, r = 0;
+        int N = nums.length;
+        while (++r < N) if (nums[r] != nums[l]) nums[++l] = nums[r];
+        return l + 1;
+    }
+}

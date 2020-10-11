@@ -86,3 +86,32 @@ public class Solution {
 
 // 感觉好多了,直接对字符串操作去掉数组转化
 // 用循环代替递归
+
+class Solution {
+    public String countAndSay(int n) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(1);
+        while (n-- > 1) {
+            sb = update(sb);
+        }
+        return sb.toString();
+    }
+
+    private StringBuilder update(StringBuilder sb) {
+        char[] str = sb.toString().toCharArray();
+        sb = new StringBuilder();
+        int N = str.length;
+        char c = str[0];
+        int t = 0;
+        for (int i = 0; i < N; i++) {
+            if (str[i] == c) t++;
+            else {
+                sb.append(t).append(c);
+                c = str[i];
+                t = 1;
+            }
+        }
+        sb.append(t).append(c);
+        return sb;
+    }
+}
