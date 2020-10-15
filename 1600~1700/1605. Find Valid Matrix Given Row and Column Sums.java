@@ -51,17 +51,16 @@ sum(rows) == sum(columns)
 
 class Solution {
     public int[][] restoreMatrix(int[] rowSum, int[] colSum) {
-        int m = rowSum.length, n = colSum.length;
+        int row = rowSum.length, col = colSum.length;
+        int[][] res = new int[row][col];
         int i = 0, j = 0;
-        int[][] res = new int[m][n];
-        while (true) {
-            int x = Math.min(rowSum[i], colSum[j]);
-            res[i][j] += x;
-            rowSum[i] -= x;
-            colSum[j] -= x;
+        while (i < row && j < col) {
+            int k = Math.min(rowSum[i], colSum[j]);
+            rowSum[i] -= k;
+            colSum[j] -= k;
+            res[i][j] = k;
             if (rowSum[i] == 0) i++;
             if (colSum[j] == 0) j++;
-            if (i >= m || j >= n) break;
         }
         return res;
     }

@@ -14,77 +14,40 @@ Output:
  */
 
 class Solution {
+    List<List<String>> res;
+    boolean[][] dp;
     public List<List<String>> partition(String s) {
-        List<List<String>> result = new ArrayList<>();
-        backTrack(result, new ArrayList<>(), s, 0);
-        return result;
-    }
-    
-    public void backTrack(List<List<String>> result, List<String> tempList, String s, int start) {
-        if (start == s.length()) {
-            result.add(new ArrayList<>(tempList));
-        } else {
-            for (int i = start; i < s.length(); i++) {
-                if (isPalindrome(s, start, i)) {
-                    tempList.add(s.substring(start, i + 1));
-                    backTrack(result, tempList, s, i + 1);
-                    tempList.remove(tempList.size() - 1);
-                }
-            }
-        }
-    }
-
-    public boolean isPalindrome(String s, int i, int j) {
-        while (i < j) {
-            if (s.charAt(i++) != s.charAt(j--)) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
-
-
-class Solution {
-
-    public List<List<String>> partition(String s) {
-        int len = s.length();
-        List<List<String>> res = new ArrayList<>();
-        if (len == 0) {
-            return res;
-        }
-        
-        boolean[][] dp = new boolean[len][len];
-        for (int right = 0; right < len; right++) {
-            for (int left = 0; left <= right; left++) {
-                if (s.charAt(left) == s.charAt(right) 
-                    && (right - left <= 2 || dp[left + 1][right - 1])) {
-                    dp[left][right] = true;
-                }
-            }
-        }
-        
-        Deque<String> stack = new ArrayDeque<>();
-        backtracking(s, 0, len, dp, stack, res);
+        res = new ArrayList<>();
+        if (s.length() == 0) return res;
+        dp = markPalindrome(s.toCharArray());
+        backtracking(s, 0, new ArrayDeque<>());
         return res;
     }
+    
+    // @return start -> end of each palindrome
+    private boolean[][] markPalindrome(char[] str) {
+        int N = str.length;
+        boolean[][] dp = new boolean[N][N];
+        for (int r = 0; r < N; r++) {
+            for (int l = 0; l < r; l++) {
+                if (str[l] == str[r] && (r == l + 1 || dp[l + 1][r - 1])) {
+                    dp[l][r] = true;
+                }
+            }
+            dp[r][r] = true;
+        }
+        return dp;
+    }
 
-    private void backtracking(String s,
-                              int start,
-                              int len,
-                              boolean[][] dp,
-                              Deque<String> path,
-                              List<List<String>> res) {
-        if (start == len) {
+    private void backtracking(String s, int start, Deque<String> path) {
+        if (start == s.length()) {
             res.add(new ArrayList<>(path));
             return;
         }
-
-        for (int i = start; i < len; i++) {
-            if (!dp[start][i]) continue;
+        for (int i = start; i < s.length(); i++) {
+            if (! dp[start][i]) continue;
             path.addLast(s.substring(start, i + 1));
-            backtracking(s, i + 1, len, dp, path, res);
+            backtracking(s, i + 1, path);
             path.removeLast();
         }
     }

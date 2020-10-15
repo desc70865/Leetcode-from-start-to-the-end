@@ -25,20 +25,27 @@ A[i][j] is a lowercase letter
 class Solution {
     public List<String> commonChars(String[] A) {
         int N = A.length;
-        int[][] cnt = new int[N][26];
-        int idx = 0;
-        for (String s: A) {
-            for (char c: s.toCharArray()) cnt[idx][c - 97]++;
-            idx++;
-        }
+        int[] map = count(A[0]);
+        for (int i = 1; i < N; i++) merge(map, count(A[i]));
         List<String> res = new ArrayList<>();
         for (int j = 0; j < 26; j++) {
-            int min = cnt[0][j];
-            for (int i = 0; i < N && min > 0; i++) {
-                min = Math.min(min, cnt[i][j]);
+            for (int k = 0; k < map[j]; k++) {
+                res.add(Character.toString(j + 97));
             }
-            for (int k = 0; k < min; k++) res.add((char) (j + 97) + "");
         }
         return res;
+    }
+
+    private void merge(int[] s1, int[] s2) {
+        for (int i = 0; i < 26; i++) {
+            if (s1[i] == 0) continue;
+            s1[i] = Math.min(s1[i], s2[i]);
+        }
+    }
+
+    private int[] count(String s) {
+        int[] cnt = new int[26];
+        for (char c: s.toCharArray()) cnt[c - 97]++;
+        return cnt;
     }
 }

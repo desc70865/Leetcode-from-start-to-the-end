@@ -41,3 +41,27 @@ class Solution {
         return res;
     }
 }
+
+
+
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int N = nums.length;
+        if (N == 0) return 0;
+        int[] dp = new int[N];
+        Arrays.fill(dp, 1);
+        int max = 1;
+        for (int i = N - 2; i >= 0; i--) {
+            for (int j = i + 1; j < N; j++) {
+                if (nums[i] >= nums[j]) continue;
+                if (dp[i] < dp[j] + 1) {
+                    dp[i] = dp[j] + 1;
+                    max = Math.max(dp[i], max);
+                }
+                if (dp[i] + i >= N) break;
+            }
+        }
+        // System.out.println(Arrays.toString(dp));
+        return max;
+    }
+}

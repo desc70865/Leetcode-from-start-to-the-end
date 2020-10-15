@@ -48,9 +48,7 @@ Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
 
 import java.util.TreeMap;
 class Solution {
-
     private final static TreeMap<Integer, String> map = new TreeMap<Integer, String>();
-
     static {
         map.put(1000, "M");
         map.put(900, "CM");

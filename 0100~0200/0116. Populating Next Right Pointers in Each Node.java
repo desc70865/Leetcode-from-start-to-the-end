@@ -90,3 +90,26 @@ class Solution {
 		return root;
 	}
 }
+
+
+
+class Solution {
+    public Node connect(Node root) {
+        if (root == null) return root;
+        Deque<Node> q = new LinkedList<>();
+        q.offerLast(root);
+        while (! q.isEmpty()) {
+            int N = q.size();
+            Node cur = q.pollFirst();
+            if (cur.left != null) q.offerLast(cur.left);
+            if (cur.right != null) q.offerLast(cur.right);
+            for (int i = 1; i < N; i++) {
+                cur.next = q.pollFirst();
+                cur = cur.next;
+                if (cur.left != null) q.offerLast(cur.left);
+                if (cur.right != null) q.offerLast(cur.right);
+            }
+        }
+        return root;
+    }
+}

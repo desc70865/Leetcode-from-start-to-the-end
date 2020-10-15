@@ -33,41 +33,58 @@ You may assume that next() call will always be valid, that is, there will be at 
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
+ *     TreeNode(int x) { val = x; }
  * }
  */
 class BSTIterator {
-    private ArrayList<Integer> list = new ArrayList<Integer>();
-    private int pos = 0, len;
-
+    ListNode head, cur;
     public BSTIterator(TreeNode root) {
+        head = new ListNode(-1);
+        cur = head;
         dfs(root);
-        len = list.size();
+        cur = head;
+        // cur.print();
     }
-    
+
     private void dfs(TreeNode node) {
-        if (node == null) {
-            return;
-        }
+        if (node == null) return;
         dfs(node.left);
-        list.add(node.val);
+        cur.add(node.val);
+        cur = cur.next;
         dfs(node.right);
     }
     
     /** @return the next smallest number */
     public int next() {
-        return this.hasNext() ? list.get(pos++) : 0;
+        cur = cur.next;
+        return cur.val;
     }
     
     /** @return whether we have a next smallest number */
     public boolean hasNext() {
-        return pos < len;
+        return cur.next != null;
+    }
+}
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    public void add(int newval) {
+        if (this.next == null) this.next = new ListNode(newval);
+        else this.next.add(newval);
+    }
+
+    public void print() {
+        System.out.print(this.val);
+        if (this.next != null) {
+            System.out.print("->");
+            this.next.print();
+        }
     }
 }
 

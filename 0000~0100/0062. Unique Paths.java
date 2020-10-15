@@ -35,16 +35,15 @@ It's guaranteed that the answer will be less than or equal to 2 * 10 ^ 9.
 class Solution {
     public int uniquePaths(int m, int n) {
         double sum = 1;
-        int small = m > n ? n : m;
-        for (int i = 1; i <= small - 1; ++i) {
-        	// System.out.print(sum);
-            sum = sum / i * (m + n - i - 1);
+        for (int i = 1; i < Math.min(m, n); i++) {
+            sum *= m + n - i - 1;
+            sum /= i;
         }
         return (int) sum;
     }
 }
 
-// mdzz
+// C(m + n -2, m - 1)
 
 public class Solution {
     public int uniquePaths(int m, int n) {

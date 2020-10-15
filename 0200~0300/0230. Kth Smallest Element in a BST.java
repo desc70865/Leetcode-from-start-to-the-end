@@ -67,3 +67,21 @@ class Solution {
         dfs(node.right);
     }
 }
+
+
+
+class Solution {
+    List<Integer> p;
+    public int kthSmallest(TreeNode root, int k) {
+        p = new ArrayList<>();
+        dfs(root);
+        return p.get(k - 1);
+    }
+
+    private void dfs(TreeNode node) {
+        if (node == null) return;
+        dfs(node.left);
+        p.add(node.val);
+        dfs(node.right);
+    }
+}

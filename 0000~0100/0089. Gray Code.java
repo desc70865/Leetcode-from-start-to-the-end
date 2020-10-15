@@ -32,9 +32,9 @@ Explanation: We define the gray code sequence to begin with 0.
 
 class Solution {
     public List<Integer> grayCode(int n) {
-        int length = 1 << n;
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        for (int i=0; i < length; i++) res.add((i >> 1) ^ i); // 异或
+        int len = 1 << n;
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < len; i++) res.add((i >> 1) ^ i);
         return res;
     }
 }

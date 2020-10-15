@@ -56,3 +56,19 @@ class Solution {
         return cnt;
     }
 }
+
+
+
+class Solution {
+    public int minFlips(String target) {
+        char[] str = target.toCharArray();
+        int N = str.length;
+        int res = 0;
+        if (str[0] == '1') res = 1;
+        for (int i = 1; i < N; i++) {
+            if (str[i] == str[i - 1]) continue;
+            res++;
+        }
+        return res;
+    }
+}

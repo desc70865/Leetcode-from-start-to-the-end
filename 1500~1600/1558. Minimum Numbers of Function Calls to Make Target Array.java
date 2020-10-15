@@ -45,38 +45,25 @@ Constraints:
  */
 
 class Solution {
+    int sum;
     public int minOperations(int[] nums) {
-        int max = 0, res = 0, t = 0, cur = 0;
+        sum = 0;
+        int max = 0;
         for (int num: nums) {
-            t = 0;
-            cur = num;
-            while (cur > 0) {
-                res += (cur & 1);
-                cur >>= 1;
-                t++;
-            }
-            max = Math.max(max, t);
+            max |= num;
+            add(num);
         }
-        return max + res - 1;
+        return sum + Integer.toBinaryString(max).length() - 1;
     }
-}
 
-
-
-class Solution {
-    int res = 0, max = 0;
-    public int minOperations(int[] nums) {
-        for (int num: nums) check(num);
-        return max + res;
-    }
-    
-    private void check(int num) {
-        int step = -1;
-        while (num > 0) {
-            res += num & 1;
-            num >>= 1;
-            step++;
+    private void add(int x) {
+        while (x != 0) {
+            sum++;
+            x ^= lowbit(x);
         }
-        max = Math.max(max, step);
+    }
+
+    private int lowbit(int x) {
+        return x & (- x);
     }
 }

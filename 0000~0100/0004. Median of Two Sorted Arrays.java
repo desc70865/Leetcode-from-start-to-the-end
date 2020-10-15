@@ -69,3 +69,24 @@ class Solution {
 }
 
 // 同步搜索两个数组的分割点以确定中位数
+
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int[] tmp = merge(nums1, nums2);
+        int N = tmp.length;
+        if (N % 2 == 1) return tmp[N / 2];
+        else return ((double) tmp[N / 2 - 1] + (double) tmp[N / 2]) / 2;
+    }
+
+    private int[] merge(int[] A, int[] B) {
+        int M = A.length, N = B.length;
+        if (M == 0) return B;
+        else if (N == 0) return A;
+        int[] res = new int[M + N];
+        int i = M - 1, j = N - 1, k = M + N - 1;
+        while (k >= 0) {
+            res[k--] = (j < 0 || i >= 0 && A[i] > B[j]) ? A[i--] : B[j--];
+        }
+        return res;
+    }
+}

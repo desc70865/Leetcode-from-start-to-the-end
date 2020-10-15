@@ -18,27 +18,23 @@ The order of your output does not matter.
  */
 
 class Solution {
-	public List<List<String>> groupAnagrams(String[] strs) {
-		if (strs == null || strs.length == 0)
-			return new ArrayList<>();
-		// 可选排序
-		// Arrays.sort(strs);
-		Map<String, List<String>> map = new HashMap<>();
-		for (String str : strs) {
- 
-			char[] cs = str.toCharArray();
-			// 转为数组进行排序
-			Arrays.sort(cs);
-			String sortStr = String.valueOf(cs);
-			// 还原String作为key
-			if (!map.containsKey(sortStr))
-				map.put(sortStr, new ArrayList<>());
-			map.get(sortStr).add(str);
-		}
-		// 注意ArrayList构造方法的应用
-		return new ArrayList<>(map.values());
-	}
-}
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String s: strs) {
+            String key = f(s.toCharArray());
+            map.putIfAbsent(key, new ArrayList<>());
+            map.get(key).add(s);
+        }
+        return new ArrayList<>(map.values());
+        // List<List<String>> res = new ArrayList<>();
+        // for (Map.Entry<String, List<String>> entry: map.entrySet()) {
+        //     res.add(entry.getValue());
+        // }
+        // return res;
+    }
 
-// 使用标准排序作为键值
-// 使用字符统计
+    private String f(char[] s) {
+        Arrays.sort(s);
+        return new String(s);
+    }
+}

@@ -30,41 +30,26 @@ Note: This question is the same as 1296: https://leetcode.com/problems/divide-ar
 class Solution {
     public boolean isNStraightHand(int[] nums, int k) {
         int n = nums.length;
-        if(n % k != 0) {
-            return false;
-        }
-        List<int[]> numsCnt = new ArrayList<>();
+        if (n % k != 0) return false;
         Arrays.sort(nums);
-        for(int num : nums) {
-            if(numsCnt.size() == 0 || numsCnt.get(numsCnt.size() - 1)[0] != num) {
-                numsCnt.add(new int[]{num, 1});
-            } else {
-                numsCnt.get(numsCnt.size() - 1)[1]++;
-            }
+        int[][] map = new int[n][2];
+        int idx = 0;
+        for (int num: nums) {
+            if (idx == 0 || map[idx - 1][0] != num) map[idx++][0] = num;
+            else map[idx - 1][1]++;
         }
-        int m = numsCnt.size();
-        int totalGroup = n / k;
-        for(int i = 0; i < m; i++) {
-            int num = numsCnt.get(i)[0];
-            int cnt = numsCnt.get(i)[1];
-            if(cnt == 0) {
-                continue;
-            } else if(i + k > m) {
-                return false;
+        int G = n / k;
+        for (int i = 0; i < idx && G > 0; i++) {
+            int cnt = map[i][1];
+            if (cnt == -1) continue;
+            if (i + k > idx) return false;
+            int num = map[i][0];
+            for (int j = 1; j < k; j++) {
+                if (map[i + j][0] != num + j) return false;
+                if (map[i + j][1] < cnt) return false;
+                map[i + j][1] -= cnt + 1;
             }
-            for(int j = 1; j < k; j++) {
-                if(numsCnt.get(i + j)[0] != num + j) {
-                    return false;
-                }
-                if(numsCnt.get(i + j)[1] < cnt) {
-                    return false;
-                }
-                numsCnt.get(i + j)[1] -= cnt;
-            }
-            totalGroup -= cnt;
-            if(totalGroup == 0) {
-                return true;
-            }
+            G -= cnt + 1;
         }
         return true;
     }

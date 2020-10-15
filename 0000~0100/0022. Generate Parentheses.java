@@ -12,20 +12,23 @@ For example, given n = 3, a solution set is:
 ]
  */
 
-public class Solution {
+class Solution {
     public List<String> generateParenthesis(int n) {
-        List<String> res = new ArrayList<String>();
-        helper(n, n, "", res);
+        List<String> res = new ArrayList<>();
+        helper(n, n, new StringBuilder(), res);
         return res;
     }
-    void helper(int left, int right, String out, List<String> res) {
-        if (left < 0 || right < 0 || left > right) return; // 递归终止条件
-        if (left == 0 && right == 0) {
-            res.add(out);
-            return; // 正常添加结果并返回
+    
+    private void helper(int L, int R, StringBuilder sb, List<String> res) {
+        if (L < 0 || R < 0 || L > R) return;
+        if (L == 0 && R == 0) {
+            res.add(sb.toString());
+            return;
         }
-        helper(left - 1, right, out + "(", res); // 选择分支,即 C(2n,n) 种结果
-        helper(left, right - 1, out + ")", res); // 但其中有 C(2n, n+1) 种是非法排列
+        helper(L - 1, R, sb.append("("), res);
+        sb.setLength(sb.length() - 1);
+        helper(L, R - 1, sb.append(")"), res);
+        sb.setLength(sb.length() - 1);
     }
 }
 
@@ -43,29 +46,10 @@ public class Solution {
 
 // Catalan number: C(2n,n) - C(2n, n+1)
 // 关于 y = x + 1 的映射
-
-public class Solution {
-    public List<String> generateParenthesis(int n) {
-        List<String> res = new ArrayList<String>();
-        helper(n, n, new StringBuilder(), res);
-        return res;
-    }
-    void helper(int left, int right, StringBuilder sb, List<String> res) {
-        if (left < 0 || right < 0 || left > right) {
-            return;
-        }
-        if (left == 0 && right == 0) {
-            res.add(sb.toString());
-            return;
-        }
-        helper(left - 1, right, sb.append("("), res);
-        sb.deleteCharAt(sb.length()-1);
-        helper(left, right - 1, sb.append(")"), res);
-        sb.deleteCharAt(sb.length()-1);
-    }
-}
-
-
+// 在 (n, n) 的范围内,符合条件的路径都在 y = x 的右下方(含边界)
+// 则不符合条件的路径都会触碰 y = x + 1
+// 其中存在唯一的映射使其转变为 前往 (n - 1, n + 1) 的路径
+// C(n + 1 + n - 1, n + 1)
 
 class Solution {
     public List<String> generateParenthesis(int n) {

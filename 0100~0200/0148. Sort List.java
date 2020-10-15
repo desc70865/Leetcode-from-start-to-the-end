@@ -29,8 +29,8 @@ class Solution {
         quickSort(dummyhead, null);
         return dummyhead.next;
     }
-    public void quickSort(ListNode head, ListNode tail)
-    {
+
+    public void quickSort(ListNode head, ListNode tail) {
         if (head.next == tail) return;
         if (head.next.next == tail) return;
         ListNode pivot = head.next;
@@ -41,27 +41,21 @@ class Solution {
         ListNode largeptr = largehead;
         
         ListNode cur = pivot.next;
-        while (cur != tail)
-        {
-            if (cur.val  < pivot.val) 
-            {
+        while (cur != tail) {
+            if (cur.val < pivot.val) {
                 smallptr.next = cur;
                 smallptr = smallptr.next;
-            }
-            else if (cur.val > pivot.val) 
-            {
+            } else if (cur.val > pivot.val) {
                 largeptr.next = cur;
                 largeptr = largeptr.next;
-            }
-            else 
-            {
+            } else {
                 pivotptr.next = cur;
                 pivotptr = pivotptr.next;
             }
             cur = cur.next;
         }
         
-        largeptr.next = tail;       
+        largeptr.next = tail;
         pivotptr.next = largehead.next;
         smallptr.next = pivot;
         head.next = smallhead.next;
@@ -76,28 +70,47 @@ class Solution {
 
 class Solution {
     public ListNode sortList(ListNode head) {
-        if (head == null)
-        {
-            return head ;
-        }
+        if (head == null || head.next == null) return head;
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();
         ListNode ptr = head;
-        while (ptr != null)
-        {
+        while (ptr != null) {
             minHeap.add(ptr.val);
-            ptr = ptr.next ;
+            ptr = ptr.next;
         }
-        
         ListNode dummy = new ListNode(0);
-        dummy = head ;
-        while (!minHeap.isEmpty())
-        {
+        dummy = head;
+        while (! minHeap.isEmpty()) {
            head.next = new ListNode(minHeap.remove());
            head = head.next;
-        }        
-        return dummy.next ;
-        
+        }
+        return dummy.next;
     }
 }
 
 // 优先队列, 堆排序
+
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode dummy = new ListNode(Integer.MIN_VALUE);
+        dummy.next = head;
+        ListNode pre = dummy;
+        ListNode cur = head;
+        while (cur != null) {
+            if (cur.val >= pre.val) {
+                pre = pre.next;
+                cur = cur.next;
+                continue;
+            }
+            ListNode m = dummy;
+            while (cur.val > m.next.val) m = m.next;
+            pre.next = cur.next;
+            cur.next = m.next;
+            m.next = cur;
+            cur = pre.next;
+        }
+        return dummy.next;
+    }
+}
+
+// 非常辣鸡

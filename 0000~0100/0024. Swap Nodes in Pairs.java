@@ -20,14 +20,10 @@ Given 1->2->3->4, you should return the list as 2->1->4->3.
  */
 class Solution {
     public ListNode swapPairs(ListNode head) {
-        if(head==null || head.next==null)
-            return head;
-        ListNode h = new ListNode(0);
-        h = head.next;
-        head.next = swapPairs(head.next.next);
-        h.next = head;
-        return h;
+        if (head == null || head.next == null) return head;
+        ListNode res = head.next;
+        head.next = swapPairs(res.next);
+        res.next = head;
+        return res;
     }
 }
-
-// 递归交换

@@ -33,3 +33,17 @@ class Solution {
         return sb.toString();
     }
 }
+
+
+
+class Solution {
+    public String removeDuplicates(String S) {
+        char[] res = new char[S.length()];
+        int idx = 0;
+        for (char c: S.toCharArray()) {
+            if (idx == 0 || res[idx - 1] != c) res[idx++] = c;
+            else idx--;
+        }
+        return String.valueOf(res, 0, idx);
+    }
+}

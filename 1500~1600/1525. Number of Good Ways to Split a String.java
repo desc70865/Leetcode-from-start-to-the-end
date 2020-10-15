@@ -39,16 +39,18 @@ s contains only lowercase English letters.
 
 class Solution {
     public int numSplits(String s) {
-        int[] left = new int[26], right = new int[26];
+        int res = 0;
         char[] arr = s.toCharArray();
-        int l = 0, r = 0, res = 0;
-        for (char c: arr) right[c - 'a']++;
-        for (int t: right) r += Math.min(1, t);
+        int[] r = new int[26], l = new int[26];
+        int diff = 0;
+        for (char c: arr) r[c - 97]++;
+        for (int t: r) if (t != 0) diff--;
         for (char c: arr) {
             int idx = c - 'a';
-            if (++left[idx] == 1) l++;
-            if (left[idx] == right[idx]) r--;
-            if (l == r) res++;
+            if (l[idx]++ == 0) diff++;
+            if (--r[idx] == 0) diff++;
+            if (diff == 0) res++;
+            else if (diff > 0) break;
         }
         return res;
     }

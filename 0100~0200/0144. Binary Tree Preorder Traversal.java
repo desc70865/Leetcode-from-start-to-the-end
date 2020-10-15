@@ -30,18 +30,17 @@ Follow up: Recursive solution is trivial, could you do it iteratively?
  * }
  */
 class Solution {
-    private List<Integer> list = new ArrayList<>();
+    List<Integer> res;
     public List<Integer> preorderTraversal(TreeNode root) {
-        preorder(root);
-        return list;
+        res = new ArrayList<>();
+        dfs(root);
+        return res;
     }
-    
-    private void preorder(TreeNode node) {
-        if (node == null) {
-            return;
-        }
-        list.add(node.val);
-        preorder(node.left);
-        preorder(node.right);
+
+    private void dfs(TreeNode node) {
+        if (node == null) return;
+        res.add(node.val);
+        dfs(node.left);
+        dfs(node.right);
     }
 }

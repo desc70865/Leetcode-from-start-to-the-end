@@ -18,46 +18,31 @@ A solution set is:
 
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> ret = new ArrayList<>();
- 
-        if (nums == null || nums.length < 3)
-            return ret;
-        int len = nums.length;
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums == null || nums.length < 3) return res;
+        int N = nums.length;
         Arrays.sort(nums);
-        // 对有序的num[i]，只需从 i+1 开始搜索
-        for (int i = 0; i < len; i++) {
-            // 结束 for 循环
-            if (nums[i] > 0)
-                break;
-            // 去重
-            if (i > 0 && nums[i] == nums[i - 1])
-                continue;
-            
-            int begin = i + 1;
-            int end = len - 1;
-            while (begin < end) {
-                int sum = nums[i] + nums[begin] + nums[end];
+        for (int i = 0; i < N; i++) {
+            if (nums[i] > 0) break;
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            int L = i + 1;
+            int R = N - 1;
+            while (L < R) {
+                int sum = nums[i] + nums[L] + nums[R];
                 if (sum == 0) {
                     List<Integer> list = new ArrayList<>();
                     list.add(nums[i]);
-                    list.add(nums[begin]);
-                    list.add(nums[end]);
-                    ret.add(list);
-                    begin++;
-                    end--;
-                    // 去重
-                    while (begin < end && nums[begin] == nums[begin - 1])
-                        begin++;
-                    while (begin < end && nums[end] == nums[end + 1])
-                        end--;
-                } else if (sum > 0)
-                    end--;
-                else
-                    begin++;
+                    list.add(nums[L]);
+                    list.add(nums[R]);
+                    res.add(list);
+                    L++;
+                    R--;
+                    while (L < R && nums[L] == nums[L - 1]) L++;
+                    while (L < R && nums[R] == nums[R + 1]) R--;
+                } else if (sum > 0) R--;
+                else L++;
             }
         }
-        return ret;
+        return res;
     }
 }
-
-// 对有序数组而言,收缩不会错过匹配
