@@ -29,7 +29,7 @@ class Solution {
 
 // 栈也太辣鸡了吧
 
-public class Solution {
+class Solution {
     public int trap(int[] height) {
         int l = 0, r = height.length - 1, level = 0, res = 0;
         while (l < r) {

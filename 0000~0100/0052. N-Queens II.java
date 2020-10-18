@@ -24,12 +24,12 @@ Explanation: There are two distinct solutions to the 4-queens puzzle as shown be
  */
 
 class Solution {
-    public static int totalNQueens(int n) {
+    public int totalNQueens(int n) {
     	int[] res = {0};
         helper(0, new ArrayList<Integer>(Collections.nCopies(n, -1)), res);
         return res[0];
     }
-    private static void helper(int curRow, List<Integer> queenCol, int[] res) {
+    private void helper(int curRow, List<Integer> queenCol, int[] res) {
         int n = queenCol.size();
         if (curRow == n) {
         	res[0] += 1;
@@ -43,7 +43,7 @@ class Solution {
             }
         }
     }
-    private static boolean isValid(List<Integer> queenCol, int row, int col) {
+    private boolean isValid(List<Integer> queenCol, int row, int col) {
         for (int i = 0; i < row; i++) {
             if (col == queenCol.get(i) || Math.abs(row - i) == Math.abs(col - queenCol.get(i)))
                 return false;

@@ -1,4 +1,4 @@
-/* 
+/*
 The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.
 
 https://assets.leetcode.com/uploads/2018/10/12/8-queens.png
@@ -42,11 +42,11 @@ class Solution {
         Set<Integer> rowSet = new HashSet<>();
         List<Position> positionList = new ArrayList<>();
         List<List<String>> allList = new ArrayList<>();
-        
+
         backtrack(board, n,  rowSet, allList,  positionList, 0);
         return allList;
     }
-    
+
     public void backtrack(char[][] board, int n, Set<Integer> rowSet, List<List<String>> allList, List<Position> positionList, int col) {
         if(col == n) {
             List<String> oneList = new ArrayList<>();
@@ -57,21 +57,21 @@ class Solution {
             return;
         }
         for(int i = 0; i < n; ++i) {
-            board[i][col] = 'Q';            
+            board[i][col] = 'Q';
             positionList.add(new Position(i, col));
-            
+
             if(rowSet.add(i)) {
                 if(isValid(positionList)) {
-                    backtrack(board, n,rowSet, allList, positionList, col+1);                    
+                    backtrack(board, n,rowSet, allList, positionList, col+1);
                 }
                 rowSet.remove(i);
             }
-            
+
             board[i][col] = '.';
-            positionList.remove(positionList.size()-1);            
-        }                
+            positionList.remove(positionList.size()-1);
+        }
     }
-    
+
     public boolean isValid( List<Position> positionList) {
         Position p2 = positionList.get(positionList.size()-1);
         for(int i = 0; i < positionList.size()-1; ++i) {

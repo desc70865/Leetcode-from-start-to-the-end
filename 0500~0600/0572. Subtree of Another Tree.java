@@ -49,7 +49,7 @@ Return false.
  * }
  */
 class Solution {
-     public static boolean isSubtree(TreeNode s, TreeNode t) {
+     public boolean isSubtree(TreeNode s, TreeNode t) {
         if (null == t) return true;
         if (null == s) return false;
         String sStr = serialByInOrder(s);
@@ -57,12 +57,23 @@ class Solution {
         return sStr.contains(tStr);
     }
 
-    private static String serialByInOrder(TreeNode node) {
+    private String serialByInOrder(TreeNode node) {
         if (null == node) return "N";
         StringBuilder sb = new StringBuilder();
         sb.append("S").append(node.val).append("E");
         sb.append(serialByInOrder(node.left));
         sb.append(serialByInOrder(node.right));
         return sb.toString();
+    }
+}
+
+
+
+class Solution {
+    public boolean isSubtree(TreeNode t1, TreeNode t2) {
+        if (t2 == null) return true;
+        if (t1 == null) return false;
+        if (t1.val == t2.val) return isSubtree(t1.left,t2.left) && isSubtree(t1.right,t2.right);
+        else return isSubtree(t1.left,t2) || isSubtree(t1.right,t2);
     }
 }

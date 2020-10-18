@@ -28,78 +28,62 @@ exection -> execution (insert 'u')
 
 class Solution {
     public int minDistance(String word1, String word2) {
-        int m = word1.length(), n = word2.length();
-        int[][] dp = new int[m+1][n+1];
-        for (int i = 0; i <= m; ++i) dp[i][0] = i;
-        for (int i = 1; i <= n; ++i) dp[0][i] = i;
-        // 插入/删除: dp[i][j-1]/dp[i-1][j]
-        // 替换: dp[i-1][j-1]
-        for (int i = 1; i <= m; ++i) {
-            for (int j = 1; j <= n; ++j) {
-                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-                    dp[i][j] = dp[i - 1][j - 1];
+        return helper(word1.toCharArray(), word2.toCharArray());
+    }
+
+    private int helper(char[] s1, char[] s2) {
+        int m = s1.length, n = s2.length;
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = m - 1; i >= 0; i--) {
+            dp[i][n] = dp[i + 1][n] + 1;
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            dp[m][i] = dp[m][i + 1] + 1;
+        }
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                if (s1[i] == s2[j]) {
+                    dp[i][j] = dp[i + 1][j + 1];
                 } else {
-                    dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + 1;
-                    if (dp[i][j] - dp[i - 1][j - 1] > 1)
-                        dp[i][j] = dp[i - 1][j - 1] + 1;
+                    dp[i][j] = 1 + min(dp[i + 1][j], dp[i][j + 1], dp[i + 1][j + 1]);
                 }
             }
         }
-        return dp[m][n];
+        return dp[0][0];
     }
-}
 
-// dp[][] -> dp[]
-// use memo store dp[i-1][j-1]
-
-class Solution {
-    public int minDistance(String word1, String word2) {
-        int m = word1.length(), n = word2.length();
-        int[] dp = new int[n+1];
-        for (int k = 1; k <= n; ++k) dp[k] = k;
-        for (int i = 1; i <= m; ++i) {
-            int memo = dp[0], tmp;
-            dp[0] = i;
-            for (int j = 1; j <= n; ++j) {
-                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-                    tmp = memo;
-                    memo = dp[j];
-                    dp[j] = tmp;
-                } else {
-                    tmp = memo;
-                    memo = dp[j];
-                    dp[j] = min(tmp, dp[j-1], dp[j]) + 1;
-                }
-            }
-        }
-        return dp[n];
-    }
-    
     private int min(int a, int b, int c) {
         return Math.min(Math.min(a, b), c);
     }
 }
 
 
+
 class Solution {
     public int minDistance(String word1, String word2) {
-        int m = word1.length(), n = word2.length();
-        int[][] memo = new int[m][n];
-        return helper(word1, 0, word2, 0, memo);
+        return helper(word1.toCharArray(), word2.toCharArray());
     }
-    int helper(String word1, int i, String word2, int j, int[][] memo) {
-        if (i == word1.length()) return (int)word2.length() - j;
-        if (j == word2.length()) return (int)word1.length() - i;
-        if (memo[i][j] > 0) return memo[i][j];
-        int res = 0;
-        if (word1.charAt(i) == word2.charAt(j)) {
-            return helper(word1, i + 1, word2, j + 1, memo);
-        } else {
-            int insertCnt = helper(word1, i, word2, j + 1, memo);
-            int deleteCnt = helper(word1, i + 1, word2, j, memo);
-            int replaceCnt = helper(word1, i + 1, word2, j + 1, memo);
-            res = Math.min(insertCnt, Math.min(deleteCnt, replaceCnt)) + 1;
+
+    private int helper(char[] s1, char[] s2) {
+        int m = s1.length, n = s2.length;
+        int[] dp = new int[n + 1];
+        for (int i = n - 1; i >= 0; i--) {
+            dp[i] = dp[i + 1] + 1;
         }
-        return memo[i][j] = res;
+        for (int i = m - 1; i >= 0; i--) {
+            int pre = dp[n];
+            dp[n]++;
+            for (int j = n - 1; j >= 0; j--) {
+                int tmp = dp[j];
+                if (s1[i] == s2[j]) dp[j] = pre;
+                else dp[j] = min(dp[j], dp[j + 1], pre) + 1;
+                pre = tmp;
+            }
+        }
+        return dp[0];
+    }
+
+    private int min(int a, int b, int c) {
+        return Math.min(Math.min(a, b), c);
     }
 }

@@ -23,42 +23,24 @@ Output: 3
  */
 
 class Solution {
-    private int x, y, m, n;
-    private char[][] grid;
-
+    int[][] dirs = new int[][] {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    int m, n;
     public int numIslands(char[][] grid) {
-        this.grid = grid;
-        if (grid == null || grid.length == 0) return 0;
-        m = grid.length-1; n = grid[0].length-1;
-        int count = 0;
-        while (getNextCluster()) {
-            clearCluster(x, y);
-            count++;
-        }
-        return count;
-    }
-    
-    private boolean getNextCluster() {
-        if (x > m || y > n) return false;
-        
-        while (x <= m) {
-            while (y <= n) {
-                if (grid[x][y] == '1') return true;
-                y++;
+        m = grid.length; n = grid[0].length;
+        int res = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '0') continue;
+                dfs(grid, i, j);
+                res++;
             }
-            x++; y = 0;
         }
-        return false;
+        return res;
     }
-    
-    private void clearCluster(int i, int j) {
-        if (i < 0 || j < 0 || i > m || j > n || grid[i][j] != '1') return;
-        
-        grid[i][j] = '0';
-        
-        clearCluster(i+1, j);
-        clearCluster(i, j+1);
-        clearCluster(i-1, j);
-        clearCluster(i, j-1);
+
+    private void dfs(char[][] A, int x, int y) {
+        if (x < 0 || y < 0 || x >= m || y >= n || A[x][y] == '0') return;
+        A[x][y] = '0';
+        for (int[] dir: dirs) dfs(A, x + dir[0], y + dir[1]);
     }
 }

@@ -13,17 +13,10 @@ Your algorithm should run in linear runtime complexity. Could you implement it u
 
 class Solution {
     public int[] singleNumber(int[] nums) {
-        Set<Integer> set = new HashSet();
-        
-        for (int num : nums) {
-            if (set.contains(num)) {
-                set.remove(num);
-            } else {
-                set.add(num);
-            }
-            // if (!set.add(num)) set.remove(num);
+        Set<Integer> set = new HashSet<>();
+        for (int num: nums) {
+            if (! set.add(num)) set.remove(num);
         }
-        
         return set.stream().mapToInt(Number::intValue).toArray();
     }
 }
@@ -37,17 +30,16 @@ class Solution {
             bitmask ^= num;
         }
         int diff = bitmask & (-bitmask);
-        // 分组 异或
-        // bitmask = a ^ b;
-        // a: xxx100 diff: 000100 b: xxx000
-
+        // bitmask = a ^ b
+        // a != b
+        // bitmask != 0
+        // diff = lowtbit(bitmask)
         int a = 0;
         for (int num : nums) {
             if ((num & diff) != 0) {
                 a ^= num;
             }
         }
-
         return new int[]{a, bitmask^a};
     }
 }

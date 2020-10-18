@@ -60,18 +60,20 @@ class Node {
 */
 
 class Solution {
-    HashMap<Node, Node> map = new HashMap<Node, Node>();
-
+    Map<Node, Node> map;
     public Node copyRandomList(Node head) {
-        if (head == null) return null;
-        if (this.map.containsKey(head)) return this.map.get(head);
-        
-        Node node = new Node(head.val, null, null);
-        this.map.put(head, node);
-        node.next = this.copyRandomList(head.next);
-        node.random = this.copyRandomList(head.random);
-        
-        return node;
+        map = new HashMap<>();
+        return creat(head);
+    }
+
+    private Node creat(Node node) {
+        if (node == null) return null;
+        if (map.containsKey(node)) return map.get(node);
+        Node cur = new Node(node.val);
+        map.put(node, cur);
+        cur.next = creat(node.next);
+        cur.random = creat(node.random);
+        return cur;
     }
 }
 

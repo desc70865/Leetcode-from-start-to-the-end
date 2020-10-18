@@ -22,18 +22,14 @@ A is sorted in non-decreasing order.
 
 class Solution {
     public int[] sortedSquares(int[] A) {
-        int N = A.length, i = 0, j = 0, k = 0;
-        while (j < N && A[j++] < 0);
-        i = --j - 1;
-        
-        int[] B = new int[N];
-        while (k < N) {
-            if (i < 0 || j < N && A[j] < -A[i]) {
-                B[k++] = A[j] * A[j++];
-            } else {
-                B[k++] = A[i] * A[i--];
-            }
+        int N = A.length;
+        int[] res = new int[N];
+        int idx = N - 1;
+        int L = 0, R = N - 1;
+        while (L <= R) {
+            if (A[L] + A[R] <= 0) res[idx--] = A[L] * A[L++];
+            else res[idx--] = A[R] * A[R--];
         }
-        return B;
+        return res;
     }
 }

@@ -41,8 +41,10 @@ class Solution {
 
 class Initial {
     private static int LEN = 1690;
-    public int num[] = new int[LEN];
-    Initial() {
+    public int[] num;
+    
+    public Initial() {
+        num = new int[LEN];
         num[0] = 1;
         int a = 0, b = 0, c = 0;
         for (int i = 1; i < LEN; i++) {
@@ -59,6 +61,7 @@ class Initial {
 }
 
 class Solution {
+    // static 加速???
     public static Initial set = new Initial();
     public int nthUglyNumber(int n) {
         return set.num[n-1];
