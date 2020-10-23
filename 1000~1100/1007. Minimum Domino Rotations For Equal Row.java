@@ -34,17 +34,18 @@ Note:
 
 class Solution {
     public int minDominoRotations(int[] A, int[] B) {
-        int[] aux = new int[6];
-        for (int num: A) aux[num-1]++;
-        for (int num: B) aux[num-1]++;
-        int N = A.length, k = 0;
-        for (int i = 0; i < 6; i++) if (aux[i] >= N) k = i + 1;
-        if (k == 0) return -1;
-        int a = 0;
+        int[] cnt = new int[7];
+        int N = A.length;
         for (int i = 0; i < N; i++) {
-            if (A[i] == k) a++;
-            else if (B[i] != k) return -1;
+            if (cnt[A[i]] < i && cnt[B[i]] < i) return -1;
+            cnt[A[i]]++;
+            cnt[B[i]]++;
         }
-        return N - Math.max(a, aux[k-1] - a);
+        int x = cnt[A[0]] >= cnt[B[0]] ? A[0] : B[0];
+        int k = 0;
+        for (int n: A) {
+            if (n == x) k++;
+        }
+        return N - Math.max(k, cnt[x] - k);
     }
 }

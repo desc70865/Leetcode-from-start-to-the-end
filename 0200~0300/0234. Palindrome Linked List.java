@@ -25,11 +25,24 @@ Could you do it in O(n) time and O(1) space?
  */
 class Solution {
     public boolean isPalindrome(ListNode head) {
-        
+        ListNode slow = head;
+        ListNode fast = head;
+        Deque<Integer> stack = new LinkedList<>();
+        while (fast != null && fast.next != null) {
+            stack.push(slow.val);
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        if (fast != null) slow = slow.next;
+        while (! stack.isEmpty()) {
+            if (slow.val != stack.pop()) return false;
+            slow = slow.next;
+        }
+        return true;
     }
 }
 
-// ~ 转换数据结构
+// stack 储存前半段
 
 class Solution {
     private ListNode frontPointer;

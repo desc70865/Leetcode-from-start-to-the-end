@@ -40,16 +40,16 @@ class Solution {
         return recursive(Integer.MAX_VALUE);
     }
     
-    private TreeNode recursive(int check) {
+    private TreeNode recursive(int rootVal) {
         if (preIndex >= pre.length) return null;
-        if (check == in[inIndex]) {
+        if (rootVal == in[inIndex]) {
             inIndex++;
             return null;
         }
         int curVal = pre[preIndex++];
         TreeNode cur = new TreeNode(curVal);
         cur.left = recursive(curVal);
-        cur.right = recursive(check);
+        cur.right = recursive(rootVal);
         return cur;
     }
 }

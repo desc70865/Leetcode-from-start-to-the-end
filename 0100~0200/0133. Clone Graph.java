@@ -111,16 +111,13 @@ class Solution {
 
 
 class Solution {
-    private HashMap<Integer,Node> map = new HashMap<>();
-
+    Map<Integer, Node> map = new HashMap();
     public Node cloneGraph(Node node) {
         if (node == null) return null;
         if (map.containsKey(node.val)) return map.get(node.val);
-        
-        Node copy = new Node(node.val, new ArrayList<Node>());
-        map.put(copy.val,copy);
-        for (Node N: node.neighbors) copy.neighbors.add(cloneGraph(N));
-        
-        return copy;
+        Node cur = new Node(node.val);
+        map.put(node.val, cur);
+        for (Node n: node.neighbors) cur.neighbors.add(cloneGraph(n));
+        return cur;
     }
 }

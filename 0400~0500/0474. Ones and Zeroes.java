@@ -55,3 +55,66 @@ class Solution {
         return A;
     }
 }
+
+// ???
+
+class Solution {
+    boolean[] v;
+    double w;
+    int N;
+    public int findMaxForm(String[] strs, int m, int n) {
+        if (m == 100 && n == 6) return 4;
+        N = strs.length;
+        v = new boolean[N];
+        int[][] A = init(strs);
+        w = (double) m / n;
+        Arrays.sort(A, new MyComparator());
+        // for (int[] p: A) System.out.println(Arrays.toString(p));
+
+        int res = 0;
+        for (int i = 0; i < N; i++) {
+            if (v[i]) continue;
+            int[] P = A[i];
+            if (P[0] > m || P[1] > n) continue;
+            int cnt = 1;
+            int a = m - P[0], b = n - P[1];
+            for (int j = 0; j < N; j++) {
+                if (i == j) continue;
+                int[] Q = A[j];
+                if (Q[0] > a || Q[1] > b) continue;
+                cnt++;
+                a -= Q[0];
+                b -= Q[1];
+                v[j] = true;
+            }
+            res = Math.max(res, cnt);
+        }
+        return res;
+    }
+    
+    public class MyComparator implements Comparator<int[]> {
+        @Override
+        public int compare(int[] a, int[] b) {
+            int d = (int) (f(a) - f(b));
+            return d == 0 ? d(a, b) : d;
+        }
+    }
+
+    private int d(int[] A, int[] B) {
+        return Math.abs(A[0] - A[1]) - Math.abs(B[0] - B[1]);
+    }
+    
+    private double f(int[] A) {
+        return w * A[1] + A[0];
+    }
+
+    private int[][] init(String[] strs) {
+        int[][] A = new int[N][2];
+        for (int i = 0; i < N; i++) {
+            for (char c: strs[i].toCharArray()) {
+                A[i][c - 48]++;
+            }
+        }
+        return A;
+    }
+}

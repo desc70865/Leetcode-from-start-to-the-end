@@ -88,3 +88,34 @@ class Solution {
         return check(node.left, level + 1) && check(node.right, level + 1);
     }
 }
+
+
+
+class Solution {
+    public boolean isEvenOddTree(TreeNode root) {
+        Deque<TreeNode> q = new LinkedList<>();
+        q.offerLast(root);
+        int k = 1;
+        while (! q.isEmpty()) {
+            int size = q.size();
+            int pre = 0;
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = q.pollFirst();
+                if (cur.val % 2 != k) return false;
+                if (i == 0) pre = cur.val;
+                else {
+                    if (k == 0) {
+                        if (cur.val >= pre) return false;
+                    } else {
+                        if (cur.val <= pre) return false;
+                    }
+                    pre = cur.val;
+                }
+                if (cur.left != null) q. offerLast(cur.left);
+                if (cur.right != null) q. offerLast(cur.right);
+            }
+            k = 1 - k;
+        }
+        return true;
+    }
+}

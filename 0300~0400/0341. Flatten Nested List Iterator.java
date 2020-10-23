@@ -36,38 +36,31 @@ Explanation: By calling next repeatedly until hasNext returns false,
  * }
  */
 public class NestedIterator implements Iterator<Integer> {
-    private ArrayList<Integer> l = new ArrayList<Integer>();
-    private int pos = 0;
-    public NestedIterator(List<NestedInteger> nestedList) {
-        // l = new List<Integer>();
-        for (NestedInteger i : nestedList) {
-            helper(i);
-        }
-    }
-    private void helper(NestedInteger i) {
-        if (i.isInteger()) {
-            // System.out.print(i.getInteger());
-            l.add(i.getInteger());
-            return;
-        }
-        for (NestedInteger j : i.getList()) {
-            helper(j);
-        }
-        return;
-    }
+    List<Integer> list = new ArrayList<>();
+    ListIterator<Integer> it;
     
+    public NestedIterator(List<NestedInteger> nestedList) {
+        dfs(nestedList);
+        it = list.listIterator();
+    }
+
     @Override
     public Integer next() {
-        return l.get(pos++);
+        return it.next();
     }
 
     @Override
     public boolean hasNext() {
-        return pos < l.size();
+        return it.hasNext();
+    }
+    
+    private void dfs(List<NestedInteger> nestedList){
+        for (NestedInteger nestedinteger: nestedList) {
+            if (nestedinteger.isInteger()) list.add(nestedinteger.getInteger());
+            else dfs(nestedinteger.getList());
+        }
     }
 }
-
-// 重写, 递归, 
 
 /**
  * Your NestedIterator object will be instantiated and called as such:
@@ -77,33 +70,4 @@ public class NestedIterator implements Iterator<Integer> {
 
 
 
-public class NestedIterator implements Iterator<Integer> {
-
-    private List<Integer> list;
-    private int index = -1;
-
-    public NestedIterator(List<NestedInteger> nestedList) {
-        list = integerIterator(nestedList);
-    }
-
-    @Override
-    public Integer next() {
-        return list.get(++index);
-    }
-
-    @Override
-    public boolean hasNext() {
-        return index + 1 < list.size();
-    }
-
-    private static List<Integer> integerIterator(List<NestedInteger> nestedIntegerList) {
-        ArrayList<Integer> list = new ArrayList<>(nestedIntegerList.size());
-        for (NestedInteger tmp : nestedIntegerList) {
-            if (tmp.isInteger()) 
-                list.add(tmp.getInteger());
-            else 
-                list.addAll(integerIterator(tmp.getList()));
-        }
-        return list;
-    }
-}
+//
