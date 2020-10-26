@@ -45,4 +45,7 @@ class Solution {
     }
 }
 
+// https://leetcode-cn.com/problems/add-two-numbers/
+// https://leetcode-cn.com/problems/sum-lists-lcci/
+
 // 全加器的链表实现

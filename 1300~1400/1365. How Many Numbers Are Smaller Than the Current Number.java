@@ -40,3 +40,27 @@ class Solution {
         return nums;
     }
 }
+
+
+
+class Solution {
+    public int[] smallerNumbersThanCurrent(int[] nums) {
+        int[] A = nums.clone();
+        Arrays.sort(A);
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = bs(A, nums[i]);
+        }
+        return nums;
+    }
+
+    private int bs(int[] A, int t) {
+        int L = 0;
+        int R = A.length - 1;
+        while (L < R) {
+            int mid = L + R >> 1;
+            if (A[mid] < t) L = mid + 1;
+            else R = mid;
+        }
+        return L;
+    }
+}

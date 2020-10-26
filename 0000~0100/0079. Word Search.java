@@ -26,75 +26,35 @@ board and word consists only of lowercase and uppercase English letters.
  */
 
 class Solution {
-    private int raw, col;
-    private char[][] board;
-    private char[] str;
-    
+    int[][] dirs = new int[][] {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    int m, n;
+    char[] str;
     public boolean exist(char[][] board, String word) {
-        if (board.length == 0 || board[0].length == 0) return false;
-        
-        this.board = board;
+        m = board.length;
+        n = board[0].length;
+        if (word.length() > m * n) return false;
         str = word.toCharArray();
-        raw = board.length;
-        col = board[0].length;
-        
-        for (int i = 0; i < raw; i++) {
-            for (int j = 0; j < col; j++) {
-                if (search(str, 0, i, j)) return true;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (helper(board, 0, i, j)) return true;
             }
         }
-        
         return false;
     }
-    private boolean search(char[] word, int idx, int i, int j) {
-        if (idx == word.length) return true;
-        if (outOfBoundary(i, j) || board[i][j] != word[idx]) return false;
-        
-        char c = board[i][j];
-        board[i][j] = '#';
-        
-        boolean res = search(word, idx + 1, i - 1, j) 
-                    || search(word, idx + 1, i + 1, j)
-                    || search(word, idx + 1, i, j - 1)
-                    || search(word, idx + 1, i, j + 1);
-        
-        board[i][j] = c;
+
+    private boolean helper(char[][] A, int idx, int x, int y) {
+        if (x < 0 || y < 0 || x >= m || y >= n) return false;
+        if (A[x][y] != str[idx]) return false;
+        if (idx == str.length - 1) return true;
+        A[x][y] ^= 64;
+        boolean res = false;
+        for (int[] dir: dirs) {
+            if (helper(A, idx + 1, x + dir[0], y + dir[1])) {
+                res = true;
+                break;
+            }
+        }
+        A[x][y] ^= 64;
         return res;
-    }
-    
-    private boolean outOfBoundary(int i, int j) {
-        return i < 0 || i >= raw || j < 0 || j >= col;
-    }
-}
-
-// ???
-
-class Solution {
-   public boolean exist(char[][] board, String word) {
-        int[][] tryCount = new int[board.length][board[0].length];
-        boolean[][] visited = new boolean[board.length][board[0].length];
-        char[] w = word.toCharArray();
-        for (int y=0; y<board.length; y++) {
-            for (int x=0; x<board[y].length; x++) {
-                if (exist(board, y, x, w, 0, tryCount, visited)) return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean exist(char[][] board, int y, int x, char[] word, int i,int[][] tryCount, boolean[][] visited) {
-        if (i == word.length) return true;
-        if (y<0 || x<0 || y == board.length || x == board[y].length) return false;
-        if (board[y][x] != word[i] || tryCount[y][x]>121 || visited[y][x] ) return false;
-        tryCount[y][x]++;
-        board[y][x] ^= 256;
-        visited[y][x] = true;
-        boolean exist = exist(board, y, x+1, word, i+1,tryCount, visited)
-            || exist(board, y, x-1, word, i+1,tryCount, visited)
-            || exist(board, y+1, x, word, i+1,tryCount, visited)
-            || exist(board, y-1, x, word, i+1,tryCount, visited);
-        board[y][x] ^= 256;
-        visited[y][x] = false;   
-        return exist;
     }
 }

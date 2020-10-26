@@ -22,34 +22,19 @@ Explanation: It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
 
 class Solution {
     public int numDecodings(String s) {
-        if (s.isEmpty() || s.charAt(0) == '0') return 0;
-        int[] dp = new int[s.length() + 1];
+        char[] str = s.toCharArray();
+        int N = str.length;
+        int[] dp = new int[N + 1];
         dp[0] = 1;
-        for (int i = 1; i < dp.length; ++i) {
-            dp[i] = (s.charAt(i - 1) == '0') ? 0 : dp[i - 1];
-            if (i > 1 && (s.charAt(i - 2) == '1' 
-            || (s.charAt(i - 2) == '2' && s.charAt(i - 1) <= '6'))) {
+        for (int i = 1; i <= N; i++) {
+            dp[i] = str[i - 1] == '0' ? 0 : dp[i - 1];
+            if (i > 1 && (str[i - 2] == '1' || str[i - 2] == '2' && str[i - 1] <= '6')) {
                 dp[i] += dp[i - 2];
             }
         }
-        return dp[s.length()]; // s.length() = dp.length - 1
+        // System.out.println(Arrays.toString(dp));
+        return dp[N];
     }
 }
 
-// dp[i] = dp[i-1] + dp[i-2] # s[i-1] != 0 && s[i-2,i-1] ∈ [10,26]
-
-class Solution {
-    public int numDecodings(String s) {
-        if (s.isEmpty() || s.charAt(0) == '0') return 0;
-        int[] dp = new int[s.length() + 1];
-        dp[0] = 1;
-        for (int i = 1; i < dp.length; ++i) {
-            if (s.charAt(i - 1) != '0') dp[i] += dp[i - 1];
-            if (i >= 2 && (s.substring(i - 2, i).compareTo("10") >= 0 
-            && s.substring(i - 2, i).compareTo("26") <= 0)) {
-                dp[i] += dp[i - 2];
-            }
-        }
-        return dp[s.length()];
-    }
-}
+// 严格斐波那契

@@ -46,3 +46,21 @@ class Solution {
         return canReach(arr, start - tmp) || canReach(arr, start + tmp);
     }
 }
+
+
+
+class Solution {
+    int N;
+    public boolean canReach(int[] arr, int start) {
+        N = arr.length;
+        return dfs(new boolean[N], start, arr);
+    }
+
+    private boolean dfs(boolean[] v, int cur, int[] arr) {
+        if (cur < 0 || cur >= N) return false;
+        if (v[cur]) return false;
+        if (arr[cur] == 0) return true;
+        v[cur] = true;
+        return dfs(v, cur - arr[cur], arr) || dfs(v, cur + arr[cur], arr);
+    }
+}

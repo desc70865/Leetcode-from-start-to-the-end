@@ -44,3 +44,32 @@ class Solution {
         return i == j;
     }
 }
+
+
+
+class Solution {
+    Deque<Integer> stack;
+    int idx;
+    int[] popped;
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        stack = new LinkedList<>();
+        idx = 0;
+        this.popped = popped;
+        
+        int i = 0;
+        int N = popped.length;
+        while (i < N) {
+            pop();
+            stack.push(pushed[i++]);
+        }
+        pop();
+        return i == idx;
+    }
+
+    private void pop() {
+        while (! stack.isEmpty() && stack.peek() == popped[idx]) {
+            stack.pop();
+            idx++;
+        }
+    }
+}

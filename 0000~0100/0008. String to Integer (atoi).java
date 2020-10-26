@@ -49,31 +49,34 @@ Explanation: The number "-91283472332" is out of the range of a 32-bit signed in
  
 class Solution {
     public int myAtoi(String str) {
-        int sign    = 1;
-        int result  = 0;
-        int current = 0;
-        int digit   = 0;
-        while (current < str.length() && str.charAt(current) == ' ') current++; //skip spaces
-        if (current == str.length()) return 0; //empty or initially contained spaces only
-        if (str.charAt(current) == '-') { // change sign
-            sign = -1;
-            current++;
-        } else if(str.charAt(current) == '+') current++; //do nothing, sign is already '+'
-        while (current < str.length()) {
-            digit = charToDigit(str.charAt(current));
-            if (digit < 0) return sign*result; //not a '0' .. '9' char, can return now
-            if (result > (Integer.MAX_VALUE - digit) / 10) return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE; //bounds
-            result = 10 * result + digit;
-            current++;
+        char[] s = str.trim().toCharArray();
+        int N = s.length;
+        if (N == 0) return 0;
+        if (s[0] != '-' && s[0] != '+' && ! isNum(s[0])) return 0;
+        boolean f = false;
+        int idx = 0;
+        // System.out.println(Arrays.toString(s));
+        if (! isNum(s[idx])) {
+            if (s[idx] == '-') f = true;
+            idx++;
         }
-        return sign*result;
+        while (idx < N && isNum(s[idx])) {
+            if (s[idx] == '0') idx++;
+            else break;
+        }
+        int base = idx;
+        long sum = 0;
+        while (idx < N && idx < base + 12 && isNum(s[idx])) {
+            sum *= 10;
+            sum += s[idx++] - '0';
+        }
+        if (f) sum = -sum;
+        if (sum > Integer.MAX_VALUE) return Integer.MAX_VALUE;
+        if (sum < Integer.MIN_VALUE) return Integer.MIN_VALUE;
+        return (int) sum;
     }
-    
-    public int charToDigit(char c) {
-        int result = c - '0';
-        return result >= 0 && result <= 9 ? result : -1;
+
+    private boolean isNum(char c) {
+        return '0' <= c && c <= '9';
     }
 }
-
-// 使用 Integer.MAX_VALUE - digit 跳过了一层 if 判断
-// 持续判断异常,简化符号分支
