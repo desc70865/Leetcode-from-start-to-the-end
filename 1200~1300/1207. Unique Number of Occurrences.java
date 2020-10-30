@@ -27,17 +27,39 @@ Constraints:
 class Solution {
     public boolean uniqueOccurrences(int[] arr) {
         Arrays.sort(arr);
-        int pre = arr[0];
         int cnt = 1;
         Set<Integer> set = new HashSet<>();
         for (int i = 1; i < arr.length; i++) {
-            if (arr[i] == pre) cnt++;
+            if (arr[i] == arr[i - 1]) cnt++;
             else {
                 if (! set.add(cnt)) return false;
-                pre = arr[i];
                 cnt = 1;
             }
         }
         return set.add(cnt);
+    }
+}
+
+
+
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num: arr) map.merge(num, 1, Integer::sum);
+        Set<Integer> set = new HashSet<>();
+        for (Integer v: map.values()) if (! set.add(v)) return false;
+        return true;
+    }
+}
+
+
+
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        int[] map = new int[2001];
+        for (int num: arr) map[num + 1000]++;
+        Set<Integer> set = new HashSet<>();
+        for (int num: map) if (num != 0 && ! set.add(num)) return false;
+        return true;
     }
 }

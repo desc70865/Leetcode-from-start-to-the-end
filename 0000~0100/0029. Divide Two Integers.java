@@ -24,7 +24,9 @@ Assume we are dealing with an environment which could only store integers within
 
 class Solution {
     public int divide(int dividend, int divisor) {
-        long m = Math.abs((long)dividend), n = Math.abs((long)divisor), res = 0;
+        long m = Math.abs((long) dividend);
+        long n = Math.abs((long) divisor);
+        long res = 0;
         if (m < n) return 0;
         long t = n, p = 1;
         while (m >= (t << 1)) {

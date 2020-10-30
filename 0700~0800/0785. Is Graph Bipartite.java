@@ -36,8 +36,27 @@ The graph is undirected: if any element j is in graph[i], then i will be in grap
  */
 
 class Solution {
+    int[] p;
     public boolean isBipartite(int[][] graph) {
-        
+        int N = graph.length;
+        int size = 2 * N + 1;
+        p = new int[size];
+        for (int i = 0; i < size; i++) p[i] = i;
+        for (int i = 0; i < N; i++) {
+            int x = find(i);
+            int P = find(i + N);
+            for (int q: graph[i]) {
+                int y = find(q);
+                if (x == y) return false;
+                p[x] = p[find(q + N)];
+                p[y] = p[P];
+            }
+        }
+        return true;
+    }
+
+    private int find(int x) {
+        return p[x] == x ? x : (p[x] = find(p[x]));
     }
 }
 

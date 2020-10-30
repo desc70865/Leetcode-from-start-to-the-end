@@ -34,8 +34,8 @@ Constraints:
 class Solution {
     int[] cnt = new int[102];
     public int[] smallerNumbersThanCurrent(int[] nums) {
-        for (int num: nums) cnt[num+1]++;
-        for (int i = 2; i <= 100; i++) cnt[i] += cnt[i-1];
+        for (int num: nums) cnt[num + 1]++;
+        for (int i = 2; i <= 100; i++) cnt[i] += cnt[i - 1];
         for (int i = 0; i < nums.length; i++) nums[i] = cnt[nums[i]];
         return nums;
     }
@@ -50,6 +50,11 @@ class Solution {
         for (int i = 0; i < nums.length; i++) {
             nums[i] = bs(A, nums[i]);
         }
+        // Map<Integer, Integer> map = new HashMap<>();
+        // for (int i = 0; i < nums.length; i++) {
+        //     map.putIfAbsent(nums[i], bs(A, nums[i]));
+        //     nums[i] = map.get(nums[i]);
+        // }
         return nums;
     }
 

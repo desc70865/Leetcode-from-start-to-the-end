@@ -11,35 +11,25 @@ The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
 class Solution {
     public int threeSumClosest(int[] nums, int target) {
         int min = Integer.MAX_VALUE;
-        int result = 0;
-     
+        int res = -1;
         Arrays.sort(nums);
-     
-        for (int i = 0; i < nums.length; i++) {
-            int j = i + 1;
-            int k = nums.length - 1;
-            while (j < k) {
-                int sum = nums[i] + nums[j] + nums[k];
+        int N = nums.length;
+        for (int i = 0; i < N - 2; i++) {
+            int cur = nums[i];
+            int L = i + 1;
+            int R = N - 1;
+            while (L < R) {
+                int sum = nums[L] + nums[R] + cur;
                 int diff = Math.abs(sum - target);
-     
-                if (diff == 0) return sum;
-     
+                if (diff == 0) return target;
                 if (diff < min) {
                     min = diff;
-                    result = sum;
+                    res = sum;
                 }
-                if (sum <= target) {
-                    j++;
-                } else {
-                    k--;
-                }
+                if (sum <= target) L++;
+                else R--;
             }
         }
-     
-        return result;
+        return res;
     }
 }
-
-// 大致同上
-// 甚至可以 - target/3 互相转化
-// 应当可以提取跳出循环,但不知道该怎么加

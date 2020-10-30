@@ -22,26 +22,25 @@ Output: -1
 
 class Solution {
     public int search(int[] nums, int target) {
-        int high = nums.length - 1, mid = 0, low = 0;
-        while(low <= high){
-            mid = (low + high) / 2;
-            if (nums[mid] == target) {
-                return mid;
-            } else if (nums[low] <= nums[mid]) {
-                if(nums[low] <= target && target <= nums[mid])
-                    high = mid - 1;
+        int L = 0;
+        int R = nums.length - 1;
+        while (L <= R) {
+            int M = L + R >> 1;
+            if (nums[M] == target) {
+                return M;
+            } else if (nums[L] <= nums[M]) {
+                // check [L, M] is ordered, same below
+                if (nums[L] <= target && target <= nums[M])
+                    R = M - 1;
                 else
-                    low = mid + 1;
+                    L = M + 1;
             } else {
-                if(nums[mid] <= target && target <= nums[high])
-                    low = mid + 1;
+                if (nums[M] <= target && target <= nums[R])
+                    L = M + 1;
                 else
-                    high = mid - 1;
+                    R = M - 1;
             }
         }
         return -1;
     }
 }
-
-// 畸形的二分搜索
-// 判断有序部分,并更新搜索区间

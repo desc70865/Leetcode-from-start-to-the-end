@@ -64,7 +64,7 @@ class Solution {
     }
 
     private void add(int l, int r) {
-        if (l == r) res.add(l + "");
+        if (l == r) res.add(Integer.toString(l));
         else res.add(l + "->" + r);
     }
 }

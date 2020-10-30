@@ -15,30 +15,47 @@ Follow up: Could you improve it to O(n log n) time complexity?
 
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int res = 1, len = nums.length;
-        if (len == 0) {
-            return 0;
+        int N = nums.length;
+        int[] dp = new int[N];
+        int R = 0;
+        for (int num: nums) {
+            int i = Arrays.binarySearch(dp, 0, R, num);
+            if (i < 0) i = - (i + 1);
+            dp[i] = num;
+            if (i == R) R++;
         }
-        int[] dp = new int[len + 1];
-        dp[res] = nums[0];
-        for (int i = 1; i < len; i++) {
-            if (nums[i] > dp[res]) {
-                dp[++res] = nums[i];
-            } else {
-                int l = 1, r = res, pos = 0;
-                while (l <= r) {
-                    int mid = l + (r - l) / 2;
-                    if (dp[mid] < nums[i]) {
-                        pos = mid;
-                        l = mid + 1;
-                    } else {
-                        r = mid - 1;
-                    }
-                }
-                dp[pos + 1] = nums[i];
-            }
+        // System.out.println(Arrays.toString(dp));
+        return R;
+    }
+}
+
+
+
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int N = nums.length;
+        int[] dp = new int[N];
+        int R = 0;
+        for (int num: nums) {
+            if (insert(dp, R - 1, num) == R) R++;
+            // System.out.println(Arrays.toString(dp));
         }
-        return res;
+        return R;
+    }
+
+    public int insert(int[] A, int R, int num) {
+        if (R >= 0 && A[R] < num) {
+            A[R + 1] = num;
+            return R + 1;
+        }
+        int L = 0;
+        while (L < R) {
+            int mid = L + R >> 1;
+            if (A[mid] < num) L = mid + 1;
+            else R = mid;
+        }
+        A[L] = num;
+        return L;
     }
 }
 

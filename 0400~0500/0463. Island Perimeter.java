@@ -32,19 +32,18 @@ grid[i][j] is 0 or 1.
  */
 
 class Solution {
-    int res;
-    boolean[][] v;
-    int m, n;
     int[][] dirs = new int[][] {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    int m, n;
+    int res;
     public int islandPerimeter(int[][] grid) {
+        m = grid.length;
+        n = grid[0].length;
         res = 0;
-        m = grid.length; n = grid[0].length;
-        v = new boolean[m][n];
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 0) continue;
-                dfs(grid, i, j);
-                return res;
+                if (grid[i][j] == 1) {
+                    dfs(grid, i, j);
+                }
             }
         }
         return res;
@@ -55,9 +54,11 @@ class Solution {
             res++;
             return;
         }
-        if (v[x][y]) return;
-        v[x][y] = true;
-        for (int[] dir: dirs) dfs(A, x + dir[0], y + dir[1]);
+        if (A[x][y] == 2) return;
+        A[x][y] = 2;
+        for (int[] dir: dirs) {
+            dfs(A, x + dir[0], y + dir[1]);
+        }
     }
 }
 
@@ -66,13 +67,11 @@ class Solution {
 class Solution {
     public int islandPerimeter(int[][] grid) {
         int res = 0;
-        int m = grid.length, n = grid[0].length;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
                 if (grid[i][j] == 0) continue;
-                res += 4;
-                if (i > 0 && grid[i - 1][j] == 1) res -= 2;
-                if (j > 0 && grid[i][j - 1] == 1) res -= 2;
+                if (i == 0 || grid[i - 1][j] == 0) res += 2;
+                if (j == 0 || grid[i][j - 1] == 0) res += 2;
             }
         }
         return res;

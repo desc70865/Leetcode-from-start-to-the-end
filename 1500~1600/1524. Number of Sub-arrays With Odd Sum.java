@@ -40,52 +40,20 @@ Constraints:
  */
 
 class Solution {
-    private int MOD = 1000000007;
-    
+    private static final int MOD = 1_000_000_007;
     public int numOfSubarrays(int[] arr) {
         int odd = 0, even = 1, sum = 0;
         long res = 0;
         for (int num: arr) {
-            sum += num;
-            res += (sum % 2 == 0 ? odd : even);
-            if (sum % 2 == 0) even++;
-            else odd++;
-        }
-        return (int) (res % MOD);
-    }
-}
-
-
-
-class Solution {
-    private int MOD = 1000000007;
-    
-    public int numOfSubarrays(int[] arr) {
-        int sum = 0;
-        int[] s = new int[] { 1, 0 };
-        long res = 0;
-        for (int num: arr) {
-            sum += num;
-            res += s[1 - sum % 2];
-            s[sum % 2]++;
-        }
-        return (int) (res % MOD);
-    }
-}
-
-
-
-class Solution {
-    private int MOD = 1000000007;
-    
-    public int numOfSubarrays(int[] arr) {
-        int sum = 0;
-        long[] s = new long[] { 0, 0 };
-        for (int num: arr) {
             sum = (sum + num) % 2;
-            s[sum]++;
+            if (sum == 0) {
+                res += odd;
+                even++;
+            } else {
+                res += even;
+                odd++;
+            }
         }
-        long res = s[0] * s[1] + s[1];
         return (int) (res % MOD);
     }
 }
@@ -97,6 +65,6 @@ class Solution {
         int sum = 0;
         long[] s = new long[2];
         for (int num: arr) s[(sum += num) % 2]++;
-        return (int) ((s[0] * s[1] + s[1]) % 1000000007);
+        return (int) ((s[0] * s[1] + s[1]) % 1_000_000_007);
     }
 }

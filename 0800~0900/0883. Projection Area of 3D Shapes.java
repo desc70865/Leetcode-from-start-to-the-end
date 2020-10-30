@@ -48,18 +48,19 @@ class Solution {
     public int projectionArea(int[][] grid) {
         int len = grid.length;
         if (len == 0) return 0;
-        int s1 = 0, s2 = 0, s3 = 0;
+        int sum = 0;
         int[] a = new int[len], b = new int[len];
         for (int i = 0; i < len; i++) {
             for (int j = 0; j < len; j++) {
                 int t = grid[i][j];
-                if (t > 0) s1++;
+                if (t == 0) continue;
+                sum++;
                 a[i] = Math.max(a[i], t);
                 b[j] = Math.max(b[j], t);
             }
         }
-        for (int num: a) s2 += num;
-        for (int num: b) s3 += num;
-        return s1 + s2 + s3;
+        for (int num: a) sum += num;
+        for (int num: b) sum += num;
+        return sum;
     }
 }

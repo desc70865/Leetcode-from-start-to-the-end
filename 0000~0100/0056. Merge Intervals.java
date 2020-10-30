@@ -16,6 +16,27 @@ NOTE: input types have been changed on April 15, 2019. Please reset to default c
 
 class Solution {
     public int[][] merge(int[][] intervals) {
+        if (intervals.length == 0) return new int[0][2];
+        Arrays.sort(intervals, (a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+        int L = intervals[0][0];
+        int R = intervals[0][1];
+        List<int[]> res = new ArrayList<>();
+        for (int[] p: intervals) {
+            if (p[0] > R) {
+                res.add(new int[] {L, R});
+                L = p[0];
+            }
+            R = Math.max(R, p[1]);
+        }
+        res.add(new int[] {L, R});
+        return res.toArray(new int[0][2]);
+    }
+}
+
+
+
+class Solution {
+    public int[][] merge(int[][] intervals) {
         if (intervals.length == 0) return new int[0][0];
         List<int[]> ans = new ArrayList<>();
         int[] cur;
@@ -65,46 +86,6 @@ class Solution {
 }
 
 // 行吧,我愿称之为最强.
-
-class Solution {
-    public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, (x,y) -> x[0]-y[0] );
-        int[][] res = new int[intervals.length][2];
-        int idx = -1; // 强行 foreach
-        for (int[] interval: intervals) {
-            if (idx == -1 || interval[0] > res[idx][1]) {
-                res[++idx] = interval;
-            } else {
-                res[idx][1] = Math.max(res[idx][1], interval[1]);
-            }
-        }
-        return Arrays.copyOf(res, idx + 1);
-    }
-}
-
-
-class Solution {
-    public int[][] merge(int[][] intervals) {
-        if (intervals == null || intervals.length == 0) {
-            return intervals;
-        }
-        Arrays.sort(intervals, (x,y) -> x[0]-y[0] );
-        List<int[]> arr = new ArrayList<int[]>();
-        arr.add(intervals[0]);
-        int cur;
-        for (int i = 1; i < intervals.length; ++i) {
-            cur = arr.size()-1; // 上一个插入元素
-            if (arr.get(cur)[1] < intervals[i][0]) {
-                arr.add(intervals[i]);
-            } else {
-                arr.get(cur)[1] = Math.max(arr.get(cur)[1], intervals[i][1]);
-            }
-        }
-        return arr.toArray(new int[arr.size()][2]);
-    }
-}
-
-// ...
 
 class Solution {
     public int[][] merge(int[][] intervals) {

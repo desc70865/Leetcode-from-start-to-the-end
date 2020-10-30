@@ -56,3 +56,28 @@ class Solution {
         return max;
     }
 }
+
+
+
+class Solution {
+    public int getWinner(int[] arr, int k) {
+        Deque<Integer> queue = new LinkedList<>();
+        for (int num: arr) queue.offerLast(num);
+        int N = arr.length - 1;
+        k = Math.min(N, k);
+        int count = k;
+        while (N-- > 0) {
+            int v = queue.pollFirst();
+            if (v > queue.peekFirst()) {
+                count--;
+                queue.offerLast(queue.pollFirst());
+                queue.offerFirst(v);
+            } else {
+                queue.offerLast(v);
+                count = k - 1;
+            }
+            if (count == 0) break;
+        }
+        return queue.pollFirst();
+    }
+}

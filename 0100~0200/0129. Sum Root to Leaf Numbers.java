@@ -51,21 +51,18 @@ Therefore, sum = 495 + 491 + 40 = 1026.
  */
 class Solution {
     public int sumNumbers(TreeNode root) {
-        if (root == null) {
+        return dfs(root, 0);
+    }
+
+    private int dfs(TreeNode node, int x) {
+        if (node == null) {
             return 0;
         }
-        return helper(root, root.val);
-    }
-    
-    private int helper(TreeNode node, int sum) {
+        x *= 10;
+        x += node.val;
         if (node.left == null && node.right == null) {
-            return sum;
+            return x;
         }
-        
-        return ((node.left == null) ? 0 : helper(node.left, sum * 10 + node.left.val))
-            + ((node.right == null) ? 0 : helper(node.right, sum * 10 + node.right.val));
+        return dfs(node.left, x) + dfs(node.right, x);
     }
 }
-
-// 另, 初始 0 
-// 返回时计算当前节点

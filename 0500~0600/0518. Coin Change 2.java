@@ -38,6 +38,8 @@ class Solution {
         int[] dp = new int[amount + 1];
         dp[0] = 1;
         for (int coin: coins) {
+            // 正序: 无限物品
+            // 逆序: @494 物品唯一
             for (int x = coin; x <= amount; x++) {
                 dp[x] += dp[x - coin];
             }

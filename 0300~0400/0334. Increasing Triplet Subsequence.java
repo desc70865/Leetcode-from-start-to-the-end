@@ -53,11 +53,11 @@ class Solution {
         int min = Integer.MAX_VALUE;
         int mid = Integer.MAX_VALUE;     
         
-		for (int n:nums) {              
-			if (n <= min) {
-                min = n;
-            } else if (n <= mid) {
-                mid = n;
+		for (int num: nums) {              
+			if (num <= min) {
+                min = num;
+            } else if (num <= mid) {
+                mid = num;
             } else {
                 return true; 
             }

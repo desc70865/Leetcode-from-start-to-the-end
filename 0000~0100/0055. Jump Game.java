@@ -41,3 +41,17 @@ class Solution {
 }
 
 // 复制粘贴又是全新的代码
+
+class Solution {
+    public boolean canJump(int[] nums) {
+        int n = nums.length, i = 0, cur = 0;
+        while (cur < n - 1) {
+            int pre = cur;
+            for (; i <= pre; ++i) {
+                cur = Math.max(cur, i + nums[i]);
+            }
+            if (pre == cur) return false;
+        }
+        return true;
+    }
+}
