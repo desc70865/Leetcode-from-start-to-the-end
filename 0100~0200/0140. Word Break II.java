@@ -37,86 +37,42 @@ Output:
  */
 
 class Solution {
-    private String s;
-    private List<String> wordDict;
-    private boolean[] dp;
-    private List<String> res = new ArrayList<>();
-    private List<String> tmp = new ArrayList<>();
+    List<String> res;
+    Set<String> set;
+    int min, max;
+    boolean v[];
+
     public List<String> wordBreak(String s, List<String> wordDict) {
-        dp = new boolean[s.length()];
-        this.s = s; this.wordDict = wordDict;
-        wordBreak(0);
+        set = new HashSet<>();
+        min = Integer.MAX_VALUE;
+        max = 0;
+        for (String word: wordDict) {
+            set.add(word);
+            int k = word.length();
+            if (k > max) max = k;
+            if (k < min) min = k;
+        }
+        res = new ArrayList<>();
+        v = new boolean[s.length() + 1];
+        wordBreak(s, 0, new ArrayList<>());
         return res;
     }
-    private void wordBreak(int startIndex) {
-        if (startIndex == s.length()) {
+
+    private void wordBreak(String s, int idx, List<String> tmp) {
+        if (idx == s.length()) {
             res.add(String.join(" ", tmp));
             return;
         }
-        /*
-        * 穷举
-        if (dp[startIndex]) return;
-        dp[startIndex] = true;
-        */
-        for (String word : wordDict) {
-            if (s.startsWith(word, startIndex)) { // core
-                tmp.add(word);
-                wordBreak(startIndex + word.length());
-                tmp.remove(tmp.size()-1);
-            }
-        }
-    }
-}
-
-
-
-class Solution {
-    private int maxLen; // longest String in wordDict
-    private boolean[] dp; // visited mark
-    private String s;
-    private List<String> wordDict;
-    private List<String> res;
-    private Set<String> dict;
-    public List<String> wordBreak(String s, List<String> wordDict) {
-        res = new ArrayList<>();
-        if(s == null || s.length() == 0 || wordDict == null) return res;
-        dict = new HashSet<>();
-        maxLen = -1;
-        this.s = s; this.wordDict = wordDict;
-        for (String word : wordDict) {
-            dict.add(word);
-            maxLen = Math.max(maxLen, word.length());
-        }
-        
-        dp = new boolean[s.length()+1];
-        Arrays.fill(dp, false);
-        
-        helper(0, new StringBuilder());
-        return res;
-    }
-    
-    private void helper(int idx, StringBuilder sb) {
-        if (s.length() == idx) {
-            res.add(sb.toString());
-            return;
-        }
-        
-        for(int i = idx+1; i <= Math.min(s.length(), idx+maxLen); ++i) {
-            if (!dp[i]) {
-                String temp = s.substring(idx, i);
-                if (dict.contains(temp)) {
-                    int oldSize = sb.length();
-                    if (oldSize != 0)
-                        sb.append(" ");
-                    sb.append(temp);
-                    
-                    int oldLen = res.size();
-                    helper(i, sb);
-                    if (res.size() == oldLen)
-                        dp[i] = true; // core # i 之后无解; dfs去重
-                    
-                    sb.delete(oldSize, sb.length());
-                }
+        if (idx > s.length() - min) return;
+        for (int i = min; i <= Math.min(max, s.length() - idx); i++) {
+            if (v[idx + i]) continue;
+            String m = s.substring(idx, idx + i);
+            if (set.contains(m)) {
+                tmp.add(m);
+                int x = res.size();
+                wordBreak(s, idx + i, tmp);
+                if (res.size() == x) v[idx + i] = true;
+                tmp.remove(tmp.size() - 1);
             }
         }
     }

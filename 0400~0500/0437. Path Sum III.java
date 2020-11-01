@@ -42,48 +42,24 @@ Return 3. The paths that sum to 8 are:
  * }
  */
 class Solution {
+    int res;
     public int pathSum(TreeNode root, int sum) {
-        
-    }
-}
-
-
-
-class Solution {
-    int res = 0;
-    public int pathSum(TreeNode root, int sum) {
-        helper(root, sum);
+        res = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        dfs(root, sum, 0, map);
         return res;
     }
-    
-    private int[] helper(TreeNode node, int p) {
-        if (node == null) return new int[0];
-        int[] a = helper(node.left, p), b = helper(node.right, p), c = new int[a.length + b.length + 1];
-        int i = 1, k = node.val;
-        c[0] = k;
-        for (int n: a) c[i++] = n + k;
-        for (int n: b) c[i++] = n + k;
-        for (int n: c) if (p == n) res++;
-        return c;
+
+    private void dfs(TreeNode node, int target, int sum, Map<Integer, Integer> map) {
+        if (node == null) return;
+        sum += node.val;
+        res += map.getOrDefault(sum - target, 0);
+        map.merge(sum, 1, Integer::sum);
+        dfs(node.left, target, sum, map);
+        dfs(node.right, target, sum, map);
+        map.merge(sum, -1, Integer::sum);
     }
 }
 
-
-
-class Solution {
-    public int pathSum(TreeNode root, int sum) {
-        HashMap<Integer, Integer> presum = new HashMap<>();
-        presum.put(0, 1);
-        return calcSum(0, sum, root, presum);
-    }
-    
-    private int calcSum(int currSum, int targetSum, TreeNode root, HashMap<Integer, Integer> presum){
-        if (root == null) return 0;
-        currSum += root.val;
-        int res = presum.getOrDefault(currSum-targetSum, 0);
-        presum.put(currSum, presum.getOrDefault(currSum ,0)+1);
-        res += calcSum(currSum, targetSum, root.left, presum) + calcSum(currSum, targetSum, root.right, presum);
-        presum.put(currSum, presum.get(currSum)-1);
-        return res;
-    }
-}
+// 04.12. 求和路径

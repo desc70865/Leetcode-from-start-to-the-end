@@ -48,13 +48,17 @@ class Solution {
     private void helper(TreeNode node, int sum, List<Integer> p) {
         if (node == null) return;
         int k = node.val;
-        p.add(k);
-        if (sum == k && node.left == null && node.right == null) {
-            res.add(new ArrayList<>(p));
-        } else {
-            helper(node.left, sum - k, p);
-            helper(node.right, sum - k, p);
+        if (node.left == null && node.right == null) {
+            if (sum == k) {
+                p.add(k);
+                res.add(new ArrayList<>(p));
+                p.remove(p.size() - 1);
+            }
+            return;
         }
+        p.add(k);
+        helper(node.left, sum - k, p);
+        helper(node.right, sum - k, p);
         p.remove(p.size() - 1);
     }
 }

@@ -69,16 +69,11 @@ class Solution {
         if (node == null) return;
         
         inOrder(node.left);
-        
-        if (pre == null) pre = node;
-        else {
-            if (pre.val > node.val) {
-                if (first == null) first = pre;
-                second = node;
-            }
-            pre = node;
+        if (pre != null && pre.val > node.val) {
+            if (first == null) first = pre;
+            second = node;
         }
-        
+        pre = node;
         inOrder(node.right);
     }
     

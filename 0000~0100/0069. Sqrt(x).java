@@ -38,7 +38,7 @@ class Solution {
         double n = 1/Double.longBitsToDouble(i)+1;
         while(Math.abs(n*n - x) > 0.1)
             n = (n + x / n) / 2.0;
-        return (int)n;
+        return (int) n;
     }
 }
 

@@ -45,3 +45,26 @@ class Solution {
         return max;
     }
 }
+
+
+
+class Solution {
+    public int maximumSum(int[] arr) {
+        int N = arr.length;
+        int[] preSum = new int[N];
+        preSum[0] = Math.max(arr[0], 0);
+        for (int i = 1; i < N; i++) {
+            preSum[i] = Math.max(preSum[i - 1] + arr[i], 0);
+        }
+        int max = arr[0];
+        int sum = 0;
+        for (int i = N - 1; i >= 0; i--) {
+            sum = Math.max(sum, 0) + arr[i];
+            max = Math.max(max, sum);
+            if (i >= 2) {
+                max = Math.max(max, sum + preSum[i - 2]);
+            }
+        }
+        return max;
+    }
+}

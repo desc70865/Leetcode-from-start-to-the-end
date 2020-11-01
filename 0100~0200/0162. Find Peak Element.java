@@ -22,16 +22,15 @@ Explanation: Your function can return either index number 1 where the peak eleme
 Follow up: Your solution should be in logarithmic complexity.
  */
 
-public class Solution {
+class Solution {
     public int findPeakElement(int[] nums) {
-        int l = 0, r = nums.length - 1;
-        while (l < r) {
-            int mid = l + (r - l) / 2;
-            if (nums[mid] > nums[mid + 1])
-                r = mid;
-            else
-                l = mid + 1;
+        int L = 0;
+        int R = nums.length - 1;
+        while (L < R) {
+            int M = L + R >> 1;
+            if (nums[M] > nums[M + 1]) R = M;
+            else L = M + 1;
         }
-        return l;
+        return L;
     }
 }

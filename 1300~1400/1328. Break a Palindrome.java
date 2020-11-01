@@ -23,18 +23,17 @@ palindrome consists of only lowercase English letters.
 
 class Solution {
     public String breakPalindrome(String palindrome) {
-        if (palindrome.length() == 1) {
-            return "";
-        }
-        char[] arr = palindrome.toCharArray();
-        for (int i = 0; i < arr.length / 2; i++) {
-            if (arr[i] == 'a') {
-                continue;
+        char[] str = palindrome.toCharArray();
+        int N = str.length;
+        if (N == 1) return "";
+        int len = N / 2;
+        for (int i = 0; i < len; i++) {
+            if (str[i] != 'a') {
+                str[i] = 'a';
+                return new String(str);
             }
-            arr[i] = 'a';
-            return new String(arr);
         }
-        arr[arr.length-1] = 'b';
-        return new String(arr);
+        str[N - 1] = 'b';
+        return new String(str);
     }
 }

@@ -35,10 +35,10 @@ class Solution {
         BITree tree = new BITree(N);
         for (int num: nums) {
             int id = map.get(num);
-            int[] q = tree.query(id);
+            int[] q = tree.query(id - 1);
             tree.update(id, q[0] + 1, q[1]);
         }
-        return tree.query(N + 1)[1];
+        return tree.query(N)[1];
     }
 }
 
@@ -67,7 +67,7 @@ class BITree {
     public int[] query(int id) {
         int x = 0;
         int c = 1;
-        for (int i = id - 1; i >= 1; i -= lowbit(i)) {
+        for (int i = id; i >= 1; i -= lowbit(i)) {
             if (lens[i] > x) {
                 c = sums[i];
                 x = lens[i];
