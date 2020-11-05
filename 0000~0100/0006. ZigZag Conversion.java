@@ -38,26 +38,48 @@ Y A   H R
 P     I
  */
  
- class Solution {
+class Solution {
     public String convert(String s, int numRows) {
-
+        if (numRows < 0) return "";
         if (numRows == 1) return s;
-
-        StringBuilder ret = new StringBuilder();
-        int length = s.length();
-        int cycleLen = 2 * (numRows - 1); // Z循环步长
-
-        for (int i = 0; i < numRows; i++) { // 行
-            for (int j = 0; j + i < length; j += cycleLen) { // 列
-                ret.append(s.charAt(j + i));
-                if (i != 0 && i != numRows - 1 && j + cycleLen - i < length) // 节点以外另一次插入
-                    ret.append(s.charAt(j + cycleLen - i)); // 以 j + numRows - 1 为对称中心
+        if (s == null || s.length() <= numRows) return s;
+        char[] str = s.toCharArray();
+        int len = str.length;
+        int T = (numRows - 1) * 2;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; i + j < len; j += T) {
+                sb.append(str[i + j]);
+                if (i == 0 || i == numRows - 1) continue;
+                if (j + T - i < len) {
+                    sb.append(str[j + T - i]);
+                }
             }
         }
-        return ret.toString();
+        return sb.toString();
     }
 }
 
-// 当然在Z字两端判断 step *= -1 也是简洁的写法
-// 可惜输出不含空格,不然会有趣很多
-// 可以先求转置数组再转置输出,大致可节省一半的插入时间
+
+
+class Solution {
+    public String convert(String s, int numRows) {
+        if (numRows <= 1) return s;
+        if (s == null || s.length() <= numRows) return s;
+        char[] str = s.toCharArray();
+        int len = str.length;
+        int T = (numRows - 1) * 2;
+        char[] res = new char[len];
+        int idx = 0;
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; i + j < len; j += T) {
+                res[idx++] = str[i + j];
+                if (i == 0 || i == numRows - 1) continue;
+                if (j + T - i < len) {
+                    res[idx++] = str[j + T - i];
+                }
+            }
+        }
+        return new String(res);
+    }
+}

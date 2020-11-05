@@ -62,22 +62,18 @@ class Solution {
     }
     
     // returns map distance -> count
-    private int[] helper(TreeNode root, int d) {
-        if (root.left == null && root.right == null) {
-            int[] f = new int[d+1];
-            f[0] = 1;
-            return f;
+    private int[] helper(TreeNode node, int D) {
+        int[] distance = new int[D + 1];
+        // @leaf
+        if (node.left == null && node.right == null) {
+            distance[1] = 1;
+            return distance;
         }
-        int[] lf = root.left != null ? helper(root.left, d) : new int[d+1];
-        int[] rf = root.right != null ? helper(root.right, d) : new int[d+1];
-        for (int i = d; i > 0; i--) lf[i] = lf[i-1];
-        for (int i = d; i > 0; i--) rf[i] = rf[i-1];
-        lf[0] = rf[0] = 0;
-        int[] prefixl = new int[d+1];
-        for (int i = 1; i <= d; i++) prefixl[i] = prefixl[i-1] + lf[i];
-        for (int i = 0; i <= d; i++) ans += rf[i] * prefixl[d - i];
-        int[] f = new int[d+1];
-        for (int i = 0; i <= d; i++) f[i] = lf[i] + rf[i];
-        return f;
+        int[] L = node.left == null ? new int[D + 1] : helper(node.left, D);
+        int[] R = node.right == null ? new int[D + 1] : helper(node.right, D);
+        for (int i = 1; i <= D; i++) distance[i] = L[i - 1] + R[i - 1];
+        for (int i = 1; i <= D; i++) L[i] += L[i - 1];
+        for (int i = 0; i <= D; i++) ans += L[i] * R[D - i];
+        return distance;
     }
 }

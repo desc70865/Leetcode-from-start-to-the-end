@@ -33,45 +33,45 @@ return its zigzag level order traversal as:
  */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        boolean order = false;
         List<List<Integer>> res = new ArrayList<>();
-        if (root == null) return res;
-        List<Integer> cur = new ArrayList<>();
-        List<TreeNode> nodes = new ArrayList<>();
-        nodes.add(root);
-        int count = 1;
-        boolean flag = true;
-        while (nodes.size() > 0) {
-            TreeNode node = nodes.remove(0);
-            count--;
-            if (node.left != null) nodes.add(node.left);
-            if (node.right != null) nodes.add(node.right);
-            if (flag) cur.add(node.val);
-            else cur.add(0, node.val);
-            if (count == 0) {
-                count = nodes.size();
-                res.add(new ArrayList<>(cur));
-                cur = new ArrayList<>();
-                flag = !flag;
+        while (! queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> level = new ArrayList<>();
+            while (size-- > 0) {
+                TreeNode cur = queue.poll();
+                if (cur.left != null) queue.offer(cur.left);
+                if (cur.right != null) queue.offer(cur.right);
+                level.add(cur.val);
             }
+            if (order) Collections.reverse(level);
+            res.add(level);
+            order = ! order;
         }
         return res;
     }
 }
+
+
 
 class Solution {
     private List<List<Integer>> res;
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         res = new ArrayList<>();
         if (root == null) return res;
-        levelTraversal(root, 1, true);
+        levelTraversal(root, 0, true);
         return res;
     }
-    private void levelTraversal(TreeNode node, int level, boolean flag) {
+    
+    private void levelTraversal(TreeNode node, int level, boolean order) {
         if (node == null) return;
-        if (res.size() < level) res.add(new ArrayList<Integer>());
-        if (flag) res.get(level-1).add(node.val);
-        else res.get(level-1).add(0,node.val);
-        levelTraversal(node.left, level+1, !flag);
-        levelTraversal(node.right, level+1, !flag);
+        if (res.size() <= level) res.add(new ArrayList<Integer>());
+        if (order) res.get(level).add(node.val);
+        else res.get(level).add(0, node.val);
+        levelTraversal(node.left, level + 1, ! order);
+        levelTraversal(node.right, level + 1, ! order);
     }
 }

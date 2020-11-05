@@ -42,7 +42,7 @@ class Solution {
         if (wordList == null || wordList.size() == 0) return res;
         
         Set<String> wordDict = new HashSet<>(wordList);
-        if (!wordDict.contains(endWord)) return res;
+        if (! wordDict.contains(endWord)) return res;
 
         Map<String, List<String>> map = new HashMap<>(); // core
         
@@ -62,9 +62,9 @@ class Solution {
 
     private void bfs(Set<String> startSet, Set<String> endSet, Map<String, List<String>> map, Set<String> wordDict, boolean reverse) {
         if (startSet.size() == 0) return;
-        Set<String> curSet = new HashSet<>();
+        Set<String> nextSet = new HashSet<>();
         wordDict.removeAll(startSet);
-        for (String s : startSet) {
+        for (String s: startSet) {
             char[] chs = s.toCharArray();
             for (int i = 0; i < chs.length; i++) {
                 char old = chs[i];
@@ -72,29 +72,25 @@ class Solution {
                     if (c == old) continue;
                     chs[i] = c;
                     String word = new String(chs);
-                    if (wordDict.contains(word)) {
-                        if (endSet.contains(word)) {
-                            finish = true;
-                        } else {
-                            curSet.add(word); // start <-> cur <-> end
-                        }
-                        String key = reverse ? word : s;
-                        String val = reverse ? s : word;
-                        if (!map.containsKey(key)) {
-                            map.put(key, new ArrayList<>());
-                        }
-                        map.get(key).add(val);
+                    if (! wordDict.contains(word)) continue;
+                    if (endSet.contains(word)) {
+                        finish = true;
+                    } else {
+                        nextSet.add(word); // start <-> cur <-> end
                     }
+                    String key = reverse ? word : s;
+                    String val = reverse ? s : word;
+                    map.computeIfAbsent(key, z -> new ArrayList<>()).add(val);
                 }
                 chs[i] = old;
             }
         }
-        if (!finish) { // bidirectional - choose
+        if (! finish) { // bidirectional - choose
             cnt++;
-            if (curSet.size() < endSet.size())
-                bfs(curSet, endSet, map, wordDict, reverse);
+            if (nextSet.size() < endSet.size())
+                bfs(nextSet, endSet, map, wordDict, reverse);
             else
-                bfs(endSet, curSet, map, wordDict, !reverse);
+                bfs(endSet, nextSet, map, wordDict, ! reverse);
         }
     }
 
@@ -103,8 +99,8 @@ class Solution {
             res.add(new ArrayList<>(list));
             return;
         }
-        if (!map.containsKey(word) || cnt < 0) return;
-        for (String next : map.get(word)) {
+        if (! map.containsKey(word) || cnt < 0) return;
+        for (String next: map.get(word)) {
             list.add(next); cnt--;
             dfs(next, endWord, res, map, list);
             list.remove(list.size() - 1); cnt++;

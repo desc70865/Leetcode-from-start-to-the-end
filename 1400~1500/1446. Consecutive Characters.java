@@ -37,18 +37,17 @@ s contains only lowercase English letters.
 
 class Solution {
     public int maxPower(String s) {
-        char[] str = s.toCharArray();
-        int N = str.length;
-        int cnt = 0, res = 0;
-        char cur = str[0];
-        for (int i = 0; i < N; i++) {
-            if (str[i] == cur) cnt++;
+        char pre = '@';
+        int cnt = 0;
+        int max = 1;
+        for (char c: s.toCharArray()) {
+            if (c == pre) cnt++;
             else {
-                res = Math.max(res, cnt);
-                cur = str[i];
+                max = Math.max(max, cnt);
                 cnt = 1;
+                pre = c;
             }
         }
-        return Math.max(res, cnt);
+        return Math.max(max, cnt);
     }
 }

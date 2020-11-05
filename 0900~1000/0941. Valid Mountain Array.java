@@ -33,16 +33,12 @@ Note:
 
 class Solution {
     public boolean validMountainArray(int[] A) {
-        int N = A.length;
-        if (N < 3) {
-            return false;
-        }
-        int i = 1;
-        while (i < N && A[i-1] < A[i++]);
-        if (i == 2 || i == N && A[N-1] >= A[N-2]) {
-            return false;
-        }
-        while (i < N && A[i-1] > A[i++]);
-        return i == N && A[N-1] < A[N-2];
+        int len = A.length;
+        if (len < 3 || A[0] >= A[1]) return false;
+        int idx = 1;
+        while (idx < len && A[idx] > A[idx - 1]) idx++;
+        if (idx == len) return false;
+        while (idx < len && A[idx] < A[idx - 1]) idx++;
+        return idx == len;
     }
 }

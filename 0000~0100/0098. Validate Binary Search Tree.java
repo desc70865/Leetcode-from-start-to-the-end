@@ -47,13 +47,13 @@ Explanation: The root node's value is 5 but its right child's value is 4.
  */
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        if (root == null) return true;
         return valid(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
-    public boolean valid(TreeNode root, long low, long high) {
-        if (root == null) return true;
-        if (root.val <= low || root.val >= high) return false;
-        return valid(root.left, low, root.val) && valid(root.right, root.val, high);
+    
+    public boolean valid(TreeNode node, long low, long high) {
+        if (node == null) return true;
+        if (node.val <= low || node.val >= high) return false;
+        return valid(node.left, low, node.val) && valid(node.right, node.val, high);
     }
 }
 
@@ -69,6 +69,7 @@ class Solution {
         }
         return true;
     }
+    
     public void inorder(TreeNode node, List<Integer> list) {
         if (node == null) return;
         inorder(node.left, list);

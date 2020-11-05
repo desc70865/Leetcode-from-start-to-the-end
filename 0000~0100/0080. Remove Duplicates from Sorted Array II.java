@@ -38,27 +38,9 @@ for (int i = 0; i < len; i++) {
  */
 
 class Solution {
-    public static int removeDuplicates(int[] nums) {
-        Arrays.sort(nums); // non
-        int cur = Integer.MIN_VALUE, pre = -1, count = 0;
-        for (int last = 0; last < nums.length; last++) {
-            if (cur == nums[last]) count++;
-            else {
-                cur = nums[last];
-                count = 1;
-            }
-            if (count <= 2) pre++;
-            if (pre != last) nums[pre] = nums[last];
-        }
-        return pre+1;
-    }
-}
-
-
-class Solution {
-    public static int removeDuplicates(int[] nums) {
+    public int removeDuplicates(int[] nums) {
         int i = 0;
-        for (int num : nums) {
+        for (int num: nums) {
             if (i < 2 || num > nums[i - 2]) {
                 nums[i++] = num;
             }
@@ -66,4 +48,3 @@ class Solution {
         return i;
     }
 }
-

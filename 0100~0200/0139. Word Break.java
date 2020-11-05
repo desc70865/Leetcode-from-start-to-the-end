@@ -48,22 +48,33 @@ class Solution {
 // dp[0]: ini # true
 // dp[i] = true : dp[t] = true && [t, i-1] ∈ dict
 
-public class Solution {
-    private String s;
-    private List<String> wordDict;
-    private boolean[] visited;
+class Solution {
+    Set<String> set;
+    int min, max;
+
     public boolean wordBreak(String s, List<String> wordDict) {
-        visited = new boolean[s.length()];
-        this.s = s; this.wordDict = wordDict;
-        return wordBreak(0);
+        set = new HashSet<>();
+        min = Integer.MAX_VALUE;
+        max = 0;
+        for (String word: wordDict) {
+            set.add(word);
+            int k = word.length();
+            if (k > max) max = k;
+            if (k < min) min = k;
+        }
+        return wordBreak(s, 0, new boolean[s.length() + 1]);
     }
-    private boolean wordBreak(int startIndex) {
-        if (startIndex == s.length()) return true;
-        if (visited[startIndex]) return false;
-        visited[startIndex] = true; // 去重
-        for (String word : wordDict) {
-            if (s.startsWith(word, startIndex)) { // core
-                if (wordBreak(startIndex + word.length())) return true;
+
+    private boolean wordBreak(String s, int idx, boolean[] v) {
+        if (idx == s.length()) {
+            return true;
+        }
+        v[idx] = true;
+        for (int i = min; i <= Math.min(max, s.length() - idx); i++) {
+            if (v[idx + i]) continue;
+            String m = s.substring(idx, idx + i);
+            if (set.contains(m)) {
+                if (wordBreak(s, idx + i, v)) return true;
             }
         }
         return false;

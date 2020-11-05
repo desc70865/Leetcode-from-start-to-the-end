@@ -75,8 +75,10 @@ class Solution {
         int cost = 0;
         int res = -1;
         int turn = -1;
+        int sum = 0;
         int p = 0, t = 0;
         for (int i = 0; i < customers.length; i++) {
+            sum += customers[i];
             p += customers[i];
             if (p > 0) t = i + 4;
             if (i < t) cost -= runningCost;
@@ -98,6 +100,7 @@ class Solution {
                 turn++;
             } else break;
         }
+        if (sum * boardingCost <= runningCost * turn) return -1;
         return turn;
     }
 }

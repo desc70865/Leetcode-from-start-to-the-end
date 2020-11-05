@@ -37,132 +37,103 @@ Explanation: The endWord "cog" is not in wordList, therefore no possible transfo
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         Set<String> dict = new HashSet<>(wordList);
-        if(!dict.contains(endWord)) return 0;
+        if(! dict.contains(endWord)) return 0;
         Set<String> beginSet = new HashSet<>();
-        Set<String> endSet = new HashSet<>();
         beginSet.add(beginWord);
+        Set<String> endSet = new HashSet<>();
         endSet.add(endWord);
-        return search(beginSet, endSet, dict,  1);
+        return bidirectionalBFS(beginSet, endSet, dict, 1);
     }
     
-    private int search(Set<String> beginSet, Set<String> endSet, Set<String> dict, int cnt){
-        if(beginSet.isEmpty() || endSet.isEmpty()) return 0;
+    private int bidirectionalBFS(Set<String> beginSet, Set<String> endSet, Set<String> dict, int cnt) {
+        if (beginSet.isEmpty() || endSet.isEmpty()) return 0;
         cnt++;
         dict.removeAll(beginSet);
         Set<String> nextSet = new HashSet<>();
-        for(String str : beginSet){
+        for (String str: beginSet) {
             char[] chs = str.toCharArray();
-            for(int i = 0; i < chs.length; i++){
+            for (int i = 0; i < chs.length; i++) {
                 char c = chs[i];
-                for(char j = 'a'; j <= 'z'; j++){
+                for (char j = 'a'; j <= 'z'; j++) {
                     chs[i] = j;
-                    String tmp = new String(chs);
-                    if(!dict.contains(tmp)) continue;
-                    if(endSet.contains(tmp)) return cnt;
-                    nextSet.add(tmp);
+                    String s = new String(chs);
+                    if (! dict.contains(s)) continue;
+                    if (endSet.contains(s)) return cnt;
+                    nextSet.add(s);
                 }
                 chs[i] = c;
             }
         }
-        return nextSet.size() > endSet.size() ? search(endSet, nextSet, dict,  cnt) : search(nextSet, endSet, dict, cnt);
+        return nextSet.size() > endSet.size() ? bidirectionalBFS(endSet, nextSet, dict, cnt) : bidirectionalBFS(nextSet, endSet, dict, cnt);
     }
 }
 
-// index[] = wordList.get(endWord)
-// if (!index) return 0;
-// foreach index dp[i] ? dp[i-1]
+// bi-directional BFS
 
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        if(!words.contains(endWord)) return 0;
-        HashSet<String> words = new HashSet<>(wordList);
-        HashMap<String, Integer> map = new HashMap<>();
+        Set<String> dict = new HashSet<>(wordList);
+        if (! dict.contains(endWord)) return 0;
         Queue<String> queue = new LinkedList<>();
-        Queue<String> test = new LinkedList<>();
-        
-        map.put(beginWord, 1);
         queue.offer(beginWord);
-        
-        while(!queue.isEmpty()) {
-            String word = queue.poll();
-            int level = map.get(word);
-            for (String temp : words) {
-                if (isSimilar(word, temp)) {
-                    if (temp.equals(endWord)) return level+1;
-                    test.offer(temp);
+        int counter = 1;
+        while (! queue.isEmpty()) {
+            counter++;
+            int size = queue.size();
+            while (size-- > 0) {
+                char[] chs = queue.poll().toCharArray();
+                for (int i = 0; i < chs.length; i++) {
+                    char c = chs[i];
+                    for (char j = 'a'; j <= 'z'; j++) {
+                        if (c == j) continue;
+                        chs[i] = j;
+                        String s = new String(chs);
+                        if (dict.contains(s)) {
+                            if (s.equals(endWord)) return counter;
+                            queue.offer(s);
+                            dict.remove(s);
+                        }
+                    }
+                    chs[i] = c;
                 }
-            }
-            while(!test.isEmpty()) {
-            	String temp = test.poll();
-                words.remove(temp);
-                map.put(temp, level+1);
-                queue.offer(temp);
             }
         }
         return 0;
     }
-    
-    private boolean isSimilar(String a, String b) {
-        int count = 0;
-        for (int i=0; i < a.length(); i++) {
-            if (a.charAt(i) != b.charAt(i)) count++;
-            if (count > 1) return false;
-        }
-        return count == 1;
-    }
 }
 
-// ...
+// uni-directional BFS
 
 class Solution {
-
-    private int L;
-    private Map<String, List<String>> dict;
-    private Set<String> todo;
-    
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        todo = new HashSet<>(wordList);
-        if(!todo.contains(endWord)) return 0;
-        L = beginWord.length();
-        dict = new HashMap<>();
-        wordList.forEach(
-            word -> {
-                for (int i=0; i < L; i++) {
-                    String wildcard = word.substring(0, i) + '*' + word.substring(i + 1, L);
-                    if (!dict.containsKey(wildcard))
-                        dict.put(wildcard, new ArrayList<>());
-                    dict.get(wildcard).add(word);
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+        int len = wordList.size();
+        boolean[] v = new boolean[len];
+        int counter = 1;
+        while (! queue.isEmpty()) {
+            int size = queue.size();
+            counter++;
+            while (size-- > 0) {
+                String cur = queue.poll();
+                for (int i = 0; i < len; i++) {
+                    if (v[i]) continue;
+                    String s = wordList.get(i);
+                    if (! isSimilar(cur, s)) continue;
+                    if (s.equals(endWord)) return counter;
+                    v[i] = true;
+                    queue.offer(s);
                 }
-            });
-        Set<String> beginSet = new HashSet<>();
-        Set<String> endSet = new HashSet<>();
-        beginSet.add(beginWord);
-        endSet.add(endWord);
-        return search(beginSet, endSet, 1);
-    }
-    
-    private int search(Set<String> beginSet, Set<String> endSet, int cnt) {
-        if (beginSet.isEmpty() || endSet.isEmpty()) return 0;
-        cnt++;
-        todo.removeAll(beginSet);
-        Set<String> nextSet = new HashSet<>();
-        
-        for (String str : beginSet) {
-            for (int i=0; i < L; i++) {
-                String cur = str.substring(0, i) + '*' + str.substring(i + 1, L);
-                List<String> remove = new ArrayList<>();
-                for (String tmp : dict.getOrDefault(cur, new ArrayList<>())) {
-                    if (!todo.contains(tmp)) {
-                        remove.add(tmp);
-                        continue;
-                    }
-                    if (endSet.contains(tmp)) return cnt;
-                    nextSet.add(tmp);
-                }
-                if (remove.size() > 0)
-                    dict.get(cur).removeAll(remove);
             }
         }
-        return nextSet.size() > endSet.size() ? search(endSet, nextSet, cnt) : search(nextSet, endSet, cnt);
+        return 0;
+    }
+
+    private boolean isSimilar(String a, String b) {
+        int diff = 0;
+        for (int i = 0; i < a.length() && diff < 2; i++) {
+            if (a.charAt(i) != b.charAt(i)) diff++;
+        }
+        return diff == 1;
     }
 }
