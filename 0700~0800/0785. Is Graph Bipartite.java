@@ -99,30 +99,25 @@ class Solution {
 
 
 class Solution {
+    Boolean[] color;
+
     public boolean isBipartite(int[][] graph) {
-        int n = graph.length;
-        int[] color = new int[n];
-        for (int i = 0; i < n; i++) {
-            if (color[i] == 0 && !dfsHelper(graph, i, color, 1)) {
-                return false;
-            }
+        int len = graph.length;
+        color = new Boolean[len];
+        for (int i = 0; i < len; i++) {
+            if (color[i] != null) continue;
+            if (dfs(i, true, graph) || dfs(i, false, graph)) continue;
+            return false;
         }
-        
         return true;
     }
-    
-    public boolean dfsHelper(int[][] graph, int cur, int[] color, int curColor) {
-        if (color[cur] != 0) {
-            return color[cur] == curColor;
+
+    private boolean dfs(int idx, boolean c, int[][] graph) {
+        if (color[idx] != null) return color[idx] == c;
+        color[idx] = c;
+        for (int next: graph[idx]) {
+            if (! dfs(next, ! c, graph)) return false;
         }
-        
-        color[cur] = curColor;
-        for (int neighbor : graph[cur]) {
-            if (!dfsHelper(graph, neighbor, color, -1 * curColor)) {
-                return false;
-            }
-        }
-        
         return true;
     }
 }

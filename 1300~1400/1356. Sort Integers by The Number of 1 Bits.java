@@ -41,12 +41,10 @@ Constraints:
 
 class Solution {
     public int[] sortByBits(int[] arr) {
-        int N = arr.length;
-        for (int i = 0; i < N; i++) {
-            arr[i] = Integer.bitCount(arr[i]) * 100000 + arr[i];
-        }
+        int len = arr.length;
+        for (int i = 0; i < len; i++) arr[i] += Integer.bitCount(arr[i]) * 100000;
         Arrays.sort(arr);
-        for (int i = 0; i < N; i++) arr[i] %= 100000;
+        for (int i = 0; i < len; i++) arr[i] %= 100000;
         return arr;
     }
 }

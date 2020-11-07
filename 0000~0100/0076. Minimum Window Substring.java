@@ -15,22 +15,20 @@ class Solution {
     public String minWindow(String s, String t) {
         int m = s.length(), n = t.length();
         if (n == 0 || n > m) return "";
-        int[] letterCnt = new int[128];
+        int[] map = new int[128];
         char[] sArr = s.toCharArray();
         int left = 0, cnt = 0, minLeft = -1, minLen = Integer.MAX_VALUE;
-        // 使用 char 数组替代 hash 表
-        for (char c : t.toCharArray()) ++letterCnt[c]; // ASCII 整数
+        for (char c : t.toCharArray()) map[c]++;
         for (int i = 0; i < m; ++i) {
-            if (--letterCnt[sArr[i]] >= 0) ++cnt;
-            while (cnt == n) { // 更新滑窗
+            if (--map[sArr[i]] >= 0) ++cnt;
+            while (cnt == n) {
                 if (minLen > i - left + 1) {
                     minLen = i - left + 1;
                     minLeft = left;
-                    // 按题设要求可提前返回
                     if (minLen == n) return s.substring(minLeft, minLeft + minLen);
                 }
-                if (++letterCnt[sArr[left]] > 0) --cnt; // 收缩判断 -> 终止当前while循环
-                ++left; // 滑动
+                if (++map[sArr[left]] > 0) --cnt;
+                ++left;
             }
         }
         return minLeft == -1 ? "" : s.substring(minLeft, minLeft + minLen);

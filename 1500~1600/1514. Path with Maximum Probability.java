@@ -51,6 +51,32 @@ class Solution {
 
 class Solution {
     public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+        double[] pro = new double[n];
+        pro[start] = 1;
+        boolean update = true;
+        while (update) {
+            update = false;
+            for (int i = 0; i < edges.length; i++) {
+                int nodeA = edges[i][0];
+                int nodeB = edges[i][1];
+                double prob = succProb[i];
+                if (pro[nodeA] * prob > pro[nodeB]) {
+                    pro[nodeB] = pro[nodeA] * prob;
+                    update = true;
+                } else if (pro[nodeB] * prob > pro[nodeA]) {
+                    pro[nodeA] = pro[nodeB] * prob;
+                    update = true;
+                }
+            }
+        }
+        return pro[end];
+    }
+}
+
+
+
+class Solution {
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
         ArrayList<double[]>[] graph = new ArrayList[n];
         for (int i = 0; i < n; i++) {
             graph[i] = new ArrayList<>();

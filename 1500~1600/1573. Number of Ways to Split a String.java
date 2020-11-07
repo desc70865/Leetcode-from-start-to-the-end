@@ -41,50 +41,16 @@ s[i] == '0' or s[i] == '1'
  */
 
 class Solution {
+    static final int MOD = 1_000_000_007;
+
     public int numWays(String s) {
-        int mod = 1_000_000_007;
         char[] str = s.toCharArray();
-        int N = str.length;
-        int cnt = 0, x = 0;
-        int[] index = new int[N];
-        for (char c: str) {
-            if (c == '1') cnt++;
-            index[x++] = cnt;
-        }
-        if (cnt == 0) {
-            long sum = 0;
-            while (N > 2) {
-                sum += N - 2;
-                N--;
-            }
-            return (int) (sum % mod);
-        }
-        if (cnt % 3 != 0) return 0;
-        int k = cnt / 3;
-        long a = 0, b = 0;
-        for (int num: index) {
-            if (num == k) a++;
-            else if (num == k * 2) b++;
-        }
-        return (int) (a * b % mod);
-    }
-}
-
-
-
-class Solution {
-    public int numWays(String s) {
-        int mod = 1_000_000_007;
-        char[] str = s.toCharArray();
-        int N = str.length;
+        long len = str.length;
         int cnt = 0;
-        int[] index = new int[N];
-        for (char c: str) {
-            cnt += c & 1;
-        }
+        for (char c: str) cnt += c & 1;
         if (cnt % 3 != 0) return 0;
         if (cnt == 0) {
-            return (int) ((long) (N - 1) * (N - 2) / 2 % mod);
+            return (int) ((len - 1) * (len - 2) / 2 % MOD);
         }
         int t = 0, k = cnt / 3;
         long a = 0, b = 0;
@@ -92,7 +58,28 @@ class Solution {
             t += c & 1;
             if (t == k) a++;
             else if (t == k * 2) b++;
+            else if (t > k * 2) break;
         }
-        return (int) (a * b % mod);
+        return (int) (a * b % MOD);
+    }
+}
+
+
+
+class Solution {
+    static final int MOD = 1_000_000_007;
+
+    public int numWays(String s) {
+        long len = s.length();
+        int sum = 0;
+        int[] map = new int[100000];
+        for (char c: s.toCharArray()) {
+            sum += c & 1;
+            map[sum]++;
+        }
+        if (sum % 3 != 0) return 0;
+        if (sum == 0) return (int) ((len - 1) * (len - 2) / 2 % MOD);
+        int k = sum / 3;
+        return (int) ((long) map[k] * map[k * 2] % MOD);
     }
 }

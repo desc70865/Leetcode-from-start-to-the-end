@@ -29,6 +29,7 @@ class Solution {
     int[][] dirs = new int[][] {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
     int m, n;
     char[] str;
+    
     public boolean exist(char[][] board, String word) {
         m = board.length;
         n = board[0].length;

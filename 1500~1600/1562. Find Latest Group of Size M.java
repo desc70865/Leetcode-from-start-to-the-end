@@ -50,40 +50,92 @@ All integers in arr are distinct.
 
 class Solution {
     public int findLatestStep(int[] arr, int m) {
-        
+        int len = arr.length;
+        if (m == len) return m;
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        map.put(1, len);
+        for (int i = len - 1; i >= m - 1; i--) {
+            int idx = arr[i];
+            int start = map.floorKey(idx);
+            int end = map.get(start);
+            if (idx > start) {
+                if (idx - start == m) return i;
+                map.put(start, idx - 1);
+            }
+            if (end > idx) {
+                if (end - idx == m) return i;
+                map.put(idx + 1, end);
+            }
+        }
+        return -1;
     }
 }
 
 
 
 class Solution {
-    public int findLatestStep(int[] arr, int k) {
-        int N = arr.length;
-        int[] set = new int[N], sz = new int[N];
-        for (int i = 0; i< N; i++) set[i] = i;
-        int ans = -1;
-        
-        int[] f = new int[1+N];
-        for (int i = 0; i< N; i++) {
-            int pos = arr[i]-1;
-            sz[pos] = 1;
-            if (pos > 0 && sz[find(set, pos-1)] > 0) {
-                f[sz[find(set, pos-1)]]--;
-                sz[find(set, pos)] += sz[find(set, pos-1)];
-                set[find(set, pos-1)] = find(set, pos);
-            }
-            if (pos+1 < N && sz[find(set, pos+1)] > 0) {
-                f[sz[find(set, pos+1)]]--;
-                sz[find(set, pos)] += sz[find(set, pos+1)];
-                set[find(set, pos+1)] = find(set, pos);
-            }
-            f[sz[find(set, pos)]]++;
-            if (f[k] > 0) ans = i+1;
+    public int findLatestStep(int[] arr, int m) {
+        int len = arr.length;
+        if (m == len) return m;
+        TreeSet<Integer> set = new TreeSet<>();
+        set.add(0);
+        set.add(len + 1);
+        for (int i = len - 1; i >= m - 1; i--) {
+            int idx = arr[i];
+            int L = set.lower(idx);
+            int R = set.higher(idx);
+            set.add(idx);
+            if (idx - L - 1 == m || R - idx - 1 == m) return i;
         }
-        return ans;
+        return -1;
     }
-    
-    int find(int[] set, int u) {
-        return set[u] = (set[u] == u ? u : find(set, set[u]));
+}
+
+
+
+class Solution {
+    public int findLatestStep(int[] arr, int m) {
+        int n = arr.length;
+        if (m == n) {
+            return n;
+        }
+        int[][] segments = new int[1][2];
+        segments[0][0] = 1;
+        segments[0][1] = n;
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = 0; j < segments.length; ++j) {
+                int[] s = segments[j];
+                if (arr[i] < s[0] || s[1] < arr[i]) continue;
+                int a = arr[i] - s[0];
+                int b = s[1] - arr[i];
+                if (a == m || b == m) return i;
+                if (arr[i] == s[0]) s[0]++;
+                else if (arr[i] == s[1]) s[1]--;
+                else {
+                    if (a > m && b > m) {
+                        int[][] nextSeg = new int[segments.length + 1][2];
+                        int k;
+                        for (k = 0; k < j; ++k) nextSeg[k] = segments[k];
+                        nextSeg[k++] = new int[]{s[0], arr[i] - 1};
+                        nextSeg[k++] = new int[]{arr[i] + 1, s[1]};
+                        for (; k < nextSeg.length; ++k) nextSeg[k] = segments[k - 1];
+                        segments = nextSeg;
+                    } else if (a > m) {
+                        s[1] = arr[i] - 1;
+                    } else if (b > m) {
+                        s[0] = arr[i] + 1;
+                    } else {
+                        if (segments.length == 1) return -1;
+                        int[][] nextSeg = new int[segments.length - 1][2];
+                        for (int k = 0; k < nextSeg.length; ++k) {
+                            nextSeg[k] = segments[k < j ? k : k + 1];
+                        }
+                        segments = nextSeg;
+                    }
+                }
+                break;
+            }
+        }
+        return -1;
     }
 }

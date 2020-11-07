@@ -43,25 +43,19 @@ keyName[i] contains only lowercase English letters.
 
 class Solution {
     public List<String> alertNames(String[] keyName, String[] keyTime) {
-        List<String> res = new ArrayList<>();
         Map<String, List<Integer>> map = new HashMap<>();
-        int N = keyName.length;
-        for (int i = 0; i < N; i++) {
-            String name = keyName[i];
-            int t = time(keyTime[i].toCharArray());
-            List<Integer> p;
-            if (! map.containsKey(name)) p = new ArrayList<>();
-            else p = map.get(name);
-            p.add(t);
-            map.put(name, p);
+        for (int i = 0; i < keyName.length; i++) {
+            String key = keyName[i];
+            int val = getTime(keyTime[i].toCharArray());
+            map.computeIfAbsent(key, z -> new ArrayList<>()).add(val);
         }
+        List<String> res = new ArrayList<>();
         for (Map.Entry<String, List<Integer>> entry: map.entrySet()) {
-            String name = entry.getKey();
             List<Integer> p = entry.getValue();
             Collections.sort(p);
             for (int i = 2; i < p.size(); i++) {
                 if (p.get(i) - p.get(i - 2) <= 60) {
-                    res.add(name);
+                    res.add(entry.getKey());
                     break;
                 }
             }
@@ -70,7 +64,7 @@ class Solution {
         return res;
     }
     
-    private int time(char[] s) {
+    private int getTime(char[] s) {
         return s[0] * 600 + s[1] * 60 + s[3] * 10 + s[4];
     }
 }
