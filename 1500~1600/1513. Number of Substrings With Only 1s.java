@@ -39,29 +39,21 @@ s[i] == '0' or s[i] == '1'
 
 class Solution {
     public int numSub(String s) {
-        char[] arr = s.toCharArray();
-        int len = 0;
-        long res = 0;
-        for (char c: arr) {
-            if (c == '0') {
-                if (len != 0) {
-                    res += cnt(len);
-                }
-                len = 0;
-            } else {
-                len++;
+        long sum = 0;
+        int cnt = 0;
+        for (char c: s.toCharArray()) {
+            if (c == '1') cnt++;
+            else {
+                sum += get(cnt);
+                cnt = 0;
             }
         }
-        if (len != 0) {
-            res += cnt(len);
-        }
-        
-        return (int) res;
+        sum += get(cnt);
+        return (int) (sum % 1_000_000_007);
     }
-    
-    private static long cnt(int x) {
-    	long t = (long) x;
-        return t * (t + 1) / 2 % 1000000007;
+
+    private long get(long x) {
+        return x * (x + 1) / 2;
     }
 }
 
@@ -69,15 +61,12 @@ class Solution {
 
 class Solution {
     public int numSub(String s) {
-        char[] chars = s.toCharArray();
-        long cnt = 0, ans = 0, mod = 1000_000_000 + 7;
-        for (char c: chars) {
-            if (c == '0') {
-                cnt = 0;
-            } else {
-                ans += ++cnt;
-            }
+        long sum = 0;
+        int cnt = 0;
+        for (char c: s.toCharArray()) {
+            if (c == '0') cnt = 0;
+            else sum += ++cnt;
         }
-        return (int)(ans % mod);
+        return (int) (sum % 1_000_000_007);
     }
 }
