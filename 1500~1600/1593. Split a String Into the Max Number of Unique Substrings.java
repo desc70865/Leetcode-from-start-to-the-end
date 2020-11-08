@@ -32,31 +32,24 @@ s contains only lower case English letters.
  */
 
 class Solution {
-    int res = 0;
-    Set<String> words;
-    
+    int max = 0;
     public int maxUniqueSplit(String s) {
-        words = new HashSet<>();
-        maxUniqueSplitHelper(s, 0);
-        return res;
+        dfs(s, 0, new HashSet<>());
+        return max;
     }
 
-    void maxUniqueSplitHelper(String s, final int start) {
-        final int n = s.length();
-        if (start == n) {
-            res = Math.max(res, words.size());
+    private void dfs(String s, int idx, Set<String> set) {
+        if (idx == s.length()) {
+            max = Math.max(set.size(), max);
             return;
         }
-        
-        if (words.size() + (n - start) <= res) return;
-        
-        for (int end = start + 1; end < n + 1; ++end) {
-            String word = s.substring(start, end);
-            if (! words.contains(word)) {
-                words.add(word);
-                maxUniqueSplitHelper(s, end);
-                words.remove(word);
-            }
+        if (set.size() + s.length() - idx <= max) return; // core
+        for (int i = idx; i < s.length(); i++) {
+            String cur = s.substring(idx, i + 1);
+            if (set.contains(cur)) continue;
+            set.add(cur);
+            dfs(s, i + 1, set);
+            set.remove(cur);
         }
     }
 }
