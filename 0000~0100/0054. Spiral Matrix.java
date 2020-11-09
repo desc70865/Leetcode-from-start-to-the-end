@@ -22,11 +22,12 @@ Output: [1,2,3,4,8,12,11,10,9,5,6,7]
  */
 
 class Solution {
-    static int height;
-    static int width;
-    static int x = 0;
-    static int y = 0;
-    public static List<Integer> spiralOrder(int[][] matrix) {
+    int height;
+    int width;
+    int x = 0;
+    int y = 0;
+    
+    public List<Integer> spiralOrder(int[][] matrix) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         if(matrix == null || matrix.length == 0)
             return result;
@@ -36,7 +37,8 @@ class Solution {
         helper(matrix, result, height, width, count);
         return result;
     }
-    private static void helper (int[][] matrix, ArrayList<Integer> result, int height, int width, int count) {
+    
+    private void helper (int[][] matrix, ArrayList<Integer> result, int height, int width, int count) {
         if (count == 0) {
             return;
         } else if (count == 1) {

@@ -32,12 +32,8 @@ Note:
 
 class Solution {
     public int[][] kClosest(int[][] points, int K) {
-        List<int[]> list = new ArrayList<>();
-        for (int[] p: points) list.add(p);
-        Collections.sort(list, (a, b) -> dis(a[0], a[1]) - dis(b[0], b[1]));
-        int[][] res = new int[K][2];
-        for (int i = 0; i < K; i++) res[i] = list.get(i);
-        return res;
+        Arrays.sort(points, (a, b) -> dis(a[0], a[1]) - dis(b[0], b[1]));
+        return Arrays.copyOfRange(points, 0, K);
     }
 
     private int dis(int x, int y) {
@@ -92,5 +88,23 @@ class Solution {
         int[] tmp = arr[l];
         arr[l] = arr[r];
         arr[r] = tmp;
+    }
+}
+
+
+
+class Solution {
+    public int[][] kClosest(int[][] points, int K) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> dis(a[0], a[1]) - dis(b[0], b[1]));
+        for (int[] p: points) pq.offer(p);
+        int[][] res = new int[K][2];
+        for (int i = 0; i < K; i++) {
+            res[i] = pq.poll();
+        }
+        return res;
+    }
+
+    private int dis(int x, int y) {
+        return x * x + y * y;
     }
 }
