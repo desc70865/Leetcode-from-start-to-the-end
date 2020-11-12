@@ -32,27 +32,11 @@ Constraints:
 class Solution {
     public int numIdenticalPairs(int[] nums) {
         Map<Integer, Integer> map = new HashMap<>();
-        int res = 0;
+        int sum = 0;
         for (int num: nums) {
-            map.compute(num, (k, v) -> {
-                if (v == null) {
-                    v = 1;
-                } else {
-                    v += 1;
-                }
-                return v;
-            });
+            sum += map.merge(num, 1, Integer::sum) - 1;
         }
-        
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            res += factorial(entry.getValue());
-        }
-        
-        return res;
-    }
-    
-    private int factorial(int x) {
-        return x * (x - 1) / 2;
+        return sum;
     }
 }
 
@@ -70,23 +54,5 @@ class Solution {
             }
         }
         return res;
-    }
-}
-
-
-
-class Solution {
-    public int numIdenticalPairs(int[] nums) {
-        Map<Integer, Integer> ints = new HashMap<Integer, Integer>();
-        int pairs = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (ints.containsKey(nums[i])) {
-                pairs += ints.get(nums[i]);
-                ints.put(nums[i], ints.get(nums[i]) + 1);
-            } else {
-                ints.put(nums[i], 1);
-            }
-        }
-        return pairs;
     }
 }

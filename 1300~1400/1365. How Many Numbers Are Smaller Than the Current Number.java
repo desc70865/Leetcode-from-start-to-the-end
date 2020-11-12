@@ -69,3 +69,36 @@ class Solution {
         return L;
     }
 }
+
+
+
+class Solution {
+    public int[] smallerNumbersThanCurrent(int[] nums) {
+        BIT bit = new BIT(100);
+        for (int num: nums) bit.update(num + 1);
+        for (int i = 0; i < nums.length; i++) nums[i] = bit.compute(nums[i]);
+        return nums;
+    }
+}
+
+class BIT {
+    int[] bit;
+
+    public BIT(int n) {
+        bit = new int[n + 1];
+    }
+
+    public int compute(int val) {
+        int res = 0;
+        for (; val > 0; val -= (val & - val)) {
+            res += bit[val];
+        }
+        return res;
+    }
+
+    public void update(int val) {
+        for (; val < bit.length; val += (val & - val)) {
+            bit[val]++;
+        }
+    }
+}

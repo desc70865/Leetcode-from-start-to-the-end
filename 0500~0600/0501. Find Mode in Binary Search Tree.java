@@ -75,3 +75,32 @@ class Solution {
         inOrder(node.right);
     }
 }
+
+
+
+class Solution {
+    Map<Integer, Integer> map;
+
+    public int[] findMode(TreeNode root) {
+        map = new HashMap<>();
+        dfs(root);
+        int max = 0;
+        for (int v: map.values()) {
+            max = Math.max(max, v);
+        }
+        List<Integer> list = new ArrayList<>();
+        for (int k: map.keySet()) {
+            if (map.get(k) == max) {
+                list.add(k);
+            }
+        }
+        return list.stream().mapToInt(Integer::valueOf).toArray();
+    }
+
+    private void dfs(TreeNode node) {
+        if (node == null) return;
+        map.merge(node.val, 1, Integer::sum);
+        dfs(node.left);
+        dfs(node.right);
+    }
+}

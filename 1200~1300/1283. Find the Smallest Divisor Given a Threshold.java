@@ -33,8 +33,11 @@ nums.length <= threshold <= 10^6
 class Solution {
     public int smallestDivisor(int[] nums, int threshold) {
         int L = 1;
-        int R = 0;
-        for (int num: nums) R = Math.max(R, num);
+        // int R = 0;
+        // for (int num: nums) {
+        //     R = Math.max(R, num);
+        // }
+        int R = 1000000;
         while (L < R) {
             int mid = L + R >> 1;
             if (isValid(mid, nums, threshold)) R = mid;
@@ -49,6 +52,6 @@ class Solution {
     }
 
     private int f(int num, int k) {
-        return num / k + Math.min(1, num % k);
+        return (num - 1) / k + 1;
     }
 }

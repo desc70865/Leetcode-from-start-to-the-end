@@ -25,53 +25,32 @@ Output: 0
  */
 
 class Solution {
-    public static int searchInsert(int[] nums, int target) {
-        int l = 0, r = nums.length - 1, mid;
-        if (nums == null || r == -1 || target <= nums[0]) {
-            return 0;
+    public int searchInsert(int[] nums, int target) {
+        int L = 0;
+        int R = nums.length - 1;
+        while (L <= R) {
+            int M = L + R >> 1;
+            if (nums[M] == target) return M;
+            else if (nums[M] < target) L = M + 1;
+            else R = M - 1;
         }
-        if (target > nums[r]) {
-            return r + 1;
-        }
-        while (l <= r) {
-            mid = l + (r - l) / 2; // 防止溢出
-            if (target < nums[mid]) {
-                r = mid - 1;
-            } else if (target > nums[mid]) {
-                l = mid + 1;
-            } else {
-                return mid;
-            }
-        }
-        return l;
+        return L;
     }
 }
 
-// 还是二分搜索,除了常规返回值,还需要处理未找到的结果
-// 此处插入位置指某个大于target的临近坐标
-// 即将标准默认返回值 -1 替换为 越界后的 l
-// 在初始位置检索首尾或许能降低复杂度
-/* 
-Runtime: 0 ms, faster than 100.00% of Java online submissions for Search Insert Position.
-Memory Usage: 39.1 MB, less than 100.00% of Java online submissions for Search Insert Position.
- */
+
 
 class Solution {
     public int searchInsert(int[] nums, int target) {
-        if (target <= nums[0]) {
-            return 0;
+        int L = 0;
+        int R = nums.length;
+        while (L < R) {
+            int M = L + R >> 1;
+            if (nums[M] < target) L = M + 1;
+            else R = M;
         }
-        int l = 0, r = nums.length - 1;
-        while (l <= r) {
-            int mid = l + (r - l) / 2;
-            if (nums[mid] < target) {
-                l = mid + 1;
-            } else if (nums[mid] > target) {
-                r = mid - 1;
-            } else {
-                return mid;
-            }
-        }
-        return l;
+        return L;
     }
 }
+
+// https://leetcode-cn.com/problems/search-insert-position/
