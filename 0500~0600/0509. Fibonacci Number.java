@@ -102,3 +102,25 @@ class Solution {
         return fib(N - 1) + fib(N - 2);
     }
 }
+
+
+
+class Solution {
+    static long[] f;
+    static final int SIZE = 30;
+    static final int MOD = (int) 1e9 + 7;
+
+    static {
+        f = new long[SIZE + 1];
+        f[0] = 0;
+        f[1] = 1;
+        for (int i = 2; i <= SIZE; i++) {
+            f[i] = f[i - 1] + f[i - 2];
+            // f[i] %= MOD;
+        }
+    }
+
+    public int fib(int n) {
+        return (int) f[n];
+    }
+}

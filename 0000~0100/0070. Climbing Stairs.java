@@ -40,6 +40,7 @@ class Solution {
     public int climbStairs(int n) {
         return Jump(n, 2);
     }
+    
     private int Jump(int n, int k) {
         int[] dp = new int[n+1];
         dp[0] = 1; dp[1] = 1;
@@ -99,5 +100,27 @@ class Solution {
             m = matrixMul(m, m);
         }
         return res;
+    }
+}
+
+
+
+class Solution {
+    static long[] f;
+    static final int SIZE = 100;
+    static final int MOD = (int) 1e9 + 7;
+
+    static {
+        f = new long[SIZE + 1];
+        f[0] = 0;
+        f[1] = 1;
+        for (int i = 2; i <= SIZE; i++) {
+            f[i] = f[i - 1] + f[i - 2];
+            // f[i] %= MOD;
+        }
+    }
+
+    public int climbStairs(int n) {
+        return (int) f[n + 1];
     }
 }

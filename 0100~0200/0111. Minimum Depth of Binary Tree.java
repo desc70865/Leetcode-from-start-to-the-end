@@ -55,3 +55,25 @@ class Solution {
         return 1 + (l * r == 0 ? Math.max(l, r) : Math.min(l, r));
     }
 }
+
+
+
+class Solution {
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        Deque<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int depth = 1;
+        while (! queue.isEmpty()) {
+            int size = queue.size();
+            while (size-- > 0) {
+                TreeNode node = queue.poll();
+                if (node.left == null && node.right == null) return depth;
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+            depth++;
+        }
+        return -1;
+    }
+}
