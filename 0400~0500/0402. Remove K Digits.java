@@ -56,7 +56,7 @@ class Solution {
         int left = 0;
         int right = 1;
         
-        // if '0' exist in [0, k + 1] remove e before these '0'
+        // if '0' exist in [0, k + 1], remove un-'0' element(s)
         for (; right < len && k > 0; right++) {
             if (right - left > k) break;
             if (str[right] == '0') {
@@ -67,37 +67,25 @@ class Solution {
             }
         }
         
-        if (right - left == 1 && right >= len || left == len) return "0";
-
-        char[] ans = new char[len];
-        int in = 0;
-        int idx;
-
-        if (k != 0) {
-            idx = left;
-            ans[in++] = str[idx];
-            for(idx++; idx < len && k > 0; idx++) {
-                if (in - 1 >= 0 && ans[in - 1] > str[idx]) {
-                    int p = in - 1;
-                    while (p >= 0 && k > 0 && ans[p] > str[idx]) {
-                        in--; 
-                        k--;
-                        p--;
-                    }
-                    ans[in++] = str[idx];
-                }
-                else ans[in++] = str[idx];
-            }
-            while (k > 0) {  
-                in--;     
-                k--;
-            }
-            while (idx < len) {
-                ans[in++] = str[idx++];
-            }
-        } else {
-            while (left < len) ans[in++] = str[left++];
+        if (left == len || right - left == 1 && right >= len) return "0";
+        if (k == 0) {
+            return new String(Arrays.copyOfRange(str, left, len));
         }
-        return new String(Arrays.copyOfRange(ans, 0, in));
+
+        char[] stack = new char[len];
+        int end = 0;
+        stack[end++] = str[left++];
+        for (; left < len && k > 0; left++) {
+            while (k > 0 && end > 0 && stack[end - 1] > str[left]) {
+                k--;
+                end--;
+            }
+            stack[end++] = str[left];
+        }
+        end -= k;
+        while (left < len) {
+            stack[end++] = str[left++];
+        }
+        return new String(Arrays.copyOfRange(stack, 0, end));
     }
 }

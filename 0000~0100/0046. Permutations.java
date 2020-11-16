@@ -18,15 +18,16 @@ Output:
 class Solution {
     List<List<Integer>> res;
     boolean[] v;
+    
     public List<List<Integer>> permute(int[] nums) {
         res = new ArrayList<>();
         int N = nums.length;
         v = new boolean[N];
-        helper(nums, N, new ArrayList<>());
+        backtracking(nums, N, new ArrayList<>());
         return res;
     }
 
-    private void helper(int[] nums, int rem, ArrayList<Integer> p) {
+    private void backtracking(int[] nums, int rem, ArrayList<Integer> p) {
         if (rem == 0) {
             res.add(new ArrayList<>(p));
             return;
@@ -35,7 +36,7 @@ class Solution {
             if (v[i]) continue;
             v[i] = true;
             p.add(nums[i]);
-            helper(nums, rem - 1, p);
+            backtracking(nums, rem - 1, p);
             p.remove(p.size() - 1);
             v[i] = false;
         }

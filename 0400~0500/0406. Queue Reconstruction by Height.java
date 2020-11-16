@@ -16,7 +16,10 @@ Output:
 
 class Solution {
     public int[][] reconstructQueue(int[][] people) {
-        
+        Arrays.sort(people, (a, b) -> a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]);
+        List<int[]> list = new ArrayList<>();
+        for (int[] p: people) list.add(p[1], p);
+        return list.toArray(new int[0][2]);
     }
 }
 
@@ -24,65 +27,79 @@ class Solution {
 
 class Solution {
     public int[][] reconstructQueue(int[][] people) {
-        Arrays.sort(people, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                // if the heights are equal, compare k-values
-                return o1[0] == o2[0] ? o1[1] - o2[1] : o2[0] - o1[0];
-            }
-        });
-
-        List<int[]> output = new LinkedList<>();
-        for (int[] p : people) {
-            output.add(p[1], p);
-        }
-
-        int n = people.length;
-        return output.toArray(new int[n][2]);
-    }
-}
-
-
-
-class Solution {
-    public int[][] reconstructQueue(int[][] people) {
-        quickSort(people, 0, people.length-1);
-        
-        List<int[]> res = new ArrayList<>();
-        for (int[] p : people) {
-            res.add(p[1], p);
-        }
-        
-        return res.toArray(new int[people.length][2]);
+        quickSort(people, 0, people.length - 1);
+        List<int[]> list = new ArrayList<>();
+        for (int[] p: people) list.add(p[1], p);
+        return list.toArray(new int[0][2]);
     }
     
-    private void quickSort(int[][] people, int left, int right) {
-        if (left >= right) {
-            return;
-        }
-        int[] pivot = people[left];
-        int l = left;
-        int r = right;
-        
+    private void quickSort(int[][] arr, int left, int right) {
+        if (left >= right) return;
+        int pivot = partition(arr, left, right);
+        quickSort(arr, left, pivot - 1);
+        quickSort(arr, pivot + 1, right);
+    }
+    
+    private int partition(int[][] arr, int l, int r) {
+        int[] pivot = arr[l];
         while (l < r) {
-            while (l < r && (people[r][0] < pivot[0] ||
-                (people[r][0] == pivot[0] && people[r][1] >= pivot[1]))) {
+            while (l < r) {
+                if (arr[r][0] > pivot[0] || arr[r][0] == pivot[0] && arr[r][1] < pivot[1]) {
+                    arr[l++] = arr[r];
+                    break;
+                }
                 r--;
             }
-            if (l < r) {
-                people[l++] = people[r];
-            }
-            while (l < r && (people[l][0] > pivot[0] ||
-                (people[l][0] == pivot[0] && people[l][1] <= pivot[1]))) {
+            while (l < r) {
+                if (arr[l][0] < pivot[0] || arr[l][0] == pivot[0] && arr[l][1] > pivot[1]) {
+                    arr[r--] = arr[l];
+                    break;
+                }
                 l++;
             }
-            if (l < r) {
-                people[r--] = people[l];
+        }
+        arr[l] = pivot;
+        return l;
+    }
+}
+
+
+
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        TreeMap<Integer, TreeSet<Integer>> map = new TreeMap<>();
+        for (int[] p: people) {
+            map.computeIfAbsent(p[0], z -> new TreeSet<>()).add(p[1]);
+        }
+        List<int[]> list = new ArrayList<>();
+        for (int k: map.descendingKeySet()) {
+            for (int v: map.get(k)) {
+                list.add(v, new int[] {k, v});
             }
         }
-        
-        people[l] = pivot;
-        quickSort(people, left, l - 1);
-        quickSort(people, l + 1, right);
+        return list.toArray(new int[0][2]);
+    }
+}
+
+
+
+class Solution {
+    static final int BASE = 1048576;
+    
+    public int[][] reconstructQueue(int[][] people) {
+        int len = people.length;
+        if (len == 0) return new int[0][0];
+        long[] aux = new long[len];
+        for (int i = 0; i < len; i++) {
+            aux[i] = ((long) people[i][0] << 20) + BASE - 1 - people[i][1];
+        }
+        Arrays.sort(aux);
+        List<int[]> list = new ArrayList<>();
+        for (int i = len - 1; i >= 0; i--) {
+            int a = (int) (aux[i] >> 20);
+            int b = (int) (BASE - 1 - aux[i] % BASE);
+            list.add(b, new int[] {a, b});
+        }
+        return list.toArray(new int[0][2]);
     }
 }
