@@ -36,17 +36,11 @@ class Solution {
         for (int[] line: matrix) {
             map.merge(Arrays.hashCode(line[0] == 0 ? line : reverse(line)), 1, Integer::sum);
         }
-        int max = 0;
-        for (int v: map.values()) {
-            max = Math.max(max, v);
-        }
-        return max;
+        return map.values().stream().max(Integer::compareTo).get();
     }
 
     private int[] reverse(int[] nums) {
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] ^= 1;
-        }
+        for (int i = 0; i < nums.length; i++) nums[i] ^= 1;
         return nums;
     }
 }
@@ -84,5 +78,41 @@ class Solution {
             hash %= MOD;
         }
         return (int) hash;
+    }
+}
+
+
+
+class Solution {
+    public int maxEqualRowsAfterFlips(int[][] matrix) {
+        int len = matrix.length;
+        int[] index = new int[len];
+        for (int i = 0; i < len; i++) {
+            index[i] = i;
+        }
+        return radixSort(matrix, index, 0, len - 1, 1);
+    }
+    
+    // base on the first element at each line
+    public int radixSort(int[][] arr, int[] index, int start, int end, int cur) {
+        if (start > end) return 0;
+        if (cur == arr[0].length) return end - start + 1;
+        
+        int i = start, j = end;
+        
+        while (i <= j) {
+            while(i <= j && arr[index[i]][cur] == arr[index[i]][0]) i++;
+            while(i <= j && arr[index[j]][cur] != arr[index[j]][0]) j--;
+            if (i > j) break;
+            // Swap.
+            int temp = index[i];
+            index[i] = index[j];
+            index[j] = temp;
+        }
+        
+        return Math.max(
+            radixSort(arr, index, start, j, cur + 1),
+            radixSort(arr, index, i, end, cur + 1)
+        );
     }
 }

@@ -46,14 +46,14 @@ Therefore, you can't travel around the circuit once no matter where you start.
 class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
         int len = gas.length;
-        int sum = 0, tmp = 0, index = 0;
-        for (int i=0; i < len; i++) {
+        int sum = 0, preSum = 0, index = 0;
+        for (int i = 0; i < len; i++) {
             int diff = gas[i] - cost[i];
             sum += diff;
-            if (diff >= -tmp) tmp += diff;
+            if (diff + preSum >= 0) preSum += diff;
             else {
-                tmp = 0;
-                index = i+1;
+                preSum = 0;
+                index = i + 1;
             }
         }
         return (sum < 0 || index >= len) ? -1 : index;

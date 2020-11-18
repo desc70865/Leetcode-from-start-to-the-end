@@ -37,100 +37,48 @@ class Solution {
 
 class Solution {
     public int[][] merge(int[][] intervals) {
-        if (intervals.length == 0) return new int[0][0];
-        List<int[]> ans = new ArrayList<>();
-        int[] cur;
-        sort(intervals, 0, intervals.length-1);
-        
-        cur = intervals[0];
-        for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0] <= cur[1]) {
-                if (intervals[i][1] > cur[1]) cur[1] = intervals[i][1]; // 半更新
-                else continue; // 略过
-            } else { // 更新
-                ans.add(cur);
-                cur = intervals[i];
-            }
-        }
-        ans.add(cur);
-        return ans.toArray(new int[ans.size()][]);
-    }
-    
-    public void sort(int[][] arr, int l, int r) {
-        if (l >= r) return;
-        int p = partition(arr, l, r);
-        sort(arr, l, p-1);
-        sort(arr, p+1, r);
-    }
-    public int partition(int[][] arr, int l, int r) {
-        int[] temp = arr[l];
-        while (l < r) {
-            while (l < r) {
-                if (arr[r][0] < temp[0]) {
-                    arr[l] = arr[r];
-                    break;
-                }
-                r--;
-            }
-            while (l < r) {
-                if (arr[l][0] > temp[0]) {
-                    arr[r] = arr[l];
-                    break;
-                }
-                l++;
-            }
-        }
-        arr[l] = temp;
-        return l;
-    }
-}
-
-// 行吧,我愿称之为最强.
-
-class Solution {
-    public int[][] merge(int[][] intervals) {
         if (intervals == null || intervals.length == 0)
-            return intervals; // new int[0][0]
-        sort(intervals, 0, intervals.length-1);
+            return intervals; 
+        sort(intervals, 0, intervals.length - 1);
         List<int[]> arr = new ArrayList<int[]>();
         arr.add(intervals[0]);
         for (int i = 1; i < intervals.length; ++i) {
-            int cur = arr.size()-1; // 上一个插入元素
-            else (arr.get(cur)[1] < intervals[i][0]) {
+            int pre = arr.size() - 1;
+            if (arr.get(pre)[1] < intervals[i][0]) {
                 arr.add(intervals[i]);
-            } if {
-                if (arr.get(cur)[1] < intervals[i][1])
-                    arr.get(cur)[1] = intervals[i][1];
+            } else if (arr.get(pre)[1] < intervals[i][1]) {
+                arr.get(pre)[1] = intervals[i][1];
             }
         }
-        return arr.toArray(new int[arr.size()][2]);
+        return arr.toArray(new int[0][2]);
     }
     
     public void sort(int[][] arr, int l, int r) {
         if (l >= r) return;
         int p = partition(arr, l, r);
-        sort(arr, l, p-1);
-        sort(arr, p+1, r);
+        sort(arr, l, p - 1);
+        sort(arr, p + 1, r);
     }
+    
     public int partition(int[][] arr, int l, int r) {
-        int[] temp = arr[l]; // 分治:选取一个幸运元素作为基准并最终返回其坐标
+        int[] pivot = arr[l];
         while (l < r) {
             while (l < r) {
-                if (arr[r][0] < temp[0]) {
-                    arr[l] = arr[r];
-                    break; // 跳出一层循环
+                if (arr[r][0] < pivot[0]) {
+                    arr[l++] = arr[r];
+                    break;
                 }
                 r--;
             }
             while (l < r) {
-                if (arr[l][0] > temp[0]) {
-                    arr[r] = arr[l];
+                if (arr[l][0] > pivot[0]) {
+                    arr[r--] = arr[l];
                     break;
                 }
                 l++;
             }
         }
-        arr[l] = temp;
+        arr[l] = pivot;
         return l;
     }
 }

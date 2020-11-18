@@ -43,36 +43,20 @@ Constraints:
 
 class Solution {
     public char findKthBit(int n, int k) {
-        
+        return (char) (helper(k) + 48);
     }
-}
 
-
-
-class Solution {
-    public char findKthBit(int n, int k) {
-        if (n == 1) return '0';
-        
-        int half = 1 << (n-1);
-        if (half == k) return '1';
-        else if (half > k) return findKthBit(n-1, k);
-        else return findKthBit(n-1, 2 * half - k) == '0' ? '1' : '0';
+    private int helper(int k) {
+        if (k < 3) return k - 1;
+        int mid = getMid(k);
+        if (k == mid) return 1;
+        return 1 - helper(2 * mid - k);
     }
-}
 
-
-
-class Solution {
-    public char findKthBit(int n, int k) {
-        return helper(n, k) ? '1' : '0';
-    }
-    
-    private boolean helper(int n, int k) {
-        if (n == 1) return false;
-        
-        int half = 1 << (n-1);
-        if (half == k) return true;
-        else if (half > k) return helper(n-1, k);
-        else return ! helper(n-1, 2 * half - k);
+    private int getMid(int n) {
+        for (int i = 0; i < 5; i++) {
+            n |= n >> (1 << i);
+        }
+        return n + 1 >> 1;
     }
 }
