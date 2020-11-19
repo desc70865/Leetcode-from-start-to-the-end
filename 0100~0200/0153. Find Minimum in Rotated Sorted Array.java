@@ -20,33 +20,20 @@ Output: 0
 
 class Solution {
     public int findMin(int[] nums) {
-        int len = nums.length;
-        if (len == 0) return -1;
-        else if (len == 1) return nums[0];
-        if (nums[0] < nums[len-1]) return nums[0];
-        for (int i=1; i < len; i++) {
-            if (nums[i] < nums[i-1]) return nums[i];
+        if (nums.length == 0) return -1;
+        int L = 0;
+        int R = nums.length - 1;
+        while (L <= R) {
+            int M = L + R >> 1;
+            if (M > 0 && nums[M] < nums[M - 1]) {
+                return nums[M];
+            } else if (nums[M] >= nums[L] && nums[M] > nums[R]) {
+				// @core ! M == L ?
+                L = M + 1;
+            } else {
+                R = M - 1;
+            }
         }
-        return -1;
-    }
-}
-
-
-
-class Solution {
-    public int findMin(int[] nums) {
-        int len = nums.length;
-        if (len == 0) return -1;
-        else if (len == 1) return nums[0];
-        int left = 0, right = len-1;
-        
-        while (left < right) {
-            int mid = left + (right - left)/2;
-            if (mid > 0 && nums[mid] < nums[mid-1]) return nums[mid];
-            if (nums[mid] >= nums[left] && nums[right] < nums[mid]) left = mid + 1;
-            else right = mid - 1;
-        }
-        
-        return nums[left];    
+        return nums[L];
     }
 }
