@@ -22,73 +22,20 @@ The longest substring is "ababb", as 'a' is repeated 2 times and 'b' is repeated
  */
 
 class Solution {
-    private int res = 0, k;
-    private String s;
-    public int longestSubstring(String s, int k) {
-        if (s == null || s.length() < k) {
-            return 0;
-        }
-        if (k <= 1) {
-            return s.length();
-        }
-        
-        this.k = k;
-        this.s = s;
-        
-        helper(0, s.length());
-        
-        return res;
-    }
-    
-    public void helper(int low, int high) {
-        int[] count = new int[26];
-        for (int i = low; i < high; i++) {
-            count[s.charAt(i) - 'a']++;
-        }
-        
-        boolean flag = true;
-        for (int x : count) {
-            if ((0 - x & x - k) < 0) { // x ∈ (0, k)
-                flag = false;
-                break;
-            }
-        }
-        if (flag) {
-            res = high - low;
-            return;
-        }
-        int start = low;
-        for (int end = low; end < high; end++) {
-            if (count[s.charAt(end) - 'a'] < k) {
-            	if (end - start > res) {
-            		helper(start, end);
-            	}
-                start = end + 1;
-            }
-        }
-        if (high - start > res) {
-            helper(start, high);
-        }
-    }
-}
-
-
-
-class Solution {
     public int longestSubstring(String s, int k) {  
         if (s == null || s.length() < k) 
             return 0;
         if (k <= 1) 
             return s.length();
-        return longestSubstring(s, k, 0, s.length()-1);
+        return longestSubstring(s.toCharArray(), k, 0, s.length()-1);
     }
     
-    public int longestSubstring(String s, int k, int low, int high) {
+    public int longestSubstring(char[] s, int k, int low, int high) {
         if (low > high)
             return 0;
         int[] count = new int[26];
         for (int i = low; i <= high; i++)
-            count[s.charAt(i) - 'a']++;
+            count[s[i] - 'a']++;
         boolean flag = true;
         for (int i = 0; i < 26; i++) {
             if ((-count[i] & count[i] - k) < 0) { // 0 < count[i] && count[i] < k
@@ -101,7 +48,7 @@ class Solution {
         int start = low;
         int res = 0;
         for (int i = low; i <= high; i++) {
-            if (count[s.charAt(i) - 'a'] < k) {
+            if (count[s[i] - 'a'] < k) {
                 res = Math.max(longestSubstring(s, k, start, i-1), res);
                 start = i+1;
             }
@@ -115,12 +62,12 @@ class Solution {
 
 class Solution {
     public int longestSubstring(String s, int k) {
-        HashMap<Character, Integer> map = new HashMap<>();
-        char[] arr = s.toCharArray();
-        for (char c : arr) map.put(c, map.getOrDefault(c, 0) + 1);;
+        int[] map = new int[26];
+        char[] chs = s.toCharArray();
+        for (char c: chs) map[c - 97]++;
         List<Integer> split = new ArrayList<>();
-        for (int i = 0; i < s.length(); i++) {
-            if (map.get(arr[i]) < k) split.add(i);
+        for (int i = 0; i < chs.length; i++) {
+            if (map[chs[i] - 97] < k) split.add(i);
         }
         if (split.size() == 0) return s.length();
         int ans = 0, left = 0;
@@ -131,55 +78,5 @@ class Solution {
             left = split.get(i) + 1;
         }
         return ans;
-    }
-}
-
-
-
-class Solution {
-	private static int res;
-    public static int longestSubstring(String s, int k) {
-        if (s == null || s.length() < k) {
-            return 0;
-        }
-        if (k <= 1) {
-            return s.length();
-        }
-        
-        helper(s, k, 0, s.length());
-        
-        return res;
-    }
-    
-    public static void helper(String s, int k, int low, int high) {
-        int[] count = new int[26];
-        for (int i = low; i < high; i++) {
-            count[s.charAt(i) - 'a']++;
-        }
-        
-        boolean flag = true;
-        for (int x : count) {
-            if ((0 - x & x - k) < 0) { // x ∈ (0, k)
-                flag = false;
-                break;
-            }
-        }
-        if (flag) {
-            res = high - low;
-            System.out.println(res);
-            return;
-        }
-        int start = low, end;
-        for (end = low; end < high; end++) {
-            if (count[s.charAt(end) - 'a'] < k) {
-            	if (end - start > res) {
-            		helper(s, k, start, end);
-            	}
-                start = end + 1;
-            }
-        }
-        if (high - start > res) {
-        	helper(s, k, start, high);
-        }
     }
 }
