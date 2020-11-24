@@ -34,17 +34,8 @@ Output: 6
  * }
  */
 class Solution {
-    int res;
     public int countNodes(TreeNode root) {
-        res = 0;
-        dfs(root);
-        return res;
-    }
-
-    private void dfs(TreeNode node) {
-        if (node == null) return;
-        res++;
-        dfs(node.left);
-        dfs(node.right);
+        if (root == null) return 0;
+        return 1 + countNodes(root.left) + countNodes(root.right);
     }
 }
