@@ -58,16 +58,14 @@ class Solution {
         int t = s.length();
         while (t > 0) {
             for (int i = 0; i < 26; i++) {
-                if (cnt[i] > 0) {
+                if (cnt[i]-- > 0) {
                     sb.append((char) ('a' + i));
-                    cnt[i]--;
                     t--;
                 }
             }
             for (int i = 25; i >= 0; i--) {
-                if (cnt[i] > 0) {
+                if (cnt[i]-- > 0) {
                     sb.append((char) ('a' + i));
-                    cnt[i]--;
                     t--;
                 }
             }

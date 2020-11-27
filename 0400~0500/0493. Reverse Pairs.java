@@ -48,7 +48,7 @@ class Solution {
 
 
 
-public class Solution {
+class Solution {
     public int reversePairs(int[] nums) {
         return reversePairsSub(nums, 0, nums.length - 1);
     }
