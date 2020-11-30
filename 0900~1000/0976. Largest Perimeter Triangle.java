@@ -30,17 +30,12 @@ Note:
  */
 
 class Solution {
-    int max = 0;
     public int largestPerimeter(int[] A) {
         Arrays.sort(A);
-        for (int i = A.length - 1; i > 1; i--) {
-            if (check(A[i], A[i - 1], A[i - 2])) return max;
+        int len = A.length;
+        for (int i = len - 1; i >= 2; i--) {
+            if (A[i] - A[i - 1] < A[i - 2]) return A[i] + A[i - 1] + A[i - 2];
         }
         return 0;
-    }
-
-    private boolean check(int a, int b, int c) {
-        max = a + b + c;
-        return a - b < c;
     }
 }

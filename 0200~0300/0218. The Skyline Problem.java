@@ -67,7 +67,7 @@ class Solution {
     }
 }
 
-
+// ↓ error
 
 class Solution {
     private List<List<Integer>> res;
@@ -100,7 +100,7 @@ class Solution {
     }
 }
 
-
+// ↓ error
 
 class Solution {
     public List<List<Integer>> getSkyline(int[][] buildings) {
