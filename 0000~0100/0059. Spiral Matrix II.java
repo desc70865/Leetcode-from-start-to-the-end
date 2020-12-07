@@ -13,7 +13,7 @@ Output:
  */
 
 class Solution {
-    public static int[][] generateMatrix(int n) {
+    public int[][] generateMatrix(int n) {
         int[][] matrix = new int[n][n];
         int x = 0;
         int y = 0;
