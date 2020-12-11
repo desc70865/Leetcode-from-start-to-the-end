@@ -31,28 +31,11 @@ Constraints:
 
 class Solution {
     public int numIdenticalPairs(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>();
+        int[] map = new int[101];
         int sum = 0;
         for (int num: nums) {
-            sum += map.merge(num, 1, Integer::sum) - 1;
+            sum += map[num]++;
         }
         return sum;
-    }
-}
-
-
-
-class Solution {
-    public int numIdenticalPairs(int[] nums) {
-        Arrays.sort(nums);
-        int res = 0, cnt = 0;
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] == nums[i-1]) {
-                res += ++cnt;
-            } else {
-                cnt = 0;
-            }
-        }
-        return res;
     }
 }

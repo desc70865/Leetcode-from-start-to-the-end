@@ -49,39 +49,14 @@ class Solution {
         char[] arr = s.toCharArray();
         int res = 0, p = 0, len = arr.length;
         for (int i = 0; i < len; i++) {
-            if (arr[i] == '(') p += 2;
-            else if (i < len - 1 && arr[i+1] == ')') {
-                i++;
-                p -= 2;
-            } else {
-                p--;
-            }
-            if (p % 2 != 0) {
-                p--;
-                res++;
-            }
-            if (p < 0) {
-                res++;
-                p = 0;
-            }
-        }
-        return res + p;
-    }
-}
-
-// ->
-
-class Solution {
-    public int minInsertions(String s) {
-        char[] arr = s.toCharArray();
-        int res = 0, p = 0, len = arr.length;
-        for (int i = 0; i < len; i++) {
             if (arr[i] == '(') {
                 p += 2;
                 continue;
+            } else if (i < len - 1 && arr[i + 1] == ')') {
+                i++;
+            } else {
+                res++;
             }
-            else if (i < len - 1 && arr[i+1] == ')') i++;
-            else res++;
             p -= 2;
             if (p < 0) {
                 res++;
