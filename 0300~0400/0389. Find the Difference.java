@@ -20,9 +20,9 @@ Explanation:
 
 class Solution {
     public char findTheDifference(String s, String t) {
-        int sum = 0;
-        for (char c: s.toCharArray()) sum -= c - 97;
-        for (char c: t.toCharArray()) sum += c - 97;
-        return (char) (sum + 97);
+        int ans = 0;
+        for (char c: s.toCharArray()) ans -= c;
+        for (char c: t.toCharArray()) ans += c;
+        return (char) ans;
     }
 }

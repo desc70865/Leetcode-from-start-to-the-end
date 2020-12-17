@@ -39,7 +39,7 @@ class Solution {
         int[] sum = new int[n + 1];
         for(int i = 1; i <= n; i++) {
             sum[i] = sv[i - 1] + sum[i - 1];
-        }        
+        }
         return dfs(sv, 1, n, dp, sum);
     }
     

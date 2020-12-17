@@ -38,47 +38,27 @@ Output: "/a/b/c"
 
 class Solution {
     public String simplifyPath(String path) {
-        Stack<String> stack = new Stack<>();
-        // 首先将字符串以 “/” 分隔存储到新的字符数组 str 中
-        String[] str = path.split("/");
-        for (String s : str) {
-            // 如果数组非空,且访问到的是 “..” 则说明要返回上一级,要将当前元素出栈
-            if ( s.equals("..") ) {
-                // 这里用到增强型 for 循环不能同时判断，需要再次判空
-                // 而普通 for 循环则可写成( !stack.isEmpty() && s.equals("..") )
-                if ( !stack.isEmpty() ) {
-                    stack.pop();
-                }                
-            // 如果数组非空并且当前元素不是 “.” 说明当前元素是路径信息，要入栈
-            } else if ( !s.equals("") && !s.equals(".") ) {
-                stack.push(s);
+        String[] paths = path.split("/");
+        String[] stack = new String[paths.length];
+        int idx = 0;
+        for (String p: paths) {
+            if ("..".equals(p)) {
+                if (idx > 0) idx--;
+            } else {
+                if (".".equals(p) || p.isEmpty()) ;
+                else stack[idx++] = p;
             }
         }
-        // 如果栈内没有元素说明没有路径信息，返回 “/” 即可
-        if ( stack.isEmpty() ) {
-            return "/";
+        if (idx == 0) return "/";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < idx; i++) {
+            sb.append('/').append(stack[i]);
         }
-        // 这里用到 StringBuilder 操作字符串，效率高
-        StringBuilder ans = new StringBuilder();
-        for (int i = 0; i < stack.size(); i++) {
-            ans.append( "/" + stack.get(i) );
-        }
-        return ans.toString();
+        return sb.toString();
     }
 }
 
-class Solution {
-    public String simplifyPath(String path) {
-        String paths[] = path.split("/");
-        List<String> temp = new ArrayList<>();
-        for (String s : paths) {
-            if (!s.isEmpty() && !".".equals(s) && !"..".equals(s)) temp.add(s);
-            else if (!temp.isEmpty() && "..".equals(s)) temp.remove(temp.size() - 1);
-        }
-        if (temp.isEmpty()) return "/";
-        return "/" + String.join("/", temp);
-    }
-}
+
 
 import java.nio.file.*;
 class Solution {

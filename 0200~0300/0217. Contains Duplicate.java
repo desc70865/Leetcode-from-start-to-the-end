@@ -20,24 +20,12 @@ Output: true
 class Solution {
     public boolean containsDuplicate(int[] nums) {
         Set<Integer> set = new HashSet<>();
-        for (int num : nums) {
+        for (int num: nums) {
             if (! set.add(num)) {
                 return true;
             }
         }
         return false;
-    }
-}
-
-// sort & traverse
-
-class Solution {
-    public boolean containsDuplicate(int[] nums) {
-        Set<Integer> set = new HashSet<>();
-        for (int num : nums) {
-            set.add(num);
-        }
-        return nums.length != set.size();
     }
 }
 
@@ -54,27 +42,6 @@ class Solution {
                 return true;
             } else {
                 bs[n & 2047] = true;
-            }
-        }
-        return false;
-    }
-}
-
-// warning: error code
-
-class Solution {
-    public boolean containsDuplicate(int[] nums) {
-        if (nums == null || nums.length < 2) {
-            return false;
-        }
-        for (int i = 1; i < nums.length; i++) {
-            for (int j = i-1; j >= 0; j--) {
-                if (nums[i] > nums[j]) {
-                    break;
-                }
-                if (nums[i] == nums[j]) {
-                    return true;
-                }
             }
         }
         return false;
