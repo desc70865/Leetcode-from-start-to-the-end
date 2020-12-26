@@ -41,8 +41,8 @@ class Solution {
         if (matrix.length == 0 || matrix[0].length == 0) return 0;
         int m = matrix.length, n = matrix[0].length, maxArea = 0;
         int[] heights = new int[n];
-        for (int row=0; row < m; row++) {
-            for (int col=0; col < n; col++) {
+        for (int row = 0; row < m; row++) {
+            for (int col = 0; col < n; col++) {
                 if (matrix[row][col] == '1') heights[col]++;
                 else heights[col] = 0;
             }
@@ -50,12 +50,12 @@ class Solution {
         }
         return maxArea;
     }
-     
+
     public int largestRectangleArea(int[] heights) {
         int[] left = new int[heights.length], right = new int[heights.length];
-        for (int i=0; i < heights.length; i++) {
+        for (int i = 0; i < heights.length; i++) {
             int pre = i - 1;
-            while (pre >= 0 && heights[i] <= heights[pre]) pre = left[pre] - 1; // 核心
+            while (pre >= 0 && heights[i] <= heights[pre]) pre = left[pre] - 1; // core
             left[i] = pre + 1;
         }
         for (int i = heights.length - 1; i >= 0; i--) {
@@ -64,7 +64,7 @@ class Solution {
             right[i] = pre - 1;
         }
         int max = 0;
-        for (int i=0; i < heights.length; i++) 
+        for (int i = 0; i < heights.length; i++) 
             max = Math.max(max, (right[i] - left[i] + 1) * heights[i]);
         return max;
     }
