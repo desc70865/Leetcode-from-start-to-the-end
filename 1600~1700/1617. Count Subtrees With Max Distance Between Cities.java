@@ -71,7 +71,7 @@ class Solution {
             for (int i = 0; i < n; i++) {
                 if (((1 << i) & j) != 0 || dp[j + (1 << i)] != 0) continue;
                 for (int k = 0; k < n; k++) {
-                    if (((1 << k) &j ) != 0 && dist[i][k] == 1) {
+                    if (((1 << k) & j) != 0 && dist[i][k] == 1) {
                         dp[j + (1 << i)] = dp[j];
                         break;
                     }
