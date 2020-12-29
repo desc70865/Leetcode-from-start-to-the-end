@@ -23,25 +23,10 @@ You may assume both s and t have the same length.
 
 class Solution {
     public boolean isIsomorphic(String s, String t) {
-        
-    }
-}
-
-
-
-class Solution {
-    public boolean isIsomorphic(String s, String t) {
-        char[] arrS = new char[128];
-        char[] arrT = new char[128];
-        char[] S = s.toCharArray();
-        char[] T = t.toCharArray();
+        Map<Character, Integer> S = new HashMap<>();
+        Map<Character, Integer> T = new HashMap<>();
         for (int i = 0; i < s.length(); i++) {
-            if (arrS[S[i]] == '\0' && arrT[T[i]] == '\0') {
-                arrS[S[i]] = T[i];
-                arrT[T[i]] = S[i];
-                continue;
-            }
-            if (arrT[T[i]] != S[i]) {
+            if (S.putIfAbsent(s.charAt(i), i) != T.putIfAbsent(t.charAt(i), i)) {
                 return false;
             }
         }
@@ -53,56 +38,18 @@ class Solution {
 
 class Solution {
     public boolean isIsomorphic(String s, String t) {
-        if (s.length() != t.length()) {
-            return false;
+        char[] chs = s.toCharArray();
+        char[] cht = t.toCharArray();
+        int len = chs.length;
+        int[] idxS = new int[128];
+        int[] idxT = new int[128];
+        for (int i = len - 1; i >= 0; i--) {
+            idxS[chs[i]] = i;
+            idxT[cht[i]] = i;
         }
-        
-        char[] arr = new char[128];
-        
-        for (int i = 0; i < s.length(); i++) {
-            char a = s.charAt(i);
-            char b = t.charAt(i);
-            if (arr[a] < '0') {
-                arr[a] = b;
-            } else if (arr[a] == b) {
-                continue;
-            } else {
+        for (int i = 0; i < len; i++) {
+            if (idxS[chs[i]] != idxT[cht[i]]) {
                 return false;
-            }
-        }
-        
-        return checkRepeat(arr);
-    }
-    
-    private boolean checkRepeat(char[] arr){
-        Set<Character> set = new HashSet<Character>();
-        int extra = 0;
-        for (char c : arr) {
-            if (c < '0') {
-                extra++;
-            } else {
-                set.add(c);
-            }
-        }
-        return set.size() + extra == arr.length;
-    }
-}
-
-
-
-class Solution {
-    public boolean isIsomorphic(String s, String t) {
-        int[] mapS = new int[128];
-        int[] mapT = new int[128];
-        for (int i = 0; i < s.length(); i++) {
-            char c1 = s.charAt(i);
-            char c2 = t.charAt(i);
-            if (mapS[c1] != mapT[c2]) {
-                return false;
-            }
-            if (mapS[c1] == 0) {
-                mapS[c1] = i + 1;
-                mapT[c2] = i + 1;
             }
         }
         return true;
