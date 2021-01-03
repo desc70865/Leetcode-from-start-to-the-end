@@ -45,6 +45,7 @@ Constraints:
 
 class Solution {
     Deque<Integer> q;
+    
     public int[] maxSlidingWindow(int[] nums, int k) {
         int N = nums.length;
         if (N == 0 || k == 0) return new int[0];
@@ -68,57 +69,5 @@ class Solution {
         }
         while (! q.isEmpty() && A[q.peekLast()] < A[i]) q.removeLast();
         q.addLast(i);
-    }
-}
-
-
-
-class Solution {
-    public int[] maxSlidingWindow(int[] nums, int k) {
-        int N = nums.length;
-        if (N == 0 || N - k + 1 <= 0) return new int[0];
-        int l = 0, r = k - 1;
-        int max = -1;
-        int[] res = new int[N - k + 1];
-        while (r < N) {
-            if (l > max) {
-                max = l;
-                for (int i = l + 1; i <= r; i++) {
-                    if (nums[i] > nums[max]) max = i;
-                }
-            } else {
-                if (nums[r] > nums[max]) max = r;
-            }
-            res[l] = nums[max];
-            l++;
-            r++;
-        }
-        return res;
-    }
-}
-
-
-
-class Solution {
-    public int[] maxSlidingWindow(int[] nums, int k) {
-        int N = nums.length;
-        if (k == 1) return nums;
-        int maxIdx = 0;
-        for (int i = 0; i < k; i++) {
-            if (nums[i] > nums[maxIdx]) maxIdx = i;
-        }
-        int[] res = new int[N - k + 1];
-        for (int l = 0, r = k - 1; r < N; l++, r++) {
-            if (l > maxIdx) {
-                maxIdx = l;
-                for (int i = l + 1; i <= r; i++) {
-                    if (nums[i] > nums[maxIdx]) maxIdx = i;
-                }
-            } else if (nums[r] > nums[maxIdx]) {
-                maxIdx = r;
-            }
-            res[l] = nums[maxIdx];
-        }
-        return res;
     }
 }
