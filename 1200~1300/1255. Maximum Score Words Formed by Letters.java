@@ -65,9 +65,8 @@ class Solution {
         int tmp = 0;
         String str = words[index];
         for (char c: str.toCharArray()) {
-            if (map[c - 'a'] > 0) {
+            if (map[c - 'a']-- > 0) {
                 tmp += score[c - 'a'];
-                map[c - 'a']--;
             } else {
                 dfs(index + 1, sum, curMap);
                 return;

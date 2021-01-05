@@ -20,7 +20,7 @@ Note: All emails are in lowercase.
  */
 
 # Write your MySQL query statement below
-select Email
-from Person
-group by Email
-having count(Email) > 1;
+SELECT Email
+FROM Person
+GROUP BY Email
+HAVING count(Email) > 1;
