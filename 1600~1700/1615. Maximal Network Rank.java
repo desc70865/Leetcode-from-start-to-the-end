@@ -62,3 +62,26 @@ class Solution {
         return a + b - 1;
     }
 }
+
+
+
+class Solution {
+    public int maximalNetworkRank(int n, int[][] roads) {
+        int[][] map = new int[n][n];
+        int[] degree = new int[n];
+        for (int[] road: roads) {
+            map[road[0]][road[1]]++;
+            map[road[1]][road[0]]++;
+            degree[road[0]]++;
+            degree[road[1]]++;
+        }
+        int ans = Integer.MIN_VALUE;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int tmp = degree[i] + degree[j] - map[i][j];
+                ans = Math.max(ans, tmp);
+            }
+        }
+        return ans;
+    }
+}

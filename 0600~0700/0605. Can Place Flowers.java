@@ -17,10 +17,10 @@ n is a non-negative integer which won't exceed the input array size.
 
 class Solution {
     public boolean canPlaceFlowers(int[] flowerbed, int n) {
-        int N = flowerbed.length;
-        for (int i = 0; i < N && n > 0; i++) {
+        int len = flowerbed.length;
+        for (int i = 0; i < len && n > 0; i++) {
             if (flowerbed[i] == 1) continue;
-            if (i > 0 && flowerbed[i - 1] == 1 || i < N - 1 && flowerbed[i + 1] == 1) continue;
+            if (i > 0 && flowerbed[i - 1] == 1 || i < len - 1 && flowerbed[i + 1] == 1) continue;
             // flowerbed[i]++;
             n--;
             i++;
