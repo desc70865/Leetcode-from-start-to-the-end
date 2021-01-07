@@ -52,12 +52,6 @@ class Solution {
             val = equations.get(i).get(1);
             graph.computeIfAbsent(key, x -> new HashMap<>()).put(val, 1 * values[i]);
             graph.computeIfAbsent(val, x -> new HashMap<>()).put(key, 1 / values[i]);
-            /* 
-            graph.putIfAbsent(key, new HashMap<>());
-            graph.putIfAbsent(val, new HashMap<>());
-            graph.get(key).put(val, 1 * values[i]);
-            graph.get(val).put(key, 1 / values[i]);
-             */
         }
         
         return;
