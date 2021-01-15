@@ -29,39 +29,39 @@ Note:
 
 class Solution {
     public int removeStones(int[][] stones) {
-        
-    }
-}
-
-
-
-class Solution {
-    public int removeStones(int[][] stones) {
-        int N = stones.length;
-        DSU dsu = new DSU(20000);
+        int len = stones.length;
+        if (len <= 1) return 0;
+        int max = 0;
+        for (int[] stone: stones) {
+            max = Math.max(max, stone[0]);
+            max = Math.max(max, stone[1]);
+        }
+        DSU dsu = new DSU(++max * 2);
 
         for (int[] stone: stones)
-            dsu.union(stone[0], stone[1] + 10000);
+            dsu.union(stone[0], stone[1] + max);
 
-        Set<Integer> seen = new HashSet();
+        Set<Integer> seen = new HashSet<>();
         for (int[] stone: stones)
             seen.add(dsu.find(stone[0]));
 
-        return N - seen.size();
+        return len - seen.size();
     }
 }
 
 class DSU {
     int[] parent;
-    public DSU(int N) {
-        parent = new int[N];
-        for (int i = 0; i < N; ++i)
+
+    public DSU(int len) {
+        parent = new int[len];
+        for (int i = 1; i < len; i++)
             parent[i] = i;
     }
+    
     public int find(int x) {
-        if (parent[x] != x) parent[x] = find(parent[x]);
-        return parent[x];
+        return parent[x] == x ? x : (parent[x] = find(parent[x]));
     }
+
     public void union(int x, int y) {
         parent[find(x)] = find(y);
     }
