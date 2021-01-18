@@ -67,3 +67,38 @@ class UnionFind {
         }
     }
 }
+
+
+
+class Solution {
+    int[] p;
+    int[] ans;
+
+    public int[] findRedundantConnection(int[][] edges) {
+        int len = edges.length + 1;
+        p = new int[len];
+        for (int i = 1; i < len; i++) {
+            p[i] = i;
+        }
+        ans = new int[2];
+        for (int[] edge: edges) {
+            union(edge[0], edge[1]);
+        }
+        return ans;
+    }
+
+    private void union(int a, int b) {
+        int x = find(a);
+        int y = find(b);
+        if (x == y) {
+            ans[0] = a;
+            ans[1] = b;
+        } else {
+            p[y] = x;
+        }
+    }
+
+    private int find(int x) {
+        return p[x] == x ? x : (p[x] = find(p[x]));
+    }
+}
