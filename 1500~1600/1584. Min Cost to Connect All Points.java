@@ -44,21 +44,22 @@ All pairs (xi, yi) are distinct.
 
 class Solution {
     public int minCostConnectPoints(int[][] A) {
-        int n = A.length, res = 0, i = 0, connected = 0;
-        boolean[] visited = new boolean[n];
-        int[] dist = new int[n];
+        int len = A.length, ans = 0, curr = 0, counter = 0;
+        boolean[] v = new boolean[len];
+        int[] dist = new int[len];
         Arrays.fill(dist, Integer.MAX_VALUE);
-        while (++connected < n) {
-            dist[i] = Integer.MAX_VALUE;
-            visited[i] = true;
-            int next = i;
-            for (int j = 0; j < n; ++j)
-                if (visited[j]) continue;
-                dist[j] = Math.min(dist[j], Math.abs(A[i][0] - A[j][0]) + Math.abs(A[i][1] - A[j][1]));
-                next = dist[j] < dist[next] ? j : next;
-            res += dist[next];
-            i = next;
+        while (++counter < len) {
+            dist[curr] = Integer.MAX_VALUE;
+            v[curr] = true;
+            int next = curr;
+            for (int j = 0; j < len; j++)
+                if (! v[j]) {
+                    dist[j] = Math.min(dist[j], Math.abs(A[curr][0] - A[j][0]) + Math.abs(A[curr][1] - A[j][1]));
+                    next = dist[j] < dist[next] ? j : next;
+                }
+            ans += dist[next];
+            curr = next;
         }
-        return res;
+        return ans;
     }
 }
