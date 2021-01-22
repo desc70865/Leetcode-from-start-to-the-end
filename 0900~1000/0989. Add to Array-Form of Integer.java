@@ -35,21 +35,17 @@ Note：
 If A.length > 1, then A[0] != 0
  */
 
-class Solution {
+class Solution {class Solution {
     public List<Integer> addToArrayForm(int[] A, int K) {
         List<Integer> res = new ArrayList<>();
-        int i = A.length - 1;
-        int carry = 0;
-        int sum = 0;
-        while (i >= 0 || K > 0) {
-            sum = carry + K % 10;
-            if (i >= 0) sum += A[i--];
-            res.add(sum % 10);
-            carry = sum / 10;
+        int idx = A.length - 1;
+        while (idx >= 0 || K > 0) {
+            if (idx >= 0) K += A[idx--];
+            res.add(K % 10);
             K /= 10;
         }
-        if (carry > 0) res.add(carry);
         Collections.reverse(res);
         return res;
     }
+}
 }
