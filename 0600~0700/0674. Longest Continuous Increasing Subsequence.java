@@ -15,15 +15,16 @@ Note: Length of the array will not exceed 10,000.
 
 class Solution {
     public int findLengthOfLCIS(int[] nums) {
-        int max = 0, len = nums.length, cur = 1;
+        int max = 0, len = nums.length, cnt = 1;
         if (len < 2) return len;
         for (int i = 1; i < len; i++) {
-            if (nums[i] > nums[i-1]) cur++;
-            else {
-                max = Math.max(max, cur);
-                cur = 1;
-            }
-        }
-        return Math.max(max, cur);
+			if (nums[i] > nums[i - 1]) {
+				cnt++;
+			} else {
+				max = Math.max(max, cnt);
+				cnt = 1;
+			}
+		}
+		return Math.max(max, cnt);
     }
 }
