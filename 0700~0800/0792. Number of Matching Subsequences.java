@@ -16,27 +16,65 @@ The length of words[i] will be in the range of [1, 50].
  */
 
 class Solution {
-    public int numMatchingSubseq(String S, String[] words) {
-        Deque<Node> queue = new LinkedList<>();
-        for (String word: words) {
-            queue.offer(f(word));
+   public int numMatchingSubseq(String str, String[] words) {
+        Queue<Node>[] waiting = new LinkedList[26];
+        for (int i = 0; i < 26; i++) {
+            waiting[i] = new LinkedList<Node>();
         }
+        for (String word: words) {
+            waiting[word.charAt(0) - 'a'].add(new Node(word));
+        }
+        
         int cnt = 0;
-        for (char c: S.toCharArray()) {
+        for (char ch: str.toCharArray()) {
+            Queue<Node> queue = waiting[ch - 'a'];
             int size = queue.size();
             while (size-- > 0) {
                 Node cur = queue.poll();
-                if (cur.val == c) {
-                    cur = cur.next;
-                    if (cur == null) {
-                        cnt++;
-                        continue;
-                    }
+                if (++cur.idx == cur.chars.length) {
+                    cnt++;
+                } else {
+                    waiting[cur.chars[cur.idx] - 'a'].add(cur);
                 }
-                queue.offer(cur);
             }
-            if (queue.isEmpty()) {
-                break;
+        }
+        return cnt;
+    }
+}
+
+class Node {
+    int idx;
+    char[] chars;
+
+    public Node (String word) {
+        this.idx = 0;
+        this.chars = word.toCharArray();
+    }
+}
+
+
+
+class Solution {
+    public int numMatchingSubseq(String S, String[] words) {
+        Deque<Node>[] list = new LinkedList[26];
+        for (int i = 0; i < 26; i++) {
+            list[i] = new LinkedList<Node>();
+        }
+        for (String word: words) {
+            list[word.charAt(0) - 'a'].offer(f(word));
+        }
+        int cnt = 0;
+        for (char c: S.toCharArray()) {
+            Deque<Node> queue = list[c - 'a'];
+            int size = queue.size();
+            while (size-- > 0) {
+                Node cur = queue.poll();
+                cur = cur.next;
+                if (cur == null) {
+                    cnt++;
+                } else {
+                    list[cur.val - 'a'].offer(cur);
+                }
             }
         }
         return cnt;

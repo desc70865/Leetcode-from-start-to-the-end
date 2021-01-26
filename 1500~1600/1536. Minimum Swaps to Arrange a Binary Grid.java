@@ -35,9 +35,58 @@ n == grid[i].length
 grid[i][j] is 0 or 1
  */
 
+/*
+class ListNode {
+    int val;
+    ListNode next;
+
+    public ListNode(int val) {
+        this.val = val;
+    }
+}
+ */
+
 class Solution {
+    int len = 0;
+    int cnt = 0;
+
     public int minSwaps(int[][] grid) {
-        
+        this.len = grid.length;
+        ListNode dummy = new ListNode(-1);
+        ListNode cur = dummy;
+        for (int i = 0; i < len; i++) {
+            cur.next = new ListNode(sum(grid[i]));
+            cur = cur.next;
+        }
+        for (int i = len - 1; i > 0; i--) {
+            if (bubble(dummy, i)) return -1;
+        }
+        return cnt;
+    }
+
+    private boolean bubble(ListNode node, int threshold) {
+        while (node.next != null) {
+            if (node.next.val >= threshold) {
+                node.next = node.next.next;
+                return false;
+            } else {
+                node = node.next;
+                cnt++;
+            }
+        }
+        return true;
+    }
+
+    private int sum(int[] nums) {
+        int sum = 0;
+        for (int i = len - 1; i >= 0; i--) {
+            if (nums[i] == 1) {
+                break;
+            } else {
+                sum++;
+            }
+        }
+        return sum;
     }
 }
 
@@ -55,7 +104,6 @@ class Solution {
             }
             cnt[i] = n;
         }
-        
         return helper(cnt);
     }
     
