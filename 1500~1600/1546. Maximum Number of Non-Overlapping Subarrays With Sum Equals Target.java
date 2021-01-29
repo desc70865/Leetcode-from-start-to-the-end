@@ -35,26 +35,18 @@ Constraints:
 
 class Solution {
     public int maxNonOverlapping(int[] nums, int target) {
-        
-    }
-}
-
-
-
-class Solution {
-    public int maxNonOverlapping(int[] nums, int target) {
-        int sum = 0, count = 0;
-        HashSet<Integer> set = new HashSet<>();
+        int sum = 0, ans = 0;
+        Set<Integer> set = new HashSet<>();
         for (int num: nums) {
             sum += num;
             if (set.contains(sum - target) || sum == target) {
-                count++;
-                set.clear();
+                ans++;
                 sum = 0;
+                set.clear();
             } else {
                 set.add(sum);
             }
         }
-        return count;
+        return ans;
     }
 }
