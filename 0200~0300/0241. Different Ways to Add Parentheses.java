@@ -24,50 +24,48 @@ class Solution {
     public List<Integer> diffWaysToCompute(String input) {
         List<Integer> numList = new ArrayList<>();
         List<Character> opList = new ArrayList<>();
-        char[] array = input.toCharArray();
         int num = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (isOperation(array[i])) {
+        for (char c: input.toCharArray()) {
+            if (isOperation(c)) {
+                opList.add(c);
                 numList.add(num);
                 num = 0;
-                opList.add(array[i]);
-                continue;
+            } else {
+                num *= 10;
+                num += c - '0';
             }
-            num = num * 10 + array[i] - '0';
         }
         numList.add(num);
-        int N = numList.size();
-        // ↑ 数值与操作符分离
+        int len = numList.size();
 
-        ArrayList<Integer>[][] dp = (ArrayList<Integer>[][]) new ArrayList[N][N];
-        for (int i = 0; i < N; i++) {
-            ArrayList<Integer> result = new ArrayList<>();
-            result.add(numList.get(i));
-            dp[i][i] = result;
+        ArrayList<Integer>[][] dp = (ArrayList<Integer>[][]) new ArrayList[len][len];
+        for (int i = 0; i < len; i++) {
+            ArrayList<Integer> list = new ArrayList<>();
+            list.add(numList.get(i));
+            dp[i][i] = list;
         }
         
-        for (int n = 2; n <= N; n++) {
-            for (int i = 0; i < N; i++) {
-                int j = i + n - 1;
-                if (j >= N) {
+        for (int k = 2; k <= len; k++) {
+            for (int i = 0; i < len; i++) {
+                int j = i + k - 1;
+                if (j >= len) {
                     break;
                 }
-                ArrayList<Integer> result = new ArrayList<>();
+                ArrayList<Integer> list = new ArrayList<>();
                 for (int s = i; s < j; s++) {
-                    ArrayList<Integer> result1 = dp[i][s];
-                    ArrayList<Integer> result2 = dp[s + 1][j];
-                    for (int x = 0; x < result1.size(); x++) {
-                        for (int y = 0; y < result2.size(); y++) {
+                    ArrayList<Integer> listA = dp[i][s];
+                    ArrayList<Integer> listB = dp[s + 1][j];
+                    for (int x = 0; x < listA.size(); x++) {
+                        for (int y = 0; y < listB.size(); y++) {
                             char op = opList.get(s);
-                            result.add(caculate(result1.get(x), op, result2.get(y)));
+                            list.add(caculate(listA.get(x), op, listB.get(y)));
                         }
                     }
                 }
-                dp[i][j] = result;
-
+                dp[i][j] = list;
             }
         }
-        return dp[0][N-1];
+        return dp[0][len - 1];
     }
 
     private int caculate(int num1, char c, int num2) {
@@ -93,133 +91,48 @@ class Solution {
 class Solution {
     private static final List<Integer> EMPTY_LIST = new ArrayList<>();
     List<Integer>[][] dp;
-    char[] chars;
+    char[] chs;
     
     public List<Integer> diffWaysToCompute(String input) {
-        chars = input.toCharArray();
-        dp = new List[chars.length][chars.length];
-        
-        return solve(0, chars.length - 1);
+        chs = input.toCharArray();
+        dp = new List[chs.length][chs.length];
+        return dfs(0, chs.length - 1);
     }
     
-    private List<Integer> solve(int start, int end) {
-        if (start > end) {
+    private List<Integer> dfs(int l, int r) {
+        if (l > r) {
             return EMPTY_LIST;
         }
-        
-        if (dp[start][end] != null) {
-            return dp[start][end];
+        if (dp[l][r] != null) {
+            return dp[l][r];
         }
-        
         List<Integer> ans = new ArrayList<>();
-        for (int i = start; i <= end; ++i) {
-            if (!Character.isDigit(chars[i])) {
-                char op = chars[i];
-                List<Integer> part1 = solve(start, i - 1);
-                List<Integer> part2 = solve(i + 1, end);
-                
-                for (int num1 : part1) {
-                    for (int num2 : part2) {
-                        ans.add(comp(num1, num2, op));
-                    }
+        for (int i = l; i <= r; i++) {
+            if (Character.isDigit(chs[i])) continue;
+            char op = chs[i];
+            for (int x: dfs(l, i - 1)) {
+                for (int y: dfs(i + 1, r)) {
+                    ans.add(comp(x, y, op));
                 }
             }
         }
-        
         if (ans.isEmpty()) {
-            ans.add(parseNum(start, end));
+            ans.add(parseToNum(l, r));
         }
-        
-        dp[start][end] = ans;
-        return ans;
+        return dp[l][r] = ans;
     }
     
-    private int parseNum(int from, int to) {
+    private int parseToNum(int from, int to) {
         int num = 0;
-        
-        for (int i = from; i <= to; ++i) {
-            num = num * 10 + chars[i] - '0';
+        for (int i = from; i <= to; i++) {
+            num *= 10;
+            num += chs[i] - '0';
         }
-        
         return num;
     }
     
     private int comp(int n1, int n2, char op) {
         return op == '+' ? (n1 + n2) :
             (op == '-' ? (n1 - n2) : (n1 * n2));
-    }
-}
-
-
-
-// ...
-
-class Solution {
-    public List<Integer> diffWaysToCompute(String input) {
-        List<Integer> numList = new ArrayList<>();
-        List<Character> opList = new ArrayList<>();
-        
-        int tmp = 0;
-        char tmd;
-        for (int i = 0; i < input.length(); i++) {
-            if (isOperation(tmd = input.charAt(i))) {
-                numList.add(stringToInt(input, tmp, i));
-                opList.add(tmd);
-                tmp = i + 1;
-            }
-        }
-        numList.add(stringToInt(input, tmp, input.length()));
-        int lenMax = numList.size();
-        // ↑ 数值与操作符分离
-
-        ArrayList<Integer>[][] dp = (ArrayList<Integer>[][]) new ArrayList[lenMax][lenMax];
-        for (int i = 0; i < lenMax; i++) {
-            ArrayList<Integer> result = new ArrayList<>();
-            result.add(numList.get(i));
-            dp[i][i] = result;
-        }
-        
-        for (int n = 2; n <= lenMax; n++) {
-            for (int i = 0; i < lenMax; i++) {
-                int j = i + n - 1; // len = j - i + 1
-                if (j >= lenMax) {
-                    break;
-                }
-                ArrayList<Integer> result = new ArrayList<>();
-                for (int s = i; s < j; s++) {
-                    ArrayList<Integer> result1 = dp[i][s]; // s ∈ [i, j]
-                    ArrayList<Integer> result2 = dp[s + 1][j];
-                    for (int x = 0; x < result1.size(); x++) {
-                        for (int y = 0; y < result2.size(); y++) {
-                            char op = opList.get(s);
-                            result.add(caculate(result1.get(x), op, result2.get(y)));
-                        }
-                    }
-                }
-                dp[i][j] = result;
-            }
-        }
-        return dp[0][lenMax-1];
-    }
-
-    private int caculate(int num1, char c, int num2) {
-        switch (c) {
-            case '+':
-                return num1 + num2;
-            case '-':
-                return num1 - num2;
-            case '*':
-                return num1 * num2;
-            default:
-                return -1;
-        }
-    }
-
-    private boolean isOperation(char c) {
-        return c == '+' || c == '-' || c == '*';
-    }
-    
-    private int stringToInt(String s, int start, int end) {
-        return Integer.parseInt(s.substring(start, end));
     }
 }
