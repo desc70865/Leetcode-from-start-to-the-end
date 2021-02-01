@@ -36,41 +36,40 @@ class Solution {
             arr1 = arr2;
             arr2 = temp;
         }
-        int[] aux = new int[arr1.length];
+        int len = arr1.length;
+        int[] aux = new int[len];
         int index = 0;
-        for (int i = arr1.length - arr2.length; i < arr1.length; i++) {
+        for (int i = len - arr2.length; i < len; i++) {
             aux[i] = arr2[index++];
         }
         arr2 = aux;
         int carry = 0;
-        for (int i = arr1.length - 1; i >= 0; i--) {
-            if (arr1[i] + arr2[i] + carry >= 2) {
-                arr1[i] = arr1[i] + arr2[i] + carry - 2;
-                carry = -1;
-                continue;
-            }
-            if (arr1[i] + arr2[i] + carry == -1) {
-                arr1[i] = 1;
-                carry = 1;
-                continue;
-            }
+        for (int i = len - 1; i >= 0; i--) {
             arr1[i] += arr2[i] + carry;
-            carry = 0;
+            if (arr1[i] > 1) {
+                arr1[i] -= 2;
+                carry = -1;
+            } else if (arr1[i] < 0) {
+                arr1[i] += 2;
+                carry = 1;
+            } else {
+                carry = 0;
+            }
         }
         if (carry == 0) {
-            for (int i = 0; i < arr1.length; i++) {
+            for (int i = 0; i < len; i++) {
                 if (arr1[i] == 1) {
-                    int[] res = new int[arr1.length - i];
+                    int[] res = new int[len - i];
                     System.arraycopy(arr1, i, res, 0, res.length);
                     return res;
                 }
             }
-            return new int[]{0};
+            return new int[1];
         } else {
-            int[] res = new int[arr1.length + 2];
+            int[] res = new int[len + 2];
             res[0] = 1;
             res[1] = 1;
-            System.arraycopy(arr1, 0, res, 2, arr1.length);
+            System.arraycopy(arr1, 0, res, 2, len);
             return res;
         }
     }
