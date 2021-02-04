@@ -39,20 +39,26 @@ s, t contain only lowercase English letters.
 
 class Solution {
     public boolean canConvertString(String s, String t, int k) {
-        return canConvertString(s.toCharArray(), t.toCharArray(), k);
-    }
-    
-    public boolean canConvertString(char[] s, char[] t, int k) {
-        if (s.length != t.length) return false;
-        int i = 0, p = 0, z = 0;
-        int[] check = new int[26];
-        while (k >= z && i < s.length) {
-            p = t[i] - s[i];
-            i++;
-            if (p < 0) p += 26;
-            else if (p == 0) continue;
-            z = (++check[p] - 1) * 26 + p;
+        if (s.length() != t.length()) {
+            return false;
         }
-        return k >= z;
+        int[] map = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            int cur = helper(s.charAt(i), t.charAt(i));
+            if (cur == 0) continue;
+            if (map[cur] == 0) {
+                map[cur] += cur;
+            } else {
+                map[cur] += 26;
+            }
+            if (map[cur] > k) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int helper(char a, char b) {
+        return (b - a + 26) % 26;
     }
 }
