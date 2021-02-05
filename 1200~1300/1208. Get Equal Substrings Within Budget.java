@@ -35,17 +35,30 @@ s and t only contain lower case English letters.
 
 class Solution {
     public int equalSubstring(String s, String t, int maxCost) {
+        int[] diff = helper(s, t);
+        int l = 0, r = 0;
+        int sum = 0;
+        int max = 0;
+        while (r < diff.length) {
+            sum += diff[r];
+            while (sum > maxCost) {
+                sum -= diff[l++];
+            }
+            if (max < r - l + 1) {
+                max = r - l + 1;
+            }
+            r++;
+        }
+        return max;
+    }
+
+    private int[] helper(String s, String t) {
         int len = s.length();
-        int[] cost = new int[len + 1];
+        int[] ans = new int[len];
         for (int i = 0; i < len; i++) {
-            cost[i + 1] = Math.abs(s.charAt(i) - t.charAt(i)) + cost[i];
+            ans[i] = Math.abs(s.charAt(i) - t.charAt(i));
         }
-        int left = 0;
-        int right = 1;
-        while (right <= len) {
-            if (cost[right++] - cost[left] > maxCost) left++;
-        }
-        return right - left - 1;
+        return ans;
     }
 }
 
@@ -61,5 +74,20 @@ class Solution {
             if (cost[i + 1] - cost[left] > maxCost) left++;
         }
         return len - left;
+    }
+}
+
+
+
+class Solution {
+    public int equalSubstring(String s, String t, int maxCost) {
+        Deque<Integer> q = new LinkedList<>();
+        q.offer(0);
+        int len = s.length();
+        for (int i = 0; i < len; i++) {
+            q.offerLast(Math.abs(s.charAt(i) - t.charAt(i)) + q.peekLast());
+            if (q.peekLast() - q.peekFirst() > maxCost) q.pollFirst();
+        }
+        return q.size() - 1;
     }
 }
