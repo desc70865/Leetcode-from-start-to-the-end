@@ -40,50 +40,6 @@ Google: 90% of our engineers use the software you wrote (Homebrew), but you canâ
  */
 class Solution {
     public TreeNode invertTree(TreeNode root) {
-        if (root == null) {
-            return null;
-        }
-        TreeNode right = invertTree(root.right);
-        TreeNode left = invertTree(root.left);
-        root.left = right;
-        root.right = left;
-        return root;
-    }
-}
-
-
-
-class Solution {
-    public TreeNode invertTree(TreeNode root) {
-        if (root == null) return null;
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        queue.add(root);
-        while (!queue.isEmpty()) {
-            TreeNode current = queue.poll();
-            TreeNode temp = current.left;
-            current.left = current.right;
-            current.right = temp;
-            if (current.left != null) queue.add(current.left);
-            if (current.right != null) queue.add(current.right);
-        }
-        return root;
-    }
-}
-
-
-
-class Solution {
-    public TreeNode invertTree(TreeNode root) {
-        if (root == null) return root;
-        invertTree(root.left);
-        invertTree(root.right);
-        swap(root);
-        return root;
-    }
-
-    private void swap(TreeNode node) {
-        TreeNode t = node.left;
-        node.left = node.right;
-        node.right = t;
+        return root == null ? null : new TreeNode(root.val, invertTree(root.right), invertTree(root.left));
     }
 }
