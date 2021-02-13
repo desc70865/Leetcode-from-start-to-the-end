@@ -16,58 +16,18 @@ Output:
 
 class Solution {
     public List<Integer> findDisappearedNumbers(int[] nums) {
-        int LEN = nums.length;
-        Set<Integer> set = new HashSet<>();
-        for (int i = 1; i <= LEN; i++) {
-            set.add(i);
-        }
-        for (int num: nums) {
-            set.remove(num);
-        }
-        
-        return new ArrayList<>(set);
-    }
-}
-
-
-
-class Solution {
-    public List<Integer> findDisappearedNumbers(int[] nums) {
-        int LEN = nums.length;
-        int[] aux = new int[LEN+1];
-        for (int i = 1; i <= LEN; i++) {
-            aux[i] = i;
-        }
-        for (int num: nums) {
-            aux[num] = 0;
-        }
-        
-        List<Integer> list = new ArrayList<>();
-        for (int num: aux) {
-            if (num != 0) {
-                list.add(num);
-            }
-        }
-        return list;
-    }
-}
-
-
-
-class Solution {
-    public List<Integer> findDisappearedNumbers(int[] nums) {
-        int LEN = nums.length;
-        boolean[] aux = new boolean[LEN+1];
+        int len = nums.length;
+        boolean[] aux = new boolean[len + 1];
         for (int num: nums) {
             aux[num] = true;
         }
         
-        List<Integer> list = new ArrayList<>();
-        for (int i = 1; i <= LEN; i++) {
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 1; i <= len; i++) {
             if (! aux[i]) {
-                list.add(i);
+                ans.add(i);
             }
         }
-        return list;
+        return ans;
     }
 }

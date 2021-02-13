@@ -41,6 +41,7 @@ All the calls to pop and peek are valid.
 
 class MyQueue {
     Stack<Integer> in, out;
+    
     /** Initialize your data structure here. */
     public MyQueue() {
         in = new Stack<>();
@@ -54,13 +55,13 @@ class MyQueue {
     
     /** Removes the element from in front of queue and returns that element. */
     public int pop() {
-        if (out.isEmpty()) trans();
+        if (out.isEmpty()) transfer();
         return out.pop();
     }
     
     /** Get the front element. */
     public int peek() {
-        if (out.isEmpty()) trans();
+        if (out.isEmpty()) transfer();
         return out.peek();
     }
     
@@ -69,7 +70,7 @@ class MyQueue {
         return in.isEmpty() && out.isEmpty();
     }
 
-    private void trans() {
+    private void transfer() {
         while (! in.isEmpty()) {
             out.push(in.pop());
         }
