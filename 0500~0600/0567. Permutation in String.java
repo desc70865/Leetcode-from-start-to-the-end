@@ -21,32 +21,41 @@ The length of both given strings is in range [1, 10,000].
  */
 
 class Solution {
+    int[] map = new int[26];
+    int diff = 0;
+
     public boolean checkInclusion(String s1, String s2) {
-        int len1 = s1.length();
-        int len2 = s2.length();
-        if (len1 > len2) return false;
-        int[] map = new int[26];
+        if (s1.length() > s2.length()) return false;
         for (char c: s1.toCharArray()) {
-            map[c - 97]++;
+            add(c);
         }
+        int len = s1.length();
         char[] chs = s2.toCharArray();
-        for (int i = 0; i < len1; i++) {
-            map[chs[i] - 97]--;
+        for (int i = 0; i < len; i++) {
+            remove(chs[i]);
         }
-        int diff = 0;
-        for (int num: map) {
-            if (num != 0) diff++;
+        for (int i = len; i < chs.length && diff != 0; i++) {
+            add(chs[i - len]);
+            remove(chs[i]);
         }
-        if (diff == 0) return true;
-        for (int i = len1; i < len2; i++) {
-            int a = ++map[chs[i - len1] - 97];
-            int b = --map[chs[i] - 97];
-            if (a == 0) diff--;
-            else if (a == 1) diff++;
-            if (b == 0) diff--;
-            else if (b == -1) diff++;
-            if (diff == 0) return true;
+        return diff == 0;
+    }
+
+    private void add(char c) {
+        if (map[c - 97] == 0) {
+            diff++;
+        } else if (map[c - 97] == -1) {
+            diff--;
         }
-        return false;
+        map[c - 97]++;
+    }
+
+    private void remove(char c) {
+        if (map[c - 97] == 0) {
+            diff++;
+        } else if (map[c - 97] == 1) {
+            diff--;
+        }
+        map[c - 97]--;
     }
 }
