@@ -21,41 +21,19 @@ The length of both given strings is in range [1, 10,000].
  */
 
 class Solution {
-    int[] map = new int[26];
-    int diff = 0;
-
     public boolean checkInclusion(String s1, String s2) {
-        if (s1.length() > s2.length()) return false;
-        for (char c: s1.toCharArray()) {
-            add(c);
+        if (s1.length() > s2.length()) {
+            return false;
         }
-        int len = s1.length();
-        char[] chs = s2.toCharArray();
-        for (int i = 0; i < len; i++) {
-            remove(chs[i]);
+        char[] chs = new StringBuilder(s1).append(s2).toString().toCharArray();
+        int sum = 0, len = s1.length();
+        for (int i = 0; i < len || i < chs.length - len && sum != 0; i++) {
+            sum += hash(chs[i]) - hash(chs[i + len]);
         }
-        for (int i = len; i < chs.length && diff != 0; i++) {
-            add(chs[i - len]);
-            remove(chs[i]);
-        }
-        return diff == 0;
+        return sum == 0;
     }
 
-    private void add(char c) {
-        if (map[c - 97] == 0) {
-            diff++;
-        } else if (map[c - 97] == -1) {
-            diff--;
-        }
-        map[c - 97]++;
-    }
-
-    private void remove(char c) {
-        if (map[c - 97] == 0) {
-            diff++;
-        } else if (map[c - 97] == 1) {
-            diff--;
-        }
-        map[c - 97]--;
+    private int hash(char c) {
+        return 1 << (c - 97);
     }
 }
