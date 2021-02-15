@@ -82,10 +82,83 @@ class Solution {
      */
     private int f(String a, String b) {
         int lcp = 0;
-        while (lcp < a.length() && lcp < b.length()) {
-            if (a.charAt(lcp) == b.charAt(lcp)) lcp++;
-            else break;
+        while (lcp < a.length() && lcp < b.length() && a.charAt(lcp) == b.charAt(lcp)) {
+            lcp++;
         }
         return a.length() - lcp;
+    }
+}
+
+
+
+class Solution {
+    static final int MAX_CHAR = 128;
+    int CNT_SIZE;
+    int len = 0, ans = 0, ranking = MAX_CHAR - 1;
+    char[] chs;
+    int[] rank, rankCopy; // [1, len], substring [i:]'s rank
+    int[] pos, posCopy; // [0, len - 1], ith substring's index
+
+    public int countDistinct(String s) {
+        if (s.length() == 1) return 1;
+        initial(s);
+        for (int offset = 1; offset < len; offset <<= 1) {
+            radixSort(offset);
+            radixSort(0);
+            updateRank(offset);
+        }
+        for (int i = 0; i < len - 1; i++) {
+            ans -= lcp(pos[i], pos[i + 1]);
+        }
+        return ans;
+    }
+
+    private void updateRank(int offset) {
+        rankCopy[pos[0]] = ranking = 1;
+        for (int i = 1; i < len; i++) {
+            if (rank[pos[i]] != rank[pos[i - 1]]
+            || rank[pos[i] + offset] != rank[pos[i - 1] + offset]) {
+                ranking++;
+            }
+            rankCopy[pos[i]] = ranking;
+        }
+        System.arraycopy(rankCopy, 0, rank, 0, rank.length);
+    }
+
+    private void radixSort(int offset) {
+        int[] bucket = new int[CNT_SIZE];
+        for (int i = 0; i < len; i++) {
+            bucket[rank[pos[i] + offset]]++;
+        }
+        for (int i = 1; i <= ranking; i++) {
+            bucket[i] += bucket[i - 1];
+        }
+        for (int i = len - 1; i >= 0; i--) {
+            posCopy[--bucket[rank[pos[i] + offset]]] = pos[i];
+        }
+        System.arraycopy(posCopy, 0, pos, 0, len);
+    }
+
+    private int lcp(int a, int b) {
+        int k = 0;
+        while (a < len && b < len && chs[a++] == chs[b++]) {
+            k++;
+        }
+        return k;
+    }
+
+    private void initial(String s) {
+        this.len = s.length();
+        this.ans = len * (len + 1) / 2;
+        this.chs = s.toCharArray();
+        CNT_SIZE = Math.max(len << 1, MAX_CHAR);
+        rank = new int[len << 1];
+        rankCopy = new int[len << 1];
+        pos = new int[len];
+        posCopy = new int[len];
+        for (int i = 0; i < len; i++) {
+            rank[i] = chs[i] - 97;
+            pos[i] = i;
+        }
     }
 }
