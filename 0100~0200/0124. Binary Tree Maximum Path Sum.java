@@ -51,11 +51,9 @@ class Solution {
 
     private int max(TreeNode node) {
         if (node == null) return 0;
-        
         int left = Math.max(max(node.left), 0);
         int right = Math.max(max(node.right), 0);
-        int cur = node.val + left + right;
-        sum = Math.max(sum, cur);
+        sum = Math.max(sum, left + node.val + right);
         return node.val + Math.max(left, right);
     }
 }
