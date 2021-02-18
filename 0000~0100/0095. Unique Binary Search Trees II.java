@@ -42,36 +42,25 @@ Constraints:
  *     }
  * }
  */
-
-// 二叉搜索树-中序遍历
-// 全排列的限制形式
-
-
 class Solution {
     public List<TreeNode> generateTrees(int n) {
         if (n == 0) return new ArrayList<>();
-        return generateTrees(1, n);
+        return dfs(1, n);
     }
 
-    private List<TreeNode> generateTrees(int start, int end) {
+    private List<TreeNode> dfs(int start, int end) {
         List<TreeNode> res = new ArrayList<>();
-        if (start > end) { // add null
+        if (start > end) {
         	res.add(null);
         	return res;
         }
-        for (int i = start; i <= end; i++) {
-            List<TreeNode> left = generateTrees(start, i - 1), right = generateTrees(i + 1, end);
-            for (TreeNode leftNode: left) {
-                for (TreeNode rightNode: right) {
-                    TreeNode root = new TreeNode(i);
-                    root.left = leftNode;
-                    root.right = rightNode;
-                    res.add(root);
+        for (int m = start; m <= end; m++) {
+            for (TreeNode l: dfs(start, m - 1)) {
+                for (TreeNode r: dfs(m + 1, end)) {
+                    res.add(new TreeNode(m, l, r));
                 }
             }
         }
-        // 返回List中包含[i, j]中 j-i+1 个节点生成树全排列的根节点;
-        // 在[i, j]中选取k作为根节点,对[i, k-1]&[k+1, j]进行递归;
         return res;
     }
 }
