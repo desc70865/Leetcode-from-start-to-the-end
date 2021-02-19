@@ -55,7 +55,8 @@ Each node's value is between [1, 100].
  * }
  */
 class Solution {
-    private int ans = 0;
+    int ans = 0;
+    
     public int countPairs(TreeNode root, int distance) {
         helper(root, distance);
         return ans;
