@@ -45,14 +45,14 @@ class Solution {
     private int sum = Integer.MIN_VALUE;
 
     public int maxPathSum(TreeNode root) {
-        max(root);
+        dfs(root);
         return sum;
     }
 
-    private int max(TreeNode node) {
+    private int dfs(TreeNode node) {
         if (node == null) return 0;
-        int left = Math.max(max(node.left), 0);
-        int right = Math.max(max(node.right), 0);
+        int left = Math.max(dfs(node.left), 0);
+        int right = Math.max(dfs(node.right), 0);
         sum = Math.max(sum, left + node.val + right);
         return node.val + Math.max(left, right);
     }
