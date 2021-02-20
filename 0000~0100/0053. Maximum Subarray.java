@@ -15,7 +15,7 @@ class Solution {
     public int maxSubArray(int[] nums) {
         int cur = 0, max = Integer.MIN_VALUE;
         for (int num: nums) {
-            cur = Math.max(cur + num, num);
+            cur = Math.max(cur, 0) + num;
             max = Math.max(cur, max);
         }
         return max;
@@ -51,4 +51,3 @@ class Solution {
 }
 
 // 3 ms
-

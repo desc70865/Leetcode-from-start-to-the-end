@@ -71,9 +71,14 @@ class Solution {
 
 class Solution {
     public boolean isSubtree(TreeNode t1, TreeNode t2) {
-        if (t2 == null) return true;
-        if (t1 == null) return false;
-        if (t1.val == t2.val) return isSubtree(t1.left, t2.left) && isSubtree(t1.right, t2.right);
-        else return isSubtree(t1.left, t2) || isSubtree(t1.right, t2);
+        if (t2 == null || t1 == null) return t2 == null;
+        return t1.val == t2.val && isSameTree(t1.left, t2.left) && isSameTree(t1.right, t2.right)
+            || isSubtree(t1.left, t2) || isSubtree(t1.right, t2);
+    }
+
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) return true;
+        else if (p == null || q == null) return false;
+        return p.val == q.val && isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
     }
 }

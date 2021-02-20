@@ -32,24 +32,17 @@ nums[i] will be an integer between 0 and 49,999.
 class Solution {
     public int findShortestSubArray(int[] nums) {
         Map<Integer, List<Integer>> map = new HashMap<>();
-        int N = nums.length;
-        for (int i = 0; i < N; i++) {
-            List<Integer> list;
-            if (! map.containsKey(nums[i])) list = new ArrayList<>();
-            else list = map.get(nums[i]);
-            list.add(i);
-            map.put(nums[i], list);
+        int min = nums.length;
+        for (int i = 0; i < min; i++) {
+            map.computeIfAbsent(nums[i], z -> new ArrayList<>()).add(i);
         }
         int max = 0;
-        int min = N;
-        for (Map.Entry<Integer, List<Integer>> entry: map.entrySet()) {
-            int num = entry.getKey();
-            List<Integer> list = entry.getValue();
-            if (list.size() > max) {
+        for (List<Integer> list: map.values()) {
+            if (max < list.size()) {
                 max = list.size();
-                min = N;
+                min = nums.length; // reset
             }
-            if (list.size() == max) {
+            if (max == list.size()) {
                 min = Math.min(min, list.get(max - 1) - list.get(0) + 1);
             }
         }
@@ -61,24 +54,33 @@ class Solution {
 
 class Solution {
     public int findShortestSubArray(int[] nums) {
-        Map<Integer, int[]> map = new HashMap<>();
-        int N = nums.length;
-        int[] p;
-        // [l, r, cnt]
-        int max = 0;
-        for (int i = 0; i < N; i++) {
-            if (! map.containsKey(nums[i])) p = new int[3];
-            else p = map.get(nums[i]);
-            if (p[0] == 0) p[0] = i + 1;
-            else p[1] = i + 1;
-            max = Math.max(max, ++p[2]);
-            map.put(nums[i], p);
+        int up = -1, low = 50001;
+        for (int num: nums) {
+            up = Math.max(up, num);
+            low = Math.min(low, num);
         }
-        if (max == 1) return 1;
-        int min = N;
-        for (Map.Entry<Integer, int[]> entry: map.entrySet()) {
-            p = entry.getValue();
-            if (p[2] == max) min = Math.min(min, p[1] - p[0] + 1);
+        int[][] map = new int[up - low + 1][3];
+        int len = nums.length;
+        for (int i = 0; i < len; i++) {
+            int idx = nums[i] - low;
+            if (map[idx][2] > 0) {
+                map[idx][1] = i;
+                map[idx][2]++;
+            } else {
+                map[idx][0] = map[idx][1] = i;
+                map[idx][2] = 1;
+            }
+        }
+        int max = 0;
+        int min = len;
+        for (int[] arr: map) {
+            if (max < arr[2]) {
+                max = arr[2];
+                min = len;
+            }
+            if (max == arr[2]) {
+                min = Math.min(min, arr[1] - arr[0] + 1);
+            }
         }
         return min;
     }
