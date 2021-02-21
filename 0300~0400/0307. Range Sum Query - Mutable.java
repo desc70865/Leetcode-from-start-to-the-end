@@ -19,41 +19,11 @@ You may assume the number of calls to update and sumRange function is distribute
 0 <= i <= j <= nums.length - 1
  */
 
-class NumArray {
-    int[] nums;
-    int[] sum;
-    int N;
-    public NumArray(int[] nums) {
-        this.nums = nums;
-        N = nums.length;
-        sum = new int[N + 1];
-        for (int i = 1; i <= N; i++) {
-            sum[i] = sum[i - 1] + nums[i - 1];
-        }
-    }
-    
-    public void update(int i, int val) {
-        int k = val - nums[i];
-        nums[i++] = val;
-        for (; i <= N; i++) sum[i] += k;
-    }
-    
-    public int sumRange(int i, int j) {
-        return sum[j + 1] - sum[i];
-    }
-}
-
-/**
- * Your NumArray object will be instantiated and called as such:
- * NumArray obj = new NumArray(nums);
- * obj.update(i,val);
- * int param_2 = obj.sumRange(i,j);
- */
-
 class BITree{
     private int[] sums = null;
-    public BITree(int n) {
-        this.sums = new int[n]; // all 0 by default
+
+    public BITree(int len) {
+        this.sums = new int[len]; // all 0 by default
     }
     
     public int lowbit(int x) {
@@ -68,12 +38,12 @@ class BITree{
     }
     
     public int query(int i) {
-        int asum = 0;
+        int ans = 0;
         while (i > 0) {
-            asum += this.sums[i];
+            ans += this.sums[i];
             i -= lowbit(i);
         }
-        return asum;
+        return ans;
     }
 }
 
@@ -82,21 +52,27 @@ class NumArray {
     private int[] nums = null;
 
     public NumArray(int[] nums) {
-        int N = nums.length;
         this.nums = nums;
-        this.tree = new BITree(N + 1);
-        for (int i = 0; i < N; i++) {
-            this.tree.update(i+1, nums[i]);
+        int len = nums.length;
+        this.tree = new BITree(len + 1);
+        for (int i = 0; i < len; i++) {
+            this.tree.update(i + 1, nums[i]);
         }
     }
     
     public void update(int i, int val) {
-        int delta = val - this.nums[i];
-        this.tree.update(i+1, delta);
+        this.tree.update(i + 1, val - this.nums[i]);
         this.nums[i] = val; // do not forget this line, to update nums!!!
     }
     
     public int sumRange(int i, int j) {
-        return this.tree.query(j+1) - this.tree.query(i);
+        return this.tree.query(j + 1) - this.tree.query(i);
     }
 }
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.update(index,val);
+ * int param_2 = obj.preSumRange(left,right);
+ */

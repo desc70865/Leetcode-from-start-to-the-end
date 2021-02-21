@@ -22,7 +22,7 @@ The size of the given array will be in the range [1,1000].
  */
 
 /**
- * Definition for a binary tree node.
+ * Definition for arr binary tree node.
  * public class TreeNode {
  *     int val;
  *     TreeNode left;
@@ -39,19 +39,19 @@ The size of the given array will be in the range [1,1000].
 class Solution {
     public TreeNode constructMaximumBinaryTree(int[] nums) {
         if (nums == null || nums.length == 0) return null;
-        return helper(nums, 0, nums.length - 1);
+        return dfs(nums, 0, nums.length - 1);
     }
 
-    private TreeNode helper(int[] A, int l, int r) {
-        if (l > r) return null;
-        // if (l == r) return new TreeNode(A[l]);
+    private TreeNode dfs(int[] arr, int l, int r) {
+        if (l > r) {
+            return null;
+        }
         int max = l;
         for (int i = l + 1; i <= r; i++) {
-            if (A[i] > A[max]) max = i;
+            if (arr[i] > arr[max]) {
+                max = i;
+            }
         }
-        TreeNode cur = new TreeNode(A[max]);
-        cur.left = helper(A, l, max - 1);
-        cur.right = helper(A, max + 1, r);
-        return cur;
+        return new TreeNode(arr[max], dfs(arr, l, max - 1), dfs(arr, max + 1, r));
     }
 }

@@ -30,21 +30,21 @@ The value of nodes is between 1 and 100.
  * }
  */
 class Solution {
-    private int sum = 0;
+    int sum = 0;
 
     public int sumEvenGrandparent(TreeNode root) {
-        helper(root, 0, 0);
+        dfs(-1, -1, root);
         return sum;
     }
 
-    private void helper(TreeNode node, int grand, int parent) {
-        if (node == null) return;
-        sum += grand * node.val;
-        helper(node.left, parent, f(node.val));
-        helper(node.right, parent, f(node.val));
-    }
-
-    private int f(int n) {
-        return 1 - n % 2;
+    private void dfs(int grand, int parent, TreeNode node) {
+        if (node == null) {
+            return;
+        }
+        if (grand % 2 == 0) {
+            sum += node.val;
+        }
+        dfs(parent, node.val, node.left);
+        dfs(parent, node.val, node.right);
     }
 }

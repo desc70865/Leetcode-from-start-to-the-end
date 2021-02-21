@@ -20,16 +20,18 @@ There are many calls to sumRange function.
  */
 
 class NumArray {
-    int[] B;
+    int[] preSum;
+
     public NumArray(int[] nums) {
-        int N = nums.length;
-        for (int i = 1; i < N; i++) nums[i] += nums[i - 1];
-        B = nums;
+        int len = nums.length;
+        preSum = new int[len + 1];
+        for (int i = 0; i < len; i++) {
+            preSum[i + 1] = preSum[i] + nums[i];
+        }
     }
     
     public int sumRange(int i, int j) {
-        if (i == 0) return B[j];
-        return B[j] - B[i - 1];
+        return preSum[j + 1] - preSum[i];
     }
 }
 
