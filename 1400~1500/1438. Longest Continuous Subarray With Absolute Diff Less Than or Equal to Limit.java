@@ -76,3 +76,31 @@ class Solution {
         res = Math.max(res, high - low - 1);
     }
 }
+
+
+
+class Solution {
+    public int longestSubarray(int[] nums, int limit) {
+        int len = nums.length;
+        int[] max = new int[len], min = new int[len];
+        int a = 0, b = -1, c = 0, d = -1;
+        int l = 0, r = 0;
+        int res = 0;
+        while (r < len) {
+            while (a <= b && nums[max[b]] < nums[r]) b--;
+            while (c <= d && nums[min[d]] > nums[r]) d--;
+            max[++b] = r;
+            min[++d] = r;
+            r++;
+            while (nums[max[a]] - nums[min[c]] > limit) {
+                l++;
+                if (l > max[a]) a++;
+                if (l > min[c]) c++;
+            }
+            res = Math.max(res, r - l);
+        }
+        return res;
+    }
+}
+
+// ???

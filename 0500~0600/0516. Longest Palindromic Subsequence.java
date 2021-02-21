@@ -52,20 +52,22 @@ s consists only of lowercase English letters.
 class Solution {
     public int longestPalindromeSubseq(String s) {
         if (s == null) return 0;
-        int N = s.length(), max = 0;
-        char[] str = s.toCharArray();
-        int[] dp = new int[N];
+        int len = s.length();
+        char[] chs = s.toCharArray();
+        int[] dp = new int[len];
         Arrays.fill(dp, 1);
-        
-        for (int i = N-1; i >= 0; i--) {
-            int preMax = 0;
-            for (int j = i+1; j < N; j++) {
-                int tmp = dp[j];
-                if (str[i] == str[j]) dp[j] = preMax + 2;
-                preMax = Math.max(tmp, preMax);
+        int max = 0;
+        for (int i = len - 1; i >= 0; i--) {
+            char cur = chs[i];
+            int curMax = 0;
+            for (int j = i + 1; j < len; j++) {
+                int mem = dp[j];
+                if (cur == chs[j]) {
+                    dp[j] = curMax + 2;
+                }
+                curMax = Math.max(mem, curMax);
             }
         }
-        
         for (int e: dp) max = Math.max(max, e);
         // System.out.println(Arrays.toString(dp));
         return max;
@@ -73,31 +75,30 @@ class Solution {
 }
 
 // ith dp[j] -> dp[i][j]
-// preMax: 维护 dp[i+1][k] k ∈ [i+1, j-1] 中的 Max
-// str[i] == str[j] dp[j] = preMax + 2;
+// curMax: 维护 dp[i+1][k] k ∈ [i+1, j-1] 中的最大值
+// chs[i] == chs[j] dp[j] = curMax + 2;
 
 class Solution {
     public int longestPalindromeSubseq(String s) {
         if (s == null) {
             return 0;
         }
-        int[][] dp = new int[s.length()][s.length()];
-        int n = s.length();
-        for (int i = 0; i < n; i++) {
+        char[] chs = s.toCharArray();
+        int len = chs.length;
+        int[][] dp = new int[len][len];
+        for (int i = 0; i < len; i++) {
             dp[i][i] = 1;
         }
-        
-        for (int i = n-1; i >= 0; i--) {
-            for (int j = i+1; j < n; j++) {
-                if (s.charAt(i) == s.charAt(j)) {
-                    dp[i][j] = dp[i+1][j-1] + 2;
+        for (int i = len - 1; i >= 0; i--) {
+            for (int j = i + 1; j < len; j++) {
+                if (chs[i] == chs[j]) {
+                    dp[i][j] = dp[i + 1][j - 1] + 2;
                 } else {
-                    dp[i][j] = Math.max(dp[i+1][j],dp[i][j-1]);
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
                 }
             }
         }
-        
-        return dp[0][n-1];
+        return dp[0][len - 1];
     }
 }
 
