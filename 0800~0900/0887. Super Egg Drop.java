@@ -56,7 +56,7 @@ class Solution {
     private int helper(int k, int sum) {
         if (k == 1) return sum;
         int r = sum;
-        for (int i = 1; i < r; i++) sum += helper(k-1, i);
+        for (int i = 1; i < r; i++) sum += helper(k - 1, i);
         return sum;
     }
 }
@@ -68,7 +68,7 @@ where dp[K][N] = 1 + max(dp[K - 1][i - 1], dp[K][N - i]) for i in 1...N.
 However this idea is very brute force, for the reason that you check all possiblity.
 
 So I consider this problem in a different way:
-dp[M][K]means that, given K eggs and M moves,
+dp[M][K] means that, given K eggs and M moves,
 what is the maximum number of floor that we can check.
 
 The dp equation is:
@@ -84,15 +84,17 @@ class Solution {
     public int superEggDrop(int K, int N) {
         /* int[][] dp = new int[N + 1][K + 1];
         int m = 0;
-        while (dp[m][K] < N) {
-            ++m;
-            for (int k = 1; k <= K; ++k)
-                dp[m][k] = dp[m - 1][k - 1] + dp[m - 1][k] + 1;
+        for (; dp[m][K] < N; m++) {
+            for (int k = 1; k <= K; ++k) {
+                dp[m + 1][k] = dp[m][k - 1]+ 1 + dp[m][k] ;
+            }
         } */
         int[] dp = new int[K + 1];
         int m = 0;
         for (; dp[K] < N; m++) {
-            for (int i = K; i > 0; i--) dp[i] += dp[i - 1] + 1;
+            for (int i = K; i > 0; i--) {
+                dp[i] += dp[i - 1] + 1;
+            }
         }
         return m;
     }

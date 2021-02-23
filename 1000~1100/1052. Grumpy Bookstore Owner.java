@@ -26,16 +26,16 @@ Note:
 
 class Solution {
     public int maxSatisfied(int[] customers, int[] grumpy, int X) {
-        int N = customers.length;
         int sum = 0;
         int max = 0;
         int cur = 0;
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < customers.length; i++) {
             if (i >= X && grumpy[i - X] == 1) {
                 cur -= customers[i - X];
             }
-            if (grumpy[i] == 0) sum += customers[i];
-            else {
+            if (grumpy[i] == 0) {
+                sum += customers[i];
+            } else {
                 cur += customers[i];
                 max = Math.max(cur, max);
             }
