@@ -26,17 +26,23 @@ Notes:
 class Solution {
     public int[][] flipAndInvertImage(int[][] A) {
         for (int[] line: A) {
-            rotate(line);
+            invert(line, 0, line.length - 1);
         }
         return A;
     }
     
-    private void rotate(int[] A) {
-        int l = 0, r = A.length - 1;
+    private void invert(int[] arr, int l, int r) {
         while (l <= r) {
-            int t = A[l];
-            A[l++] = 1 - A[r];
-            A[r--] = 1 - t;
+            swap(arr, l++, r--);
+        }
+    }
+
+    private void swap(int[] arr, int l, int r) {
+        if (l == r) {
+            arr[l] ^= 1;
+        } else if (arr[l] == arr[r]) {
+            arr[l] ^= 1;
+            arr[r] ^= 1;
         }
     }
 }
