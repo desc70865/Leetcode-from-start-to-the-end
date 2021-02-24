@@ -42,20 +42,22 @@ Each node will have value between 0 and 100000.
  * }
  */
 class Solution {
-    int res = 0;
+    int ans = 0;
+	
     public int maxAncestorDiff(TreeNode root) {
-        if (root == null) return 0;
         dfs(root, root.val, root.val);
-        return res;
+        return ans;
     }
 
     private void dfs(TreeNode node, int min, int max) {
         if (node == null) return;
-        int k = node.val;
-        if (k < min) min = k;
-        else if (k > max) max = k;
-        res = Math.max(res, k - min);
-        res = Math.max(res, max - k);
+		if (node.val < min) {
+			min = node.val;
+			ans = Math.max(ans, max - min);
+		} else if (node.val > max) {
+			max = node.val;
+			ans = Math.max(ans, max - min);
+		}
         dfs(node.left, min, max);
         dfs(node.right, min, max);
     }

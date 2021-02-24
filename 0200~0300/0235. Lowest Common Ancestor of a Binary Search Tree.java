@@ -39,7 +39,6 @@ p and q are different and both values will exist in the BST.
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if ((root.val - p.val) * (root.val - q.val) <= 0) return root;
-        if (root.val < p.val) return lowestCommonAncestor(root.right, p, q);
-        else return lowestCommonAncestor(root.left, p, q);
+        return p.val < root.val ? lowestCommonAncestor(root.left, p, q) : lowestCommonAncestor(root.right, p, q);
     }
 }
