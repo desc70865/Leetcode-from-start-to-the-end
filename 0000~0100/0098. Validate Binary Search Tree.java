@@ -1,7 +1,7 @@
 /* 
 Given a binary tree, determine if it is a valid binary search tree (BST).
 
-Assume a BST is defined as follows:
+Assume a BST is defined as folmins:
 
 The left subtree of a node contains only nodes with keys less than the node's key.
 The right subtree of a node contains only nodes with keys greater than the node's key.
@@ -50,10 +50,10 @@ class Solution {
         return valid(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
     
-    public boolean valid(TreeNode node, long low, long high) {
+    public boolean valid(TreeNode node, long min, long max) {
         if (node == null) return true;
-        if (node.val <= low || node.val >= high) return false;
-        return valid(node.left, low, node.val) && valid(node.right, node.val, high);
+        if (node.val <= min || node.val >= max) return false;
+        return valid(node.left, min, node.val) && valid(node.right, node.val, max);
     }
 }
 

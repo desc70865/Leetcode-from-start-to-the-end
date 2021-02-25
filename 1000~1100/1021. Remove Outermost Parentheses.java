@@ -45,11 +45,9 @@ class Solution {
         StringBuilder sb = new StringBuilder();
         for (char c: S.toCharArray()) {
             if (c == '(') {
-                t++;
-                if (t > 1) sb.append(c);
+                if (++t > 1) sb.append(c);
             } else {
-                t--;
-                if (t > 0) sb.append(c);
+                if (--t > 0) sb.append(c);
             }
         }
         return sb.toString();
