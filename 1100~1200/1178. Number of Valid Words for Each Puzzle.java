@@ -34,11 +34,11 @@ Each puzzles[i] doesn't contain repeated characters.
 class Solution {
     public List<Integer> findNumOfValidWords(String[] words, String[] puzzles) {
         Map<Integer, Integer> map = new HashMap<>();
-        for (String word: words) map.merge(f(word), 1, (a, b) -> a + b);
+        for (String word: words) map.merge(encode(word), 1, Integer::sum);
         List<Integer> res = new ArrayList<>();
         for (String puzzle: puzzles) {
-            int mask = f(puzzle);
-            int head = d(puzzle.charAt(0));
+            int mask = encode(puzzle);
+            int head = bitmap(puzzle.charAt(0));
             int cur = mask;
             int cnt = 0;
             while (true) {
@@ -51,13 +51,13 @@ class Solution {
         return res;
     }
 
-    private int f(String s) {
+    private int encode(String s) {
         int res = 0;
-        for (char c: s.toCharArray()) res |= d(c);
+        for (char c: s.toCharArray()) res |= bitmap(c);
         return res;
     }
 
-    private int d(char c) {
+    private int bitmap(char c) {
         return 1 << (c - 97);
     }
 }

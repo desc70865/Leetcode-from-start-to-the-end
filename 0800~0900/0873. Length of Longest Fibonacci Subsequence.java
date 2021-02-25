@@ -54,3 +54,34 @@ class Solution {
         return max > 0 ? max + 2 : 0;
     }
 }
+
+
+
+class Solution {
+    public int lenLongestFibSubseq(int[] A) {
+        int len = A.length;
+        int[][] dp = new int[len][len];
+        for (int i = 0; i < len; i++) {
+            for (int j = i + 1; j < len; j++) {
+                dp[i][j] = 2;
+            }
+        }
+        int max = 0;
+        for (int i = 0; i < len; i++) {
+            for (int l = 0, r = i - 1; l < r;) {
+                int sum = A[l] + A[r];
+                if (sum == A[i]) {
+                    dp[r][i] = Math.max(dp[r][i], dp[l][r] + 1);
+                    max = Math.max(max, dp[r][i]);
+                    l++;
+                    r--;
+                } else if (sum < A[i]) {
+                    l++;
+                } else {
+                    r--;
+                }
+            }
+        }
+        return max;
+    }
+}
