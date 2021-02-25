@@ -44,6 +44,9 @@ class Solution {
             while (true) {
                 if ((head & cur) == head && map.containsKey(cur)) cnt += map.get(cur);
                 if (cur == 0) break;
+				// core
+				// -1: 遍历
+				// &: 真子集
                 cur = (cur - 1) & mask;
             }
             res.add(cnt);
