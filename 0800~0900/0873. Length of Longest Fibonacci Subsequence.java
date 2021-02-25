@@ -35,22 +35,21 @@ class Solution {
     public int lenLongestFibSubseq(int[] A) {
         int len = A.length;
         int[][] dp = new int[len][len];
-        Set<Integer> set = new HashSet<>();
-        set.add(A[len - 1]);
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(A[len - 1], len - 1);
         int max = 0;
         for (int i = len - 2; i >= 0; i--) {
             for (int j = i + 1; j < len; j++) {
                 int sum = A[i] + A[j];
-                if (set.contains(sum)) {
-                    int k = Arrays.binarySearch(A, sum);
-                    dp[i][j] = dp[j][k] + 1;
+                if (map.containsKey(sum)) {
+                    dp[i][j] = dp[j][map.get(sum)] + 1;
                     max = Math.max(max, dp[i][j]);
                 }
                 if (sum >= A[len - 1]) {
                     break;
                 }
             }
-            set.add(A[i]);
+            map.put(A[i], i);
         }
         return max > 0 ? max + 2 : 0;
     }

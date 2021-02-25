@@ -32,40 +32,28 @@ return its level order traversal as:
  * }
  */
 class Solution {
-    List<List<Integer>> res;
-    public List<List<Integer>> levelOrder(TreeNode root) {
-        res = new ArrayList<>();
-        dfs(root, 0);
-        return res;
-    }
-
-    private void dfs(TreeNode node, int h) {
-        if (node == null) return;
-        if (h == res.size()) res.add(new ArrayList<>());
-        res.get(h).add(node.val);
-        dfs(node.left, h + 1);
-        dfs(node.right, h + 1);
-    }
-}
-
-// 队列存储节点,标记层数
-
-class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> ans = new ArrayList<>();
-        Queue<TreeNode> q = new LinkedList<>();
-        if (root != null) q.offer(root);
-        TreeNode cur;
-        while (!q.isEmpty()) {
-            int size = q.size();
-            List<Integer> subAns = new LinkedList<Integer>();
-            for (int i = 0; i < size; ++i) {
-                cur = q.poll();
-                subAns.add(cur.val);
-                if (cur.left != null) q.offer(cur.left);
-                if (cur.right != null) q.offer(cur.right);
+        if (root == null) {
+            return ans;
+        }
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        int depth = 0;
+        while (queue.size() > 0) {
+            int size = queue.size();
+            List<Integer> level = new ArrayList<>();
+            while (size-- > 0) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+                level.add(node.val);
             }
-            ans.add(subAns);
+            ans.add(level);
         }
         return ans;
     }

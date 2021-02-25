@@ -45,7 +45,6 @@ class Solution {
 
 class Solution {
     public int numSquares(int n) {
-
         ArrayList<Integer> square_nums = new ArrayList<Integer>();
         for (int i = 1; i * i <= n; ++i) {
             square_nums.add(i * i);
