@@ -35,7 +35,7 @@ class Solution {
     private int maxDepth = 0, sum = 0;
 
     public int deepestLeavesSum(TreeNode root) {
-        dfs(1, root);
+        dfs(0, root);
         return sum;
     }
 
