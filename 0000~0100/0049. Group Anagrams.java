@@ -21,29 +21,7 @@ class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
         Map<String, List<String>> map = new HashMap<>();
         for (String s: strs) {
-            String key = f(s.toCharArray());
-            map.putIfAbsent(key, new ArrayList<>());
-            map.get(key).add(s);
-        }
-        return new ArrayList<>(map.values());
-    }
-
-    private String f(char[] s) {
-        Arrays.sort(s);
-        return new String(s);
-    }
-}
-
-
-
-class Solution {
-    public List<List<String>> groupAnagrams(String[] strs) {
-        Map<String, List<String>> map = new HashMap<>();
-        for (String s: strs) {
-            String k = f(s);
-            List<String> cur = map.getOrDefault(k, new ArrayList<>());
-            cur.add(s);
-            map.put(k, cur);
+            map.computeIfAbsent(f(s), z -> new ArrayList<>()).add(s);
         }
         return new ArrayList<>(map.values());
     }

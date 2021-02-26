@@ -51,18 +51,18 @@ Note: The given binary tree has not more than 10000 nodes. The height of the tre
  */
 class Solution {
     int res;
+    
     public int longestUnivaluePath(TreeNode root) {
         res = 0;
         dfs(root, -1);
         return Math.max(res - 1, 0);
     }
-
+    
     private int dfs(TreeNode node, int val) {
         if (node == null) return 0;
         int l = dfs(node.left, node.val);
         int r = dfs(node.right, node.val);
         res = Math.max(res, l + r + 1);
-        if (node.val != val) return 0;
-        return 1 + Math.max(l, r);
+        return node.val == val ? 1 + Math.max(l, r) : 0;
     }
 }

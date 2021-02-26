@@ -30,29 +30,22 @@ strs[i] consists only of digits '0' and '1'.
  */
 
 class Solution {
-    int N;
     public int findMaxForm(String[] strs, int m, int n) {
-        N = strs.length;
-        int[][] A = init(strs);
         int[][] dp = new int[m + 1][n + 1];
-        for (int i = 0; i < N; i++) {
-            for (int j = m; j >= A[i][0]; j--) {
-                for (int k = n; k >= A[i][1]; k--) {
-                    dp[j][k] = Math.max(dp[j][k], 1 + dp[j - A[i][0]][k - A[i][1]]);
+        for (int i = 0; i < strs.length; i++) {
+            int zero = 0;
+            int one = 0;
+            for (char c: strs[i].toCharArray()) {
+                if (c == '0') zero++;
+                else one++;
+            }
+            for (int j = m; j >= zero; j--) {
+                for (int k = n; k >= one; k--) {
+                    dp[j][k] = Math.max(dp[j][k], 1 + dp[j - zero][k - one]);
                 }
             }
         }
         return dp[m][n];
-    }
-
-    private int[][] init(String[] strs) {
-        int[][] A = new int[N][2];
-        for (int i = 0; i < N; i++) {
-            for (char c: strs[i].toCharArray()) {
-                A[i][c - 48]++;
-            }
-        }
-        return A;
     }
 }
 
