@@ -22,38 +22,38 @@ The longest substring is "ababb", as 'a' is repeated 2 times and 'b' is repeated
  */
 
 class Solution {
-    public int longestSubstring(String s, int k) {  
-        if (s == null || s.length() < k) 
+    public int longestSubstring(String s, int k) {
+        if (s == null || s.length() < k)
             return 0;
-        if (k <= 1) 
+        if (k <= 1)
             return s.length();
-        return longestSubstring(s.toCharArray(), k, 0, s.length()-1);
+        return longestSubstring(s.toCharArray(), k, 0, s.length() - 1);
     }
     
     public int longestSubstring(char[] s, int k, int low, int high) {
         if (low > high)
             return 0;
-        int[] count = new int[26];
+        int[] map = new int[26];
         for (int i = low; i <= high; i++)
-            count[s[i] - 'a']++;
-        boolean flag = true;
+            map[s[i] - 'a']++;
+        boolean valid = true;
         for (int i = 0; i < 26; i++) {
-            if ((-count[i] & count[i] - k) < 0) { // 0 < count[i] && count[i] < k
-                flag = false;
+            if (0 < map[i] && map[i] < k) {
+                valid = false;
                 break;
             }
         }
-        if (flag)
+        if (valid)
             return high - low + 1;
-        int start = low;
+        int left = low;
         int res = 0;
-        for (int i = low; i <= high; i++) {
-            if (count[s[i] - 'a'] < k) {
-                res = Math.max(longestSubstring(s, k, start, i-1), res);
-                start = i+1;
+        for (int right = low; right <= high; right++) {
+            if (map[s[right] - 'a'] < k) {
+                res = Math.max(longestSubstring(s, k, left, right - 1), res);
+                left = right + 1;
             }
         }
-        res = Math.max(longestSubstring(s, k, start, high), res);
+        res = Math.max(longestSubstring(s, k, left, high), res);
         return res;
     }
 }

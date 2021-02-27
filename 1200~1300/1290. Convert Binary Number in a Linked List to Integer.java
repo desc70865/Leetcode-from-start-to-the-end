@@ -51,7 +51,7 @@ class Solution {
         int res = 0;
         while (head != null) {
             res <<= 1;
-            res += head.val;
+            res |= head.val;
             head = head.next;
         }
         return res;

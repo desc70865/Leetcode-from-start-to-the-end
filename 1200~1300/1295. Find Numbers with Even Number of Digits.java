@@ -29,33 +29,10 @@ Constraints:
 
 class Solution {
     public int findNumbers(int[] nums) {
-        int cnt = 0;
-        for (int num : nums) {
-            if (10 <= num && num < 100 || 1000 <= num && num < 10000 || 100000 <= num) {
-                cnt++;
-            }
+        int sum = 0;
+        for (int num: nums) {
+            sum += String.valueOf(num).length() % 2 == 0 ? 1 : 0;
         }
-        return cnt;
-    }
-}
-
-
-
-class Solution {
-    public int findNumbers(int[] nums) {
-        int cnt = 0;
-        for (int num : nums) {
-            if (isEven(num)) {
-                cnt++;
-            }
-        }
-        return cnt;
-    }
-    
-    private boolean isEven(int num) {
-        while (num / 100 > 0) {
-            num /= 100;
-        }
-        return num > 9 || num == 0;
+        return sum;
     }
 }

@@ -26,55 +26,21 @@ groupSizes.length == n
 
 class Solution {
     public List<List<Integer>> groupThePeople(int[] groupSizes) {
-        List<List<Integer>> res = new ArrayList<>();
-        List<Integer> tmp;
         Map<Integer, List<Integer>> map = new HashMap<>();
         for (int i = 0; i < groupSizes.length; i++) {
-            int key = groupSizes[i];
-            if (! map.containsKey(key)) tmp = new ArrayList<>();
-            else tmp = map.get(key);
-            tmp.add(i);
-            map.put(key, tmp);
+            map.computeIfAbsent(groupSizes[i], z -> new ArrayList<>()).add(i);
         }
-
-        for (Map.Entry<Integer, List<Integer>> entry: map.entrySet()) {
-            int key = entry.getKey();
-            List<Integer> list = entry.getValue(), l = new ArrayList<>();
-            for (Integer n: list) {
-                l.add(n);
-                if (l.size() == key) {
-                    res.add(new ArrayList<>(l));
-                    l = new ArrayList<>();
+        List<List<Integer>> list = new ArrayList<>();
+        for (int size: map.keySet()) {
+            List<Integer> cur = map.get(size);
+            for (int i = 0; i < cur.size(); i += size) {
+                List<Integer> tmp = new ArrayList<>();
+                for (int j = i; j < i + size; j++) {
+                    tmp.add(cur.get(j));
                 }
+                list.add(tmp);
             }
         }
-        return res;
-    }
-}
-
-
-
-class Solution {
-    private List<List<Integer>> result = new ArrayList<>();
-    private boolean[] isVisited;
-    
-    public List<List<Integer>> groupThePeople(int[] groupSizes) {
-        isVisited = new boolean[groupSizes.length];
-        for (int i = 0; i < groupSizes.length; i++) {
-            if (!isVisited[i]) findGroup(groupSizes, i);
-        }
-        return result;
-    }
-    
-    public void findGroup(int[] groupSizez, int i){
-        List<Integer> list = new ArrayList<Integer>();
-        int max = groupSizez[i--];
-        while (list.size() < max && ++i < groupSizez.length) {
-            if (groupSizez[i] == max && !isVisited[i]) {
-                isVisited[i] = true;
-                list.add(i);
-            }
-        }
-        result.add(list);
+        return list;
     }
 }
