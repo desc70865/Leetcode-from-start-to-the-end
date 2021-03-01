@@ -27,31 +27,10 @@ Constraints:
 
 class Solution {
     public boolean canJump(int[] nums) {
-        int res = 0, n = nums.length, i = 0, cur = 0;
-        while (cur < n - 1) {
-            ++res;
-            int pre = cur;
-            for (; i <= pre; ++i) {
-                cur = Math.max(cur, i + nums[i]);
-            }
-            if (pre == cur) return false;
+        int max = 0;
+        for (int i = 0; i <= max && max < nums.length - 1; i++) {
+            max = Math.max(max, nums[i] + i);
         }
-        return true;
-    }
-}
-
-// 复制粘贴又是全新的代码
-
-class Solution {
-    public boolean canJump(int[] nums) {
-        int n = nums.length, i = 0, cur = 0;
-        while (cur < n - 1) {
-            int pre = cur;
-            for (; i <= pre; ++i) {
-                cur = Math.max(cur, i + nums[i]);
-            }
-            if (pre == cur) return false;
-        }
-        return true;
+        return max >= nums.length - 1;
     }
 }
