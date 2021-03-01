@@ -30,42 +30,28 @@ Output: true
  */
 
 class Solution {
-    private HashMap<Character, Character> mappings;
-    
-    public Solution() {
-        this.mappings = new HashMap<Character, Character>();
-        this.mappings.put(')', '(');
-        this.mappings.put('}', '{');
-        this.mappings.put(']', '[');
-    }
-    
     public boolean isValid(String s) {
-        Stack<Character> stack = new Stack<Character>();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (this.mappings.containsKey(c)) {
-                char topElement = stack.empty() ? '#' : stack.pop();
-                if (topElement != this.mappings.get(c)) {
-                    return false;
-                }
-            } else {
-                stack.push(c);
-            }
-        }
-        return stack.isEmpty();
-    }
-}
-
-// 很容易想到应用后进先出实现
-// 将配对括号存储在HashMap中,实现区分左value右key并判断的依据
-
-class Solution {
-    public boolean isValid(String s) {
-        Stack<Character> stack = new Stack<>();
+        Deque<Character> stack = new ArrayDeque<>();
         for (char c: s.toCharArray()) {
             if (c == '(' || c == '[' || c == '{') stack.push(c);
             else if (stack.isEmpty() || Math.abs(c - stack.pop()) > 2) return false;
         }
         return stack.isEmpty();
+    }
+}
+
+
+
+class Solution {
+    public boolean isValid(String s) {
+        int max = s.length() / 2 + 1;
+        char[] stack = new char[max];
+        int p = 0;
+        for (char c: s.toCharArray()) {
+            if (p >= max) return false;
+            if (c == '(' || c == '[' || c == '{') stack[p++] = c;
+            else if (p <= 0 || Math.abs(c - stack[--p]) > 2) return false;
+        }
+        return p == 0;
     }
 }

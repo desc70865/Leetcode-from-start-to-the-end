@@ -52,7 +52,7 @@ class Solution {
                 max++;
             } else if (c == ')') {
                 min = Math.max(0, min - 1);
-                if (max-- < 1) return false;
+                if (--max < 0) return false;
             } else {
                 min = Math.max(0, min - 1);
                 max++;

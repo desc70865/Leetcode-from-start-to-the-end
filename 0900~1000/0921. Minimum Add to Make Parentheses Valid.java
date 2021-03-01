@@ -36,15 +36,15 @@ S only consists of '(' and ')' characters.
 
 class Solution {
     public int minAddToMakeValid(String S) {
-        int t = 0, sum = 0;
+        int left = 0, right = 0;
         for (char c: S.toCharArray()) {
-            if (c == '(') {
-                if (t < 0) {
-                    sum -= t;
-                    t = 1;
-                } else t++;
-            } else t--;
+            if (c == ')') {
+                if (left == 0) right++;
+                else left--;
+            } else {
+                left++;
+            }
         }
-        return sum + Math.abs(t);
+        return left + right;
     }
 }
