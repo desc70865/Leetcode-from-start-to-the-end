@@ -15,22 +15,21 @@ Output:
 
 class Solution {
     List<List<String>> res;
-    boolean[][] dp;
+
     public List<List<String>> partition(String s) {
         res = new ArrayList<>();
         if (s.length() == 0) return res;
-        dp = markPalindrome(s.toCharArray());
-        backtracking(s, 0, new ArrayDeque<>());
+        dfs(s, 0, new ArrayDeque<>(), markPalindrome(s.toCharArray()));
         return res;
     }
     
-    // @return start -> end of each palindrome
-    private boolean[][] markPalindrome(char[] str) {
-        int N = str.length;
+    // @return l -> end of each palindrome
+    private boolean[][] markPalindrome(char[] chs) {
+        int N = chs.length;
         boolean[][] dp = new boolean[N][N];
         for (int r = 0; r < N; r++) {
             for (int l = 0; l < r; l++) {
-                if (str[l] == str[r] && (r == l + 1 || dp[l + 1][r - 1])) {
+                if (chs[l] == chs[r] && (r == l + 1 || dp[l + 1][r - 1])) {
                     dp[l][r] = true;
                 }
             }
@@ -39,15 +38,15 @@ class Solution {
         return dp;
     }
 
-    private void backtracking(String s, int start, Deque<String> path) {
-        if (start == s.length()) {
+    private void dfs(String s, int l, Deque<String> path, boolean[][] dp) {
+        if (l == s.length()) {
             res.add(new ArrayList<>(path));
             return;
         }
-        for (int i = start; i < s.length(); i++) {
-            if (! dp[start][i]) continue;
-            path.addLast(s.substring(start, i + 1));
-            backtracking(s, i + 1, path);
+        for (int r = l; r < s.length(); r++) {
+            if (! dp[l][r]) continue;
+            path.addLast(s.substring(l, r + 1));
+            dfs(s, r + 1, path, dp);
             path.removeLast();
         }
     }
