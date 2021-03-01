@@ -32,7 +32,7 @@ class Solution {
 
 class Solution {
     public int numTrees(int n) {
-        return (int) (Combination(2*n, n) / (n + 1));
+        return (int) (Combination(2 * n, n) / (n + 1));
     }
     
     private long Combination(int n, int k) { // C(n, k)

@@ -82,25 +82,44 @@ class Solution {
 class Solution {
     public int longestSubarray(int[] nums, int limit) {
         int len = nums.length;
-        int[] max = new int[len], min = new int[len];
-        int a = 0, b = -1, c = 0, d = -1;
-        int l = 0, r = 0;
-        int res = 0;
-        while (r < len) {
-            while (a <= b && nums[max[b]] < nums[r]) b--;
-            while (c <= d && nums[min[d]] > nums[r]) d--;
-            max[++b] = r;
-            min[++d] = r;
-            r++;
-            while (nums[max[a]] - nums[min[c]] > limit) {
+        // Monotonic Queue
+        int[] maxQueue = new int[len];
+        int maxHead = 0, maxTail = -1;
+        int[] minQueue = new int[len];
+        int minHead = 0, minTail = -1;
+        int max = 0;
+        for (int l = 0, r = 0; r < len;) {
+            while (maxHead <= maxTail && nums[maxQueue[maxTail]] < nums[r]) maxTail--;
+            while (minHead <= minTail && nums[minQueue[minTail]] > nums[r]) minTail--;
+            maxQueue[++maxTail] = minQueue[++minTail] = r++;
+            while (nums[maxQueue[maxHead]] - nums[minQueue[minHead]] > limit) {
+                if (l == maxQueue[maxHead]) maxHead++;
+                if (l == minQueue[minHead]) minHead++;
                 l++;
-                if (l > max[a]) a++;
-                if (l > min[c]) c++;
             }
-            res = Math.max(res, r - l);
+            max = Math.max(max, r - l);
         }
-        return res;
+        return max;
     }
 }
 
 // ???
+
+class Solution {
+    public int longestSubarray(int[] nums, int limit) {
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        int l = 0, r = 0;
+        int ans = 0;
+        while (r < nums.length) {
+            map.merge(nums[r], 1, Integer::sum);
+            while (map.lastKey() - map.firstKey() > limit) {
+                if (map.merge(nums[l], - 1, Integer::sum) == 0) {
+                    map.remove(nums[l]);
+                }
+                l++;
+            }
+            ans = Math.max(ans, ++r - l);
+        }
+        return ans;
+    }
+}

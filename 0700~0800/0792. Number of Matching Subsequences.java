@@ -16,26 +16,23 @@ The length of words[i] will be in the range of [1, 50].
  */
 
 class Solution {
-   public int numMatchingSubseq(String str, String[] words) {
-        Queue<Node>[] waiting = new LinkedList[26];
+    public int numMatchingSubseq(String S, String[] words) {
+        Deque<Node>[] queue = new ArrayDeque[26];
         for (int i = 0; i < 26; i++) {
-            waiting[i] = new LinkedList<Node>();
+            queue[i] = new ArrayDeque<Node>();
         }
         for (String word: words) {
-            waiting[word.charAt(0) - 'a'].add(new Node(word));
+            Node node = new Node(word);
+            queue[node.chs[0] - 'a'].offer(node);
         }
-        
         int cnt = 0;
-        for (char ch: str.toCharArray()) {
-            Queue<Node> queue = waiting[ch - 'a'];
-            int size = queue.size();
+        for (char c: S.toCharArray()) {
+            Deque<Node> q = queue[c - 'a'];
+            int size = q.size();
             while (size-- > 0) {
-                Node cur = queue.poll();
-                if (++cur.idx == cur.chars.length) {
-                    cnt++;
-                } else {
-                    waiting[cur.chars[cur.idx] - 'a'].add(cur);
-                }
+                Node cur = q.poll();
+                if (++cur.idx == cur.chs.length) cnt++;
+                else queue[cur.chs[cur.idx] - 'a'].offer(cur);
             }
         }
         return cnt;
@@ -43,12 +40,12 @@ class Solution {
 }
 
 class Node {
+    char[] chs;
     int idx;
-    char[] chars;
 
-    public Node (String word) {
+    public Node(String s) {
+        this.chs = s.toCharArray();
         this.idx = 0;
-        this.chars = word.toCharArray();
     }
 }
 
@@ -56,46 +53,42 @@ class Node {
 
 class Solution {
     public int numMatchingSubseq(String S, String[] words) {
-        Deque<Node>[] list = new LinkedList[26];
+        Deque<Node>[] queue = new ArrayDeque[26];
         for (int i = 0; i < 26; i++) {
-            list[i] = new LinkedList<Node>();
+            queue[i] = new ArrayDeque<Node>();
         }
         for (String word: words) {
-            list[word.charAt(0) - 'a'].offer(f(word));
+            Node node = new Node(word).next;
+            queue[node.c - 'a'].offer(node);
         }
         int cnt = 0;
         for (char c: S.toCharArray()) {
-            Deque<Node> queue = list[c - 'a'];
-            int size = queue.size();
+            Deque<Node> cur = queue[c - 'a'];
+            int size = cur.size();
             while (size-- > 0) {
-                Node cur = queue.poll();
-                cur = cur.next;
-                if (cur == null) {
-                    cnt++;
-                } else {
-                    list[cur.val - 'a'].offer(cur);
-                }
+                Node curNode = cur.poll();
+                if (curNode.next == null) cnt++;
+                else queue[curNode.next.c - 'a'].offer(curNode.next);
             }
         }
         return cnt;
     }
+}
 
-    private Node f(String s) {
-        Node dummy = new Node('@');
-        Node cur = dummy;
+class Node {
+    char c;
+    Node next;
+
+    public Node(char c) {
+        this.c = c;
+        this.next = null;
+    }
+
+    public Node(String s) {
+        Node cur = this;
         for (char c: s.toCharArray()) {
             cur.next = new Node(c);
             cur = cur.next;
         }
-        return dummy.next;
-    }
-}
-
-class Node {
-    char val;
-    Node next;
-
-    public Node(char val) {
-        this.val = val;
     }
 }
