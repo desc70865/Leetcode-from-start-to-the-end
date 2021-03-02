@@ -28,9 +28,17 @@ s consists of lower-case English letters only.
 
 class Solution {
     public int minCut(String s) {
-        int len = s.length();
-        if (len <= 1) return 0;
-        boolean[][] dp = markPalindrome(s.toCharArray());
+        char[] chs = s.toCharArray();
+        int len = chs.length;
+        boolean[][] dp = new boolean[len][len];
+        for (int r = 0; r < len; r++) {
+            for (int l = 0; l < r; l++) {
+                if (chs[l] == chs[r] && (r == l + 1 || dp[l + 1][r - 1])) {
+                    dp[l][r] = true;
+                }
+            }
+            dp[r][r] = true;
+        }
         int[] split = new int[len];
         for (int r = 0; r < len; r++) {
             if (dp[0][r]) continue;
@@ -42,20 +50,5 @@ class Solution {
             }
         }
         return split[len - 1];
-    }
-    
-    // @return l -> end of each palindrome
-    private boolean[][] markPalindrome(char[] chs) {
-        int N = chs.length;
-        boolean[][] dp = new boolean[N][N];
-        for (int r = 0; r < N; r++) {
-            for (int l = 0; l < r; l++) {
-                if (chs[l] == chs[r] && (r == l + 1 || dp[l + 1][r - 1])) {
-                    dp[l][r] = true;
-                }
-            }
-            dp[r][r] = true;
-        }
-        return dp;
     }
 }
