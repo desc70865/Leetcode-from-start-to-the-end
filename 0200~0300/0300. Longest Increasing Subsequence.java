@@ -24,7 +24,6 @@ class Solution {
             dp[i] = num;
             if (i == R) R++;
         }
-        // System.out.println(Arrays.toString(dp));
         return R;
     }
 }

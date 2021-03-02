@@ -64,3 +64,47 @@ class Solution {
         return dp[0][len - 1];
     }
 }
+
+
+
+// @param size: amount of different character intervals
+
+class Solution {
+    public int strangePrinter(String s) {
+        char[] chs = s.toCharArray();
+        int len = chs.length;
+        if (len <= 1) {
+            return len;
+        }
+        int[] cur = new int[26];
+        int[] next = new int[len];
+        Arrays.fill(next, -1);
+        Arrays.fill(cur, -1);
+        cur[chs[0] - 'a'] = 0;
+        int size = 1;
+        for (int i = 1; i < len; i++) {
+            if (chs[i - 1] == chs[i]) continue;
+            int idx = chs[i] - 'a';
+            if (cur[idx] != -1) {
+                next[cur[idx]] = size;
+            }
+            cur[idx] = size++;
+        }
+        // 将 chs[] 中的信息压缩至 next[] 中
+        int[][] dp = new int[size][size];
+        for (int l = size - 1; l >= 0; l--) {
+            Arrays.fill(dp[l], Integer.MAX_VALUE);
+            for (int m = l; m < size; m++) {
+                if (m == l) {
+                    dp[l][m] = 1;
+                } else {
+                    dp[l][m] = Math.min(dp[l][m], dp[l][m - 1] + 1);
+                }
+                for (int r = next[m]; r != -1; r = next[r]) {
+                    dp[l][r] = Math.min(dp[l][r], dp[l][m] + dp[m + 1][r - 1]);
+                }
+            }
+        }
+        return dp[0][size - 1];
+    }
+}
