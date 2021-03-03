@@ -18,16 +18,11 @@ Can you do it like a boss? Do it without using any builtin function like __built
 
 class Solution {
     public int[] countBits(int num) {
-        int[] res = new int[num+1];
-        int m = 2;
+        int[] bicCount = new int[num + 1];
         for (int i = 1; i <= num; i++) {
-            if (i >= m * 2) {
-                m *= 2;
-            }
-            System.out.println(m);
-            res[i] = res[i - m] + 1;
+            bicCount[i] = bicCount[i >> 1] + (i & 1);
         }
-        return res;
+        return bicCount;
     }
 }
 
@@ -36,17 +31,17 @@ class Solution {
 class Solution {
     public int[] countBits(int num) {
         int arr[] = new int[num + 1];
-        helper(arr, 1, 1);
+        dfs(arr, 1, 1);
         return arr;
     }
     
-    public void helper(int[] arr, int count, int num) {
+    public void dfs(int[] arr, int count, int num) {
         if (num >= arr.length) {
             return;
         }
         arr[num] = count;
         
-        helper(arr, count, 2 * num);
-        helper(arr, count + 1, 2 * num + 1);
+        dfs(arr, count, 2 * num);
+        dfs(arr, count + 1, 2 * num + 1);
     }
 }

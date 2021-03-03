@@ -1,0 +1,62 @@
+/* 
+You have a number of envelopes with widths and heights given as a pair of integers (w, h). One envelope can fit into another if and only if both the width and height of one envelope is greater than the width and height of the other envelope.
+
+What is the maximum number of envelopes can you Russian doll? (put one inside other)
+
+Note:
+Rotation is not allowed.
+
+Example:
+
+Input: [[5,4],[6,4],[6,7],[2,3]]
+Output: 3 
+Explanation: The maximum number of envelopes you can Russian doll is 3 ([2,3] => [5,4] => [6,7]).
+ */
+
+class Solution {
+    public int maxEnvelopes(int[][] envelopes) {
+        quickSort(envelopes, 0, envelopes.length - 1);
+        return lengthOfLIS(envelopes);
+    }
+
+    public int lengthOfLIS(int[][] nums) {
+        int[] dp = new int[nums.length];
+        int R = 0;
+        for (int[] num: nums) {
+            int i = Arrays.binarySearch(dp, 0, R, num[1]);
+            if (i < 0) i = - (i + 1);
+            dp[i] = num[1];
+            if (i == R) R++;
+        }
+        return R;
+    }
+    
+    private void quickSort(int[][] arr, int left, int right) {
+        if (left >= right) return;
+        int pivot = partition(arr, left, right);
+        quickSort(arr, left, pivot - 1);
+        quickSort(arr, pivot + 1, right);
+    }
+    
+    private int partition(int[][] arr, int l, int r) {
+        int[] pivot = arr[l];
+        while (l < r) {
+            while (l < r) {
+                if (arr[r][0] < pivot[0] || arr[r][0] == pivot[0] && arr[r][1] > pivot[1]) {
+                    arr[l++] = arr[r];
+                    break;
+                }
+                r--;
+            }
+            while (l < r) {
+                if (arr[l][0] > pivot[0] || arr[l][0] == pivot[0] && arr[l][1] < pivot[1]) {
+                    arr[r--] = arr[l];
+                    break;
+                }
+                l++;
+            }
+        }
+        arr[l] = pivot;
+        return l;
+    }
+}
