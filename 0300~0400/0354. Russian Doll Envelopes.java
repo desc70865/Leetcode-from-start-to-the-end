@@ -23,12 +23,28 @@ class Solution {
         int[] dp = new int[nums.length];
         int R = 0;
         for (int[] num: nums) {
-            int i = Arrays.binarySearch(dp, 0, R, num[1]);
-            if (i < 0) i = - (i + 1);
-            dp[i] = num[1];
-            if (i == R) R++;
+            int k = num[1];
+            if (R == 0 || k > dp[R - 1]) {
+                dp[R++] = k;
+            } else {
+                dp[binarySearch(dp, 0, R - 1, k)] = k;
+            }
         }
         return R;
+    }
+
+    private int binarySearch(int[] arr, int l, int r, int target) {
+        while (l <= r) {
+            int m = l + r >> 1;
+            if (arr[m] < target) {
+                l = m + 1;
+            } else if (arr[m] > target) {
+                r = m - 1;
+            } else {
+                return m;
+            }
+        }
+        return l;
     }
     
     private void quickSort(int[][] arr, int left, int right) {

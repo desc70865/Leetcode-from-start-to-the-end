@@ -31,29 +31,31 @@ class Solution {
 
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int N = nums.length;
-        int[] dp = new int[N];
+        int[] dp = new int[nums.length];
         int R = 0;
         for (int num: nums) {
-            if (insert(dp, R - 1, num) == R) R++;
-            // System.out.println(Arrays.toString(dp));
+            int k = num;
+            if (R == 0 || k > dp[R - 1]) {
+                dp[R++] = k;
+            } else {
+                dp[binarySearch(dp, 0, R - 1, k)] = k;
+            }
         }
         return R;
     }
 
-    public int insert(int[] A, int R, int num) {
-        if (R >= 0 && A[R] < num) {
-            A[R + 1] = num;
-            return R + 1;
+    private int binarySearch(int[] arr, int l, int r, int target) {
+        while (l <= r) {
+            int m = l + r >> 1;
+            if (arr[m] < target) {
+                l = m + 1;
+            } else if (arr[m] > target) {
+                r = m - 1;
+            } else {
+                return m;
+            }
         }
-        int L = 0;
-        while (L < R) {
-            int mid = L + R >> 1;
-            if (A[mid] < num) L = mid + 1;
-            else R = mid;
-        }
-        A[L] = num;
-        return L;
+        return l;
     }
 }
 
