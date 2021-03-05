@@ -54,3 +54,28 @@ class Solution {
         return ans;
     }
 }
+
+
+
+class Solution {
+    public int[] minOperations(String boxes) {
+        char[] box = boxes.toCharArray();
+        int len = box.length;
+        int[] l = new int[len], r = new int[len];
+        int sum = box[0] - '0';
+        for (int i = 1; i < len; i++) {
+            l[i] = l[i - 1] + sum;
+            sum += box[i] - '0';
+        }
+        sum = box[len - 1] - '0';
+        for (int i = len - 2; i >= 0; i--) {
+            r[i] = r[i + 1] + sum;
+            sum += box[i] - '0';
+        }
+        int[] ans = new int[len];
+        for (int i = 0; i < len; i++) {
+            ans[i] = l[i] + r[i];
+        }
+        return ans;
+    }
+}

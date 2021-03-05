@@ -40,12 +40,12 @@ All the calls to pop and peek are valid.
  */
 
 class MyQueue {
-    Stack<Integer> in, out;
+    Deque<Integer> in, out;
     
     /** Initialize your data structure here. */
     public MyQueue() {
-        in = new Stack<>();
-        out = new Stack<>();
+        in = new ArrayDeque<>();
+        out = new ArrayDeque<>();
     }
     
     /** Push element x to the back of queue. */
