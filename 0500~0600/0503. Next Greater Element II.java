@@ -12,15 +12,16 @@ Note: The length of given array won't exceed 10000.
 
 class Solution {
     public int[] nextGreaterElements(int[] nums) {
-        int N = nums.length;
-        int[] res = new int[N];
-        Stack<Integer> stack = new Stack<>();
-        for (int i = 2 * N - 1; i >= 0; --i) {
-            int j = i % N;
-            while (! stack.isEmpty() && nums[stack.peek()] <= nums[j]) stack.pop();
-            res[j] = stack.isEmpty() ? -1 : nums[stack.peek()];
-            stack.push(j);
+        int len = nums.length;
+        int[] stack = new int[len];
+        int idx = -1;
+        int[] ans = new int[len];
+        for (int i = 2 * len - 1; i >= 0; i--) {
+            int k = i % len;
+            while (idx >= 0 && nums[stack[idx]] <= nums[k]) idx--;
+            if (i < len) ans[k] = idx >= 0 ? nums[stack[idx]] : -1;
+            stack[++idx] = k;
         }
-        return res;
+        return ans;
     }
 }

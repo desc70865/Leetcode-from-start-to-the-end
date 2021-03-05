@@ -78,16 +78,16 @@ class Solution {
 
 class Solution {
     public String longestPalindrome(String s) {
-        int N = s.length();
-        if (N < 2) return s;
-        char[] c = s.toCharArray();
+        int len = s.length();
+        if (len < 2) return s;
+        char[] chs = s.toCharArray();
         int L = -1, R = 0;
         int mid = 0;
-        while (mid < N) {
+        while (mid < len) {
             int l = mid, r = mid;
-            while (r < N - 1 && c[r] == c[r + 1]) r++;
+            while (r < len - 1 && chs[r] == chs[r + 1]) r++;
             mid = r + 1;
-            while (0 <= l && r < N && c[l] == c[r]) {
+            while (0 <= l && r < len && chs[l] == chs[r]) {
                 l--;
                 r++;
             }

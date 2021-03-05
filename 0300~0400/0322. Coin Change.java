@@ -27,7 +27,35 @@ class Solution {
                 dp[i] = Math.min(dp[i], dp[i - coin] + 1);
             }
         }
-        // System.out.println(Arrays.toString(dp));
         return dp[amount] > amount ? -1 : dp[amount];
+    }
+}
+
+
+
+class Solution {
+    int INF = Integer.MAX_VALUE;
+    int ans = INF;
+
+    public int coinChange(int[] coins, int amount) {
+        Arrays.sort(coins);
+        dfs(coins, coins.length - 1, amount, 0);
+        return ans == INF ? -1 : ans;
+    }
+
+    public void dfs(int[] coins, int index, int amount, int cnt) {
+        if (index < 0) return;
+        for (int rem = amount / coins[index]; rem >= 0; rem--) {
+            int cur = amount - rem * coins[index];
+            int curCnt = cnt + rem;
+            if (cur == 0) {
+                ans = Math.min(ans, curCnt);
+                break;
+            } else if (curCnt + 1 < ans) {
+                dfs(coins, index - 1, cur, curCnt);
+            } else {
+                break;
+            }
+        }
     }
 }
