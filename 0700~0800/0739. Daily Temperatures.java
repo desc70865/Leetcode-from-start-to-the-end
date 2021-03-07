@@ -8,17 +8,15 @@ Note: The length of temperatures will be in the range [1, 30000]. Each temperatu
 
 class Solution {
     public int[] dailyTemperatures(int[] T) {
-        int N = T.length;
-        int[] res = new int[N];
-        Deque<Integer> stack = new LinkedList<Integer>();
-        for (int i = 0; i < N; i++) {
-            int temperature = T[i];
-            while (!stack.isEmpty() && temperature > T[stack.peek()]) {
-                int pre = stack.pop();
-                res[pre] = i - pre;
-            }
-            stack.push(i);
+        int len = T.length;
+        int[] stack = new int[len];
+        int[] ans = new int[len];
+        int idx = -1;
+        for (int i = len - 1; i >= 0; i--) {
+            while (idx >= 0 && T[stack[idx]] <= T[i]) idx--;
+            ans[i] = idx >= 0 ? stack[idx] - i : 0;
+            stack[++idx] = i;
         }
-        return res;
+        return ans;
     }
 }

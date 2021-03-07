@@ -24,71 +24,41 @@ class Solution {
 
 class Solution {
     public int findKthLargest(int[] nums, int k) {
-        // init heap 'the smallest element first'
-        PriorityQueue<Integer> heap =
-            new PriorityQueue<Integer>((n1, n2) -> n1 - n2);
-
-        // keep k largest elements in the heap
-        for (int n: nums) {
-            heap.add(n);
-            if (heap.size() > k)
-                heap.poll();
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for (int num: nums) {
+            pq.offer(num);
+            if (pq.size() > k) pq.poll();
         }
-
-        // output
-        return heap.poll();        
+        return pq.peek();
     }
 }
 
 
-// 指定一个 pivot 阈值分割, 比较 len_left 与 k
-// 递归 直至相等
-
 
 class Solution {
     public int findKthLargest(int[] nums, int k) {
-        if (nums == null || nums.length == 0) {
-            return -1;
-        }
-        
-        return helper(nums, 0, nums.length - 1, k);
+        return findKthLargest(nums, 0, nums.length - 1, k);
     }
-    
-    private int helper(int[] nums, int start, int end, int k) {
-        if (start == end) {
-            return nums[start];
+
+    private int findKthLargest(int[] nums, int L, int R, int k) {
+        if (L == R) return nums[L];
+        int pivot = nums[L] + nums[R] >> 1;
+        int l = L, r = R;
+        while (true) {
+            while (l <= r && nums[l] > pivot) l++;
+            while (l <= r && nums[r] < pivot) r--;
+            if (l <= r) swap(nums, l++, r--);
+            else break;
         }
-        
-        int left = start;
-        int right = end;
-        int pivot = nums[left + (right - left) / 2];
-        
-        while (left <= right) {
-            
-            while (left <= right && nums[left] > pivot) {
-                left++;
-            }
-            
-            while (left <= right && nums[right] < pivot) {
-                right--;
-            }
-            
-            if (left <= right) {
-                int temp = nums[left];
-                nums[left++] = nums[right];
-                nums[right--] = temp;
-            }
-        }
-        
-        // right < pivotIndex < left
-        if (k <= right - start + 1) {
-            return helper(nums, start, right, k);
-        }
-        
-        if (k >= left - start + 1) {
-            return helper(nums, left, end, k - (left - start));
-        }
-        
-        return nums[right + 1];
+        // [r, ?, l]
+        if (k <= r - L + 1) return findKthLargest(nums, L, r, k);
+        else if (k >= l - L + 1) return findKthLargest(nums, l, R, k - l + L);
+        else return nums[l - 1]; // || nums[r + 1]
+    }
+
+    private void swap(int[] nums, int l, int r) {
+        int tmp = nums[l];
+        nums[l] = nums[r];
+        nums[r] = tmp;
     }
 }

@@ -36,87 +36,40 @@ grid[i][j] is only 0, 1, or 2.
  */
 
 class Solution {
-    int M, N;
+    int[] dirs = new int[] {0, 1, 0, -1, 0};
+
     public int orangesRotting(int[][] grid) {
-        M = grid.length; N = grid[0].length;
-        boolean flag = true;
-        while (flag) {
-            flag = false;
-            for (int i = 0; i < M; i++) {
-                for (int j = 0; j < N; j++) {
-                    if (grid[i][j] >= 2) {
-                        trans(grid, i, j);
-                    } 
-                }
+        int m = grid.length;
+        int n = grid[0].length;
+        int fresh = 0;
+        Deque<Integer> queue = new ArrayDeque<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) fresh++;
+                else if (grid[i][j] == 2) queue.offer(i * n + j);
             }
         }
-    }
-    
-    private void trans(int[][] grid, int i, int j) {
-        rot(grid, i-1, j);
-        rot(grid, i+1, j);
-        rot(grid, i, j-1);
-        rot(grid, i, j+1);
-    }
-    
-    private void rot(int[][] grid, int i, int j) {
-        if (i < 0 || i >= M || j < 0 || j >= N) return;
-        grid[i][j] <<= 1;
-    }
-}
-
-// ??? 保留, 更新
-
-class Solution {
-    public int orangesRotting(int[][] grid) {
-        int M = grid.length;
-        int N = grid[0].length;
-        Queue<int[]> queue = new LinkedList<>();
-
-        int count = 0;
-        for (int r = 0; r < M; r++) {
-            for (int c = 0; c < N; c++) {
-                if (grid[r][c] == 1) {
-                    count++;
-                } else if (grid[r][c] == 2) {
-                    queue.add(new int[]{r, c});
+        int level = 0;
+        while (fresh > 0 && queue.size() > 0) {
+            int size = queue.size();
+            while (size-- > 0) {
+                int cur = queue.poll();
+                int x = cur / n;
+                int y = cur % n;
+                for (int i = 0; i < 4; i++) {
+                    int nx = x + dirs[i];
+                    if (nx < 0 || nx >= m) continue;
+                    int ny = y + dirs[i + 1];
+                    if (ny < 0 || ny >= n) continue;
+                    if (grid[nx][ny] == 1) {
+                        grid[nx][ny] = 0;
+                        fresh--;
+                        queue.offer(nx * n + ny);
+                    }
                 }
             }
+            level++;
         }
-        int round = 0;
-        while (count > 0 && !queue.isEmpty()) {
-            round++;
-            int n = queue.size();
-            for (int i = 0; i < n; i++) {
-                int[] orange = queue.poll();
-                int r = orange[0];
-                int c = orange[1];
-                if (r-1 >= 0 && grid[r-1][c] == 1) {
-                    grid[r-1][c] = 2;
-                    count--;
-                    queue.add(new int[]{r-1, c});
-                }
-                if (r+1 < M && grid[r+1][c] == 1) {
-                    grid[r+1][c] = 2;
-                    count--;
-                    queue.add(new int[]{r+1, c});
-                }
-                if (c-1 >= 0 && grid[r][c-1] == 1) {
-                    grid[r][c-1] = 2;
-                    count--;
-                    queue.add(new int[]{r, c-1});
-                }
-                if (c+1 < N && grid[r][c+1] == 1) {
-                    grid[r][c+1] = 2;
-                    count--;
-                    queue.add(new int[]{r, c+1});
-                }
-            }
-        }
-        if (count > 0) {
-            return -1;
-        } else {
-            return round;
-        }
+        return fresh == 0 ? level : -1;
     }
 }
