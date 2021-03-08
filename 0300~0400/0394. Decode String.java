@@ -31,72 +31,31 @@ Output: "abccdcdcdxyz"
  */
 
 class Solution {
-    private int index = 0;
+    int idx = 0;
+
     public String decodeString(String s) {
-        return dfs(s, 0);
+        return decodeString(s.toCharArray(), 1);
     }
-    
-    private String dfs(String s, int cnt) {
-        StringBuilder sb = new StringBuilder();
-        char t;
-        int N = 0;
-        while (index < s.length()) {
-            t = s.charAt(index++);
-            if (t == '[') {
-                sb.append(dfs(s, N));
-                N = 0;
-            } else if (t == ']') {
+
+    private String decodeString(char[] chs, int multiple) {
+        StringBuilder module = new StringBuilder();
+        int nextMulti = 0;
+        while (idx < chs.length) {
+            char c = chs[idx++];
+            if (c == '[') {
+                module.append(decodeString(chs, nextMulti));
+                nextMulti = 0;
+            } else if (c == ']') {
                 break;
-            } else if (Character.isDigit(t)) {
-                N = 10 * N + (t - '0');
+            } else if (c <= '9') {
+                nextMulti *= 10;
+                nextMulti += c - '0';
             } else {
-                sb.append(t);
+                module.append(c);
             }
         }
-        if (cnt == 0) {
-            return sb.toString();
-        }
-        StringBuilder tmp = new StringBuilder();
-        for (int i = 0; i < cnt; i++) {
-            tmp.append(sb);
-        }
-        return tmp.toString();
-    }
-}
-
-
-
-class Solution {
-    public String decodeString(String s) {
-        StringBuilder res = new StringBuilder();
-        int i = 0;
-        while (i < s.length()) {
-            if (Character.isAlphabetic(s.charAt(i))) {
-                res.append(s.charAt(i++));
-                continue;
-            }
-            
-            int num = 0;
-            while (Character.isDigit(s.charAt(i))) {
-                num = num * 10 + (s.charAt(i++) - '0');
-            }
-            
-            int j = i, count = 1;
-            while (count > 0) {
-                j++;
-                if (s.charAt(j) == '[') {
-                    count++;
-                } else if (s.charAt(j) == ']') {
-                    count--;
-                }
-            }
-            
-            String temp = decodeString(s.substring(i+1, j));
-            for (int t = 0; t < num; t++) {
-                res.append(temp);
-            }
-            i = j+1;
-        }
-        return res.toString();
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < multiple; i++) ans.append(module);
+        return ans.toString();
     }
 }
