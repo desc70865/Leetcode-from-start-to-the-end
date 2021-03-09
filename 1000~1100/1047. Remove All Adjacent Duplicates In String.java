@@ -23,27 +23,12 @@ S consists only of English lowercase letters.
 
 class Solution {
     public String removeDuplicates(String S) {
-        Deque<Character> q = new LinkedList<>();
+        char[] stack = new char[S.length()];
+        int idx = -1;
         for (char c: S.toCharArray()) {
-            if (! q.isEmpty() && q.peekLast() == c) q.removeLast();
-            else q.offerLast(c);
+            if (idx >= 0 && c == stack[idx]) idx--;
+            else stack[++idx] = c;
         }
-        StringBuilder sb = new StringBuilder();
-        while (! q.isEmpty()) sb.append(q.pollFirst());
-        return sb.toString();
-    }
-}
-
-
-
-class Solution {
-    public String removeDuplicates(String S) {
-        char[] res = new char[S.length()];
-        int idx = 0;
-        for (char c: S.toCharArray()) {
-            if (idx == 0 || res[idx - 1] != c) res[idx++] = c;
-            else idx--;
-        }
-        return String.valueOf(res, 0, idx);
+        return String.valueOf(stack, 0, ++idx);
     }
 }

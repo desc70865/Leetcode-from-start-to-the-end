@@ -56,27 +56,53 @@ All the characters that occur in votes[0] also occur in votes[j] where 1 <= j < 
 class Solution {
     public String rankTeams(String[] votes) {
         int[][] map = new int[26][27];
-        for (String s: votes) {
-            int idx = 0;
-            for (char c: s.toCharArray()) {
-                map[c - 'A'][idx++]++;
+        for (String v: votes) {
+            int k = 0;
+            for (char c: v.toCharArray()) {
+                map[c - 'A'][k++]++;
             }
         }
-        for (int i = 0; i < 26; i++) {
-            map[i][26] = i;
-        }
-        for (int i = 25; i >= 0; i--) {
-            sort(map, i);
-        }
-        StringBuilder sb = new StringBuilder();
+        for (int i = 25; i >= 0; i--) map[i][26] = i;
+        for (int i = 25; i >= 0; i--) sort(map, i);
         int size = votes[0].length();
+        char[] ans = new char[size];
         for (int i = 0; i < size; i++) {
-            sb.append((char) (map[i][26] + 'A'));
+            ans[i]  = (char) (map[i][26] + 'A');
         }
-        return sb.toString();
+        return new String(ans);
     }
-
+    
+    // lambda -> final
     private void sort(int[][] map, final int i) {
         Arrays.sort(map, (a, b) -> b[i] - a[i]);
+    }
+}
+
+
+
+class Solution {
+    public String rankTeams(String[] votes) {
+        int size = votes[0].length();
+        double[] base = new double[size];
+        base[size - 1] = 1;
+        for (int i = size - 2; i >= 0; i--) {
+            base[i] = base[i + 1] * 26;
+        }
+        double[][] map = new double[26][2];
+        for (int i = 0; i < 26; i++) {
+            map[i][0] = i;
+        }
+        for (String v: votes) {
+            int k = 0;
+            for (char c: v.toCharArray()) {
+                map[c - 'A'][1] += base[k++];
+            }
+        }
+        Arrays.sort(map, (a, b) -> b[1] == a[1] ? (int) (a[0] - b[0]) : (int) (b[1] - a[1]));
+        char[] ans = new char[size];
+        for (int i = 0; i < size; i++) {
+            ans[i]  = (char) (map[i][0] + 'A');
+        }
+        return new String(ans);
     }
 }

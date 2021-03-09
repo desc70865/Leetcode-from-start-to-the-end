@@ -52,3 +52,25 @@ class Solution {
         return split[len - 1];
     }
 }
+
+
+
+class Solution {
+    public int minCut(String s) {
+        char[] chs = s.toCharArray();
+        int len = chs.length;
+        int[] dp = new int[len];
+        Arrays.fill(dp, len);
+        for (int m = 0; m < len; m++) {
+            expand(chs, dp, m, m);
+            expand(chs, dp, m, m + 1);
+        }
+        return dp[len - 1];
+    }
+
+    private void expand(char[] chs, int[] dp, int l, int r) {
+        while (0 <= l && r < chs.length && chs[l] == chs[r]) {
+            dp[r] = Math.min(dp[r++], l-- == 0 ? 0 : dp[l] + 1);
+        }
+    }
+}

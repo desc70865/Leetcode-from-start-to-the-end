@@ -21,22 +21,19 @@ S will consist of lowercase English letters ('a' to 'z') only.
 
 class Solution {
     public List<Integer> partitionLabels(String S) {
+        int[] map = new int[26];
+        char[] chs = S.toCharArray();
+        int len = chs.length;
+        for (int i = 0; i < len; i++) map[chs[i] - 'a'] = i;
+        int l = -1, r = 0;
         List<Integer> res = new ArrayList<>();
-        
-        int[] m = new int[26];
-        char[] str = S.toCharArray();
-        int len = str.length;
-        for (int i = 0; i < len; i++) m[str[i] - 'a'] = i;
-        
-        int p = 0, s = -1;
         for (int i = 0; i < len; i++) {
-            p = Math.max(p, m[str[i] - 'a']);
-            if (p == i) {
-                res.add(p - s);
-                s = p;
+            r = Math.max(r, map[chs[i] - 'a']);
+            if (r == i) {
+                res.add(r - l);
+                l = r;
             }
         }
-        
         return res;
     }
 }

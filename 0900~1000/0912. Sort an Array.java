@@ -21,39 +21,45 @@ Constraints:
 
 class Solution {
     public int[] sortArray(int[] nums) {
-        sort(nums, 0, nums.length-1);
+        Arrays.sort(nums);
         return nums;
     }
-    
-    private void sort(int[] arr, int l, int r) {
-        int LEN = r - l;
-        if (LEN < 0) {
-            return;
-        }
-        int pivot = partition(arr, l, r);
-        sort(arr, l, pivot-1);
-        sort(arr, pivot+1, r);
+}
+
+
+
+class Solution {
+    public int[] sortArray(int[] nums) {
+        sort(nums, 0, nums.length - 1);
+        return nums;
+    }
+
+    public void sort(int[] arr, int l, int r) {
+        if (l >= r) return;
+        int p = partition(arr, l, r);
+        sort(arr, l, p - 1);
+        sort(arr, p + 1, r);
     }
     
-    private int partition(int[] arr, int l, int r) {
-        int pivot = arr[l];
+    public int partition(int[] arr, int l, int r) {
+        int temp = arr[l];
         while (l < r) {
             while (l < r) {
-                if (arr[r] < pivot) {
-                    arr[l] = arr[r];
+                if (arr[r] < temp) {
+                    arr[l++] = arr[r];
                     break;
                 }
                 r--;
             }
             while (l < r) {
-                if (arr[l] > pivot) {
-                    arr[r] = arr[l];
+                if (arr[l] > temp) {
+                    arr[r--] = arr[l];
                     break;
                 }
                 l++;
             }
         }
-        arr[l] = pivot;
+        arr[l] = temp;
         return l;
     }
 }
@@ -62,37 +68,23 @@ class Solution {
 
 class Solution {
     public int[] sortArray(int[] nums) {
-       	nums = CountingSort(nums);
-		return nums;
-	}
-
-	public int[] CountingSort(int[] num) {
-		int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
-		for (int i = 0; i < num.length; i++) {
-			if (num[i] > max)
-				max = num[i];
-			if (num[i] < min)
-				min = num[i];
-		}
-
-		int[] C = new int[max - min + 1];
-		int[] B = new int[num.length];
-		for (int i = 0; i < C.length; i++) {
-			C[i] = 0;
-		}
-
-		for (int j = 0; j < num.length; j++) {
-			C[num[j] - min]++;
-		}
-
-		for (int i = 1; i < C.length; i++) {
-			C[i] = C[i] + C[i - 1];
-		}
-
-		for (int j = num.length - 1; j >= 0; j--) {
-			B[--C[num[j] - min]] = num[j];
-		}
-
-		return B;
-	}
+        int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
+        int len = nums.length;
+        for (int i = 0; i < len; i++) {
+            if (nums[i] > max) max = nums[i];
+            if (nums[i] < min) min = nums[i];
+        }
+        int[] bucket = new int[max - min + 1];
+        for (int j = 0; j < len; j++) {
+            bucket[nums[j] - min]++;
+        }
+        for (int i = 1; i < bucket.length; i++) {
+            bucket[i] += bucket[i - 1];
+        }
+        int[] ans = new int[len];
+        for (int j = len - 1; j >= 0; j--) {
+            ans[--bucket[nums[j] - min]] = nums[j];
+        }
+        return ans;
+    }
 }

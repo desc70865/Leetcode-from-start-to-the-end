@@ -19,13 +19,10 @@ There is only one duplicate number in the array, but it could be repeated more t
 
 class Solution {
     public int findDuplicate(int[] nums) {
-        Set<Integer> hashset = new HashSet<>();
-        for (int num : nums) {
-            if (! hashset.contains(num)) {
-                hashset.add(num);
-            } else {
-                return num;
-            }
+        Set<Integer> set = new HashSet<>();
+        for (int num: nums) {
+            if (set.add(num));
+            else return num;
         }
         return -1;
     }
@@ -35,19 +32,12 @@ class Solution {
 
 class Solution {
     public int findDuplicate(int[] nums) {
-        int slow = 0, fast = 0, p = 0;
-
-        do {
-            slow = nums[slow];
-            fast = nums[nums[fast]];
-        } while (slow != fast);
-
-        while (slow != p) {
-            slow = nums[slow];
-            p = nums[p];
+        int len = nums.length;
+        int[] map = new int[len];
+        for (int num: nums) {
+            if (map[num]++ > 0) return num;
         }
-        
-        return slow;
+        return -1;
     }
 }
 
@@ -55,23 +45,16 @@ class Solution {
 
 class Solution {
     public int findDuplicate(int[] nums) {
-        int n = nums.length;
-        int l = 1, r = n - 1, ans = -1;
-        while (l <= r) {
-            int mid = (l + r) >> 1;
-            int cnt = 0;
-            for (int i = 0; i < n; ++i) {
-                if (nums[i] <= mid) {
-                    cnt++;
-                }
-            }
-            if (cnt <= mid) {
-                l = mid + 1;
-            } else {
-                r = mid - 1;
-                ans = mid;
-            }
+        int slow = 0, fast = 0;
+        do {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        } while (slow != fast);
+        slow = 0;
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
         }
-        return ans;
+        return fast;
     }
 }

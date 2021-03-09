@@ -32,33 +32,40 @@ isConnected[i][j] == isConnected[j][i]
  */
 
 class Solution {
-    int[] p;
-
-    public int findCircleNum(int[][] M) {
-        int len = M.length;
-        p = new int[len];
-        Arrays.fill(p, -1);
-
+    public int findCircleNum(int[][] isConnected) {
+        int len = isConnected.length;
+        UnionFind uf = new UnionFind(len);
         for (int i = 0; i < len; i++) {
             for (int j = i + 1; j < len; j++) {
-                if (M[i][j] == 0) continue;
-                union(i, j);
+                if (isConnected[i][j] == 1) uf.union(i, j);
             }
         }
-        int cnt = 0;
-        for (int num: p) if (num == -1) cnt++;
-        return cnt;
+        return uf.size;
     }
+}
 
-    private void union(int a, int b) {
-        a = find(a);
-        b = find(b);
-        if (a != b) {
-            p[a] = b;
+class UnionFind {
+    int[] p;
+    int size;
+
+    public UnionFind(int n) {
+        this.p = new int[n];
+        this.size = n;
+        for (int i = 1; i < n; i++) {
+            p[i] = i;
         }
     }
 
-    private int find(int x) {
-        return p[x] == -1 ? x : (p[x] = find(p[x]));
+    public int find(int x) {
+        return p[x] == x ? x : (p[x] = find(p[x]));
+    }
+
+    public void union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a == b) return;
+        else if (a < b) p[b] = a;
+        else p[a] = b;
+        this.size--;
     }
 }
