@@ -41,37 +41,39 @@ No two computers are connected by more than one cable.
  */
 
 class Solution {
-    int[] p;
-    int ans;
-
     public int makeConnected(int n, int[][] connections) {
         int len = connections.length;
         if (n - 1 > len) return -1;
-        p = new int[n];
-        ans = n - 1;
+        UnionFind uf = new UnionFind(n);
+        for (int[] c: connections) {
+            uf.union(c[0], c[1]);
+        }
+        return uf.size;
+    }
+}
+
+class UnionFind {
+    int[] p;
+    int size;
+
+    public UnionFind(int n) {
+        this.p = new int[n];
+        this.size = n - 1;
         for (int i = 1; i < n; i++) {
             p[i] = i;
         }
-        for (int[] c: connections) {
-            union(c[0], c[1]);
-        }
-        return ans;
     }
 
-    private int find(int x) {
+    public int find(int x) {
         return p[x] == x ? x : (p[x] = find(p[x]));
     }
 
-    private void union(int a, int b) {
+    public void union(int a, int b) {
         a = find(a);
         b = find(b);
-        if (a == b) {
-            return;
-        } else if (a < b) {
-            p[b] = a;
-        } else {
-            p[a] = b;
-        }
-        ans--;
+        if (a == b) return;
+        else if (a < b) p[b] = a;
+        else p[a] = b;
+        this.size--;
     }
 }

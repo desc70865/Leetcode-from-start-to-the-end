@@ -44,3 +44,25 @@ class Solution {
         return list;
     }
 }
+
+
+
+class Solution {
+    public List<List<Integer>> groupThePeople(int[] groupSizes) {
+        int len = groupSizes.length;
+        for (int i = 0; i < len; i++) {
+            groupSizes[i] <<= 9;
+            groupSizes[i] += i;
+        }
+        Arrays.sort(groupSizes);
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < len;) {
+            List<Integer> list = new ArrayList<>();
+            for (int j = groupSizes[i] / 512; j > 0; j--) {
+                list.add(groupSizes[i++] % 512);
+            }
+            res.add(list);
+        }
+        return res;
+    }
+}
