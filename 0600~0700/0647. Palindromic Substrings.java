@@ -23,37 +23,20 @@ The input string length won't exceed 1000.
  */
 
 class Solution {
-    int count = 0;
     public int countSubstrings(String s) {
-        if (s == null || s.length() == 0) return 1;
-        
-        for (int i = 0; i < s.length(); i++) {
-            extendSubstring(s, i, i);
-            extendSubstring(s, i, i+1);
-        }
-        return count;
-    }
-    
-    private void extendSubstring(String s, int l, int r) {
-        while (l >= 0 && r < s.length() && s.charAt(l--) == s.charAt(r++)) count++;
-    }
-}
-
-// 利用回文特性中心扩展
-
-class Solution {
-    int res = 0;
-    public int countSubstrings(String s) {
-        char[] str = s.toCharArray();
-        int len = str.length;
+        char[] chs = s.toCharArray();
+        int len = chs.length;
+        int sum = 0;
         for (int i = 0; i < len; i++) {
-            helper(str, len, i, i);
-            helper(str, len, i, i+1);
+            sum += expand(chs, i, i);
+            sum += expand(chs, i, i + 1);
         }
-        return res;
+        return sum;
     }
 
-    private void helper(char[] str, int len, int j, int k) {
-        while (j >= 0 && k < len && str[j--] == str[k++]) res++;
+    private int expand(char[] chs, int l, int r) {
+        int ans = 0;
+        while (0 <= l && r < chs.length && chs[l--] == chs[r--]) ans++;
+        return ans;
     }
 }
