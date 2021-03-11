@@ -24,15 +24,15 @@ class Solution {
     int i = 0;
 
     public int calculate(String s) {
-        return cal(s.trim());
+        return cal(s.trim().toCharArray());
     }
 
-    private int cal(String s) {
+    private int cal(char[] chs) {
         Deque<Integer> stack = new ArrayDeque<>();
         int num = 0;
-        char sign = '+';
-        for (; i < s.length(); i++) {
-            char c = s.charAt(i);
+        char operator = '+';
+        for (; i < chs.length; i++) {
+            char c = chs[i];
             if (c == ' ') {
                 continue;
             }
@@ -40,11 +40,10 @@ class Solution {
                 num = num * 10 + (c - '0');
             } else if (c == '(') {
                 i++;
-                num = cal(s);
+                num = cal(chs);
             }
-
-            if (!Character.isDigit(c) || i == s.length() - 1) {
-                switch (sign) {
+            if (!Character.isDigit(c) || i == chs.length - 1) {
+                switch (operator) {
                     case '+':
                         stack.push(num);
                         break;
@@ -60,18 +59,13 @@ class Solution {
                         stack.push(pre / num);
                         break;
                 }
-                if (i == s.length() - 1) {
-                    break;
-                }
-                sign = c;
+                operator = c;
                 num = 0;
             }
-
             if (c == ')') {
                 break;
             }
         }
-
         int res = 0;
         while (!stack.isEmpty()) {
             res += stack.pop();
