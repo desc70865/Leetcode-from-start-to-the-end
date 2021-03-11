@@ -39,18 +39,20 @@ points.length == 2
 
 class Solution {
     public int findMinArrowShots(int[][] points) {
-        if (points.length == 0) return 0;
-        Arrays.sort(points, new MyComparator());
-        int res = 1, e = points[0][1];
-        for (int[] p: points) {
-            if (p[0] <= e) continue;
-            res++;
-            e = p[1];
+        int len = points.length;
+        if (len == 0) return 0;
+        Arrays.sort(points, (a, b) -> a[1] < b[1] ? -1 : 1);
+        // Arrays.sort(points, new cmp());
+        int ans = points.length;
+        int end = points[0][1];
+        for (int i = 1; i < len; i++) {
+            if (points[i][0] > end) end = points[i][1];
+            else ans--;
         }
-        return res;
+        return ans;
     }
 
-    public class MyComparator implements Comparator<int[]> {
+    public class cmp implements Comparator<int[]> {
         @Override
         public int compare(int[] a, int[] b) {
             if (a[1] == b[1]) {

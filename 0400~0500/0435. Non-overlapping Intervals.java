@@ -28,21 +28,45 @@ Intervals like [1,2] and [2,3] have borders "touching" but they don't overlap ea
 
 class Solution {
     public int eraseOverlapIntervals(int[][] intervals) {
-        
-    }
-}
-
-
-
-class Solution {
-    public int eraseOverlapIntervals(int[][] intervals) {
-        if (intervals.length == 0) return 0;
-        Arrays.sort(intervals, (a, b) -> (a[1] - b[1]));
-        int res = 0, k = intervals[0][1];
-        for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0] >= k) k = intervals[i][1];
-            else res++;
+        int len = intervals.length;
+        if (len == 0) return 0;
+        sort(intervals, 0, len - 1);
+        // Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+        int ans = 0;
+        int end = intervals[0][1];
+        for (int i = 1; i < len; i++) {
+            if (intervals[i][0] >= end) end = intervals[i][1];
+            else ans++;
         }
-        return res;
+        return ans;
+    }
+
+    private void sort(int[][] arr, int l, int r) {
+        if (l > r) return;
+        int pivot = partition(arr, l, r);
+        sort(arr, l, pivot - 1);
+        sort(arr, pivot + 1, r);
+    }
+
+    private int partition(int[][] arr, int l, int r) {
+        int[] pivot = arr[l];
+        while (l < r) {
+            while (l < r) {
+                if (arr[r][1] < pivot[1]) {
+                    arr[l++] = arr[r];
+                    break;
+                }
+                r--;
+            }
+            while (l < r) {
+                if (arr[l][1] > pivot[1]) {
+                    arr[r--] = arr[l];
+                    break;
+                }
+                l++;
+            }
+        }
+        arr[l] = pivot;
+        return l;
     }
 }
