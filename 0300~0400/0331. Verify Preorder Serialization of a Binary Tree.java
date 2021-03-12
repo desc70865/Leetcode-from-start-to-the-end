@@ -32,13 +32,33 @@ Output: false
 
 class Solution {
     public boolean isValidSerialization(String preorder) {
-        String[] s = preorder.split(",");
-        int x = 1;
-        for (String c: s) {
-            if (x == 0) return false;
-            if (c.charAt(0) == '#') x--;
-            else x++;
+        String[] strs = preorder.split(",");
+        int degree = 1;
+        for (String str: strs) {
+            if (degree == 0) return false;
+            if (str.charAt(0) == '#') degree--;
+            else degree++;
         }
-        return x == 0;
+        return degree == 0;
+    }
+}
+
+
+
+class Solution {
+    public boolean isValidSerialization(String preorder) {
+        char[] chs = preorder.toCharArray();
+        int len = chs.length;
+        if (chs[0] == '#') return len == 1;
+        int degree = 1;
+        for (int i = 1; i < len; i++) {
+            if (chs[i] == ',') {
+                if (chs[i - 1] == '#') degree--;
+                else if (degree++ == 0) return false;
+            }
+        }
+        if (chs[len - 1] == '#') degree--;
+        else degree++;
+        return degree == 0;
     }
 }

@@ -26,36 +26,33 @@ board and word consists only of lowercase and uppercase English letters.
  */
 
 class Solution {
-    int[][] dirs = new int[][] {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    int[] dirs = new int[] {0, 1, 0, -1, 0};
     int m, n;
-    char[] str;
-    
+
     public boolean exist(char[][] board, String word) {
-        m = board.length;
-        n = board[0].length;
-        if (word.length() > m * n) return false;
-        str = word.toCharArray();
+        char[] target = word.toCharArray();
+        m = board.length; n = board[0].length;
+        if (target.length > m * n) return false;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (helper(board, 0, i, j)) return true;
+                if (dfs(board, i, j, target, 0)) return true;
             }
         }
         return false;
     }
 
-    private boolean helper(char[][] A, int idx, int x, int y) {
-        if (x < 0 || y < 0 || x >= m || y >= n) return false;
-        if (A[x][y] != str[idx]) return false;
-        if (idx == str.length - 1) return true;
-        A[x][y] ^= 64;
-        boolean res = false;
-        for (int[] dir: dirs) {
-            if (helper(A, idx + 1, x + dir[0], y + dir[1])) {
-                res = true;
-                break;
+    private boolean dfs(char[][] board, int x, int y, char[] target, int idx) {
+        if (x < 0 || x >= m || y < 0 || y >= n) return false;
+        if (board[x][y] != target[idx]) return false;
+        if (idx == target.length - 1) return true;
+        board[x][y] ^= 64;
+        for (int i = 0; i < 4; i++) {
+            if (dfs(board, x + dirs[i], y + dirs[i + 1], target, idx + 1)) {
+                board[x][y] ^= 64;
+                return true;
             }
         }
-        A[x][y] ^= 64;
-        return res;
+        board[x][y] ^= 64;
+        return false;
     }
 }

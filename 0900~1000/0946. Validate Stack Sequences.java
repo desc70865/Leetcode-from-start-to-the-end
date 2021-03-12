@@ -27,49 +27,18 @@ pushed and popped have distinct values.
 
 class Solution {
     public boolean validateStackSequences(int[] pushed, int[] popped) {
-        Stack<Integer> p = new Stack<>();
+        int len = pushed.length;
+        int[] stack = new int[len];
         int i = 0, j = 0;
-        int N = popped.length;
-        while (i < N && j < N) {
-            while (! p.isEmpty() && p.peek() == popped[j]) {
-                p.pop();
+        for (int k = -1; j < len;) {
+            if (k < 0 || stack[k] != popped[j]) {
+                if (i >= len) return false;
+                stack[++k] = pushed[i++];
+            } else {
+                k--;
                 j++;
             }
-            p.push(pushed[i++]);
-        }
-        while (! p.isEmpty() && p.peek() == popped[j]) {
-            p.pop();
-            j++;
         }
         return i == j;
-    }
-}
-
-
-
-class Solution {
-    Deque<Integer> stack;
-    int idx;
-    int[] popped;
-    public boolean validateStackSequences(int[] pushed, int[] popped) {
-        stack = new LinkedList<>();
-        idx = 0;
-        this.popped = popped;
-        
-        int i = 0;
-        int N = popped.length;
-        while (i < N) {
-            pop();
-            stack.push(pushed[i++]);
-        }
-        pop();
-        return i == idx;
-    }
-
-    private void pop() {
-        while (! stack.isEmpty() && stack.peek() == popped[idx]) {
-            stack.pop();
-            idx++;
-        }
     }
 }

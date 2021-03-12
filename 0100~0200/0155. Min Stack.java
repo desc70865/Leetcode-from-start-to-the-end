@@ -33,15 +33,15 @@ Methods pop, top and getMin operations will always be called on non-empty stacks
  */
 
 class MinStack {
-    Stack<Integer> min, p;
+    Deque<Integer> min, stack;
     /** initialize your data structure here. */
     public MinStack() {
-        min = new Stack<>();
-        p = new Stack<>();
+        min = new ArrayDeque<>();
+        stack = new ArrayDeque<>();
     }
     
     public void push(int x) {
-        p.push(x);
+        stack.push(x);
         if (min.isEmpty() || x <= getMin()) min.push(x);
     }
     
@@ -49,11 +49,11 @@ class MinStack {
         // if compare two Integer directly
         // you must use equals
         if (top() == getMin()) min.pop();
-        p.pop();
+        stack.pop();
     }
     
     public int top() {
-        return p.peek();
+        return stack.peek();
     }
     
     public int getMin() {
@@ -69,78 +69,3 @@ class MinStack {
  * int param_3 = obj.top();
  * int param_4 = obj.getMin();
  */
-
-
-class MinStack {
-
-    /** initialize your data structure here. */
-    Stack<int[]> stack;
-
-    public MinStack() {
-        stack = new Stack<>();
-    }
-
-    public void push(int x) {
-        if (stack.isEmpty()) {
-            stack.push(new int[]{x, x});
-        } else {
-            stack.push(new int[]{x, Math.min(x, stack.peek()[1])});
-        }
-    }
-
-    public void pop() {
-        stack.pop();
-    }
-
-    public int top() {
-        return stack.peek()[0];
-    }
-
-    public int getMin() {
-        return stack.peek()[1];
-    }
-}
-
-
-
-class MinStack {
-    Node head;
-    int min = Integer.MAX_VALUE;
-    /** initialize your data structure here. */
-    public MinStack() {
-        head = new Node();
-    }
-    
-    public void push(int x) {
-        Node node = new Node(x);
-        min = Math.min(x, min);
-        node.min = min;
-        node.next = head;
-        head = node;
-    }
-    
-    public void pop() {
-        head = head.next;
-        min = head.min;
-    }
-    
-    public int top() {
-        return head.value;
-    }
-    
-    public int getMin() {
-        return head.min;
-    }
-}
-
-class Node {
-    int value;
-    int min = Integer.MAX_VALUE;
-    Node next;
-    public Node() {
-        
-    }
-    public Node(int num){
-        this.value = num;
-    }
-}
