@@ -19,8 +19,7 @@ You can assume that you can always reach the last index.
 class Solution {
     public int jump(int[] nums) {
         int ans = 0;
-        for (int end = 0, idx = 0; end < nums.length - 1;) {
-            ans++;
+        for (int end = 0, idx = 0; end < nums.length - 1; ans++) {
             for (int pre = end; idx <= pre; idx++) {
                 end = Math.max(end, idx + nums[idx]);
             }
