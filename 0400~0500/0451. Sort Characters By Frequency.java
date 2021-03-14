@@ -38,16 +38,22 @@ Note that 'A' and 'a' are treated as two different characters.
 
 class Solution {
     public String frequencySort(String s) {
+        char[] chs = s.toCharArray();
         int[][] map = new int[128][2];
-        for (int i = 0; i < 128; i++) map[i][1] = i;
-        for (char c: s.toCharArray()) map[c][0]++;
-        Arrays.sort(map, (a, b) -> b[0] - a[0]);
-        StringBuilder sb = new StringBuilder();
-        for (int[] p: map) {
-            if (p[0] == 0) break;
-            char c = (char) p[1];
-            for (int k = 0; k < p[0]; k++) sb.append(c);
+        for (int i = 0; i < 128; i++) {
+            map[i][0] = i;
         }
-        return sb.toString();
+        for (char c: chs) {
+            map[c][1]++;
+        }
+        Arrays.sort(map, (a, b) -> b[1] - a[1]);
+        int k = 0;
+        for (int[] m: map) {
+            char c = (char) m[0];
+            for (int i = 0; i < m[1]; i++) {
+                chs[k++] = c;
+            }
+        }
+        return new String(chs);
     }
 }

@@ -35,33 +35,52 @@ s and t only contain lower case English letters.
 
 class Solution {
     public int equalSubstring(String s, String t, int maxCost) {
-        int[] diff = helper(s, t);
-        int l = 0, r = 0;
-        int sum = 0;
+        int len = s.length();
+        int[] cost = new int[len];
+        for (int i = 0; i < len; i++) {
+            cost[i] = Math.abs(s.charAt(i) - t.charAt(i));
+        }
         int max = 0;
-        while (r < diff.length) {
-            sum += diff[r];
+        int sum = 0;
+        for (int l = 0, r = 0; r < len; r++) {
+            sum += cost[r];
             while (sum > maxCost) {
-                sum -= diff[l++];
+                sum -= cost[l++];
             }
-            if (max < r - l + 1) {
-                max = r - l + 1;
-            }
-            r++;
+            max = Math.max(max, r - l + 1);
         }
         return max;
     }
+}
 
-    private int[] helper(String s, String t) {
-        int len = s.length();
-        int[] ans = new int[len];
-        for (int i = 0; i < len; i++) {
-            ans[i] = Math.abs(s.charAt(i) - t.charAt(i));
+
+
+class Solution {
+    public int equalSubstring(String s, String t, int maxCost) {
+        int l = 0, r = 0;
+        for (int sum = 0; r < s.length();) {
+            sum += diff(s, t, r++);
+            if (sum > maxCost) {
+                sum -= diff(s, t, l++);
+            }
         }
-        return ans;
+        return r - l;
+    }
+
+    private int diff(String s, String t, int idx) {
+        return Math.abs(s.charAt(idx) - t.charAt(idx));
     }
 }
 
+
+/* 
+int equalSubstring(char * s, char * t, int maxCost)
+{
+    int l = 0, r = 0;
+    while (s[r] != '\0') if ((maxCost -= fabs(s[r] - t[r++])) < 0) maxCost += fabs(s[l] - t[l++]);
+    return r - l;
+}
+ */
 
 
 class Solution {
@@ -81,13 +100,13 @@ class Solution {
 
 class Solution {
     public int equalSubstring(String s, String t, int maxCost) {
-        Deque<Integer> q = new LinkedList<>();
-        q.offer(0);
+        Deque<Integer> deque = new ArrayDeque<>();
+        deque.offerLast(0);
         int len = s.length();
         for (int i = 0; i < len; i++) {
-            q.offerLast(Math.abs(s.charAt(i) - t.charAt(i)) + q.peekLast());
-            if (q.peekLast() - q.peekFirst() > maxCost) q.pollFirst();
+            deque.offerLast(Math.abs(s.charAt(i) - t.charAt(i)) + deque.peekLast());
+            if (deque.peekLast() - deque.peekFirst() > maxCost) deque.pollFirst();
         }
-        return q.size() - 1;
+        return deque.size() - 1;
     }
 }

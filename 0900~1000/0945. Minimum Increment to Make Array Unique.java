@@ -26,70 +26,18 @@ Note:
 
 
 class Solution {
-    public int minIncrementForUnique(int[] A) {
-        if (A.length == 0) return 0;
-        UnionFind set = new UnionFind();
-        int res = 0;
-        for (int num: A) {
-            if (set.contains(num)) {
-                int next = set.find(num) + 1;
-                res += (next - num);
-                set.insert(next);
-            } else {
-                set.insert(num);
-            }
-        }
-        return res;
-    }
-}
-
-class UnionFind {
     int[] p;
 
-    public UnionFind() {
-        p = new int[79999];
-        Arrays.fill(p, -1);
-    }
-
-    public void insert(int x) {
-        p[x] = x;
-        if (x > 0 && p[x - 1] != -1) union(x, x - 1);
-        if (p[x + 1] != -1) union(x, x + 1);
-    }
-
-    public boolean contains(int x) {
-        return p[x] != -1;
-    }
-    
-    public int find(int x) {
-        return x == p[x] ? x : (p[x] = find(p[x]));
-    }
-
-    public void union(int x, int y) {
-        int rootX = find(x);
-        int rootY = find(y);
-        if (rootX == rootY) return;
-        if (rootX < rootY) p[rootX] = rootY;
-        else p[rootY] = rootX;
-    }
-}
-
-
-
-class Solution {
-    int[] p;
     public int minIncrementForUnique(int[] A) {
         p = new int[80000];
         Arrays.fill(p, -1);
-        int move = 0;
-        for (int a: A) {
-            move += find(a) - a;
-        }
-        return move;
+        int ans = 0;
+        for (int a: A) ans += find(a) - a;
+        return ans;
     }
-    
-    private int find(int a) {
-        return p[a] == -1 ? (p[a] = a) : (p[a] = find(p[a] + 1));
+
+    private int find(int x) {
+        return p[x] == -1 ? p[x] = x : (p[x] = find(p[x] + 1));
     }
 }
 
@@ -97,20 +45,24 @@ class Solution {
 
 class Solution {
     public int minIncrementForUnique(int[] A) {
-        int N = A.length;
-        if (N < 2) return 0;
+        int len = A.length;
+        if (len < 2) return 0;
         int max = Integer.MIN_VALUE;
-        for (int a: A) max = Math.max(max, a);
-        int[] map = new int[max + 1];
-        for (int a: A) map[a]++;
-        int res = 0;
-        for (int i = 0; i < max; i++) {
-            if (map[i] > 1) {
-                res += map[i] - 1;
-                map[i + 1] += map[i] - 1;
+        int min = Integer.MAX_VALUE;
+        for (int a: A) {
+            max = Math.max(max, a);
+            min = Math.min(min, a);
+        }
+        int size = max - min;
+        int[] bucket = new int[size + 1];
+        for (int a: A) bucket[a - min]++;
+        int ans = 0;
+        for (int i = 0; i < size; i++) {
+            if (bucket[i] > 1) {
+                ans += bucket[i] - 1;
+                bucket[i + 1] += bucket[i] - 1;
             }
         }
-        res += map[max] * (map[max] - 1) / 2;
-        return res;
+        return ans + bucket[size] * (bucket[size] - 1) / 2;
     }
 }

@@ -20,16 +20,12 @@ class Solution {
     public int largestRectangleArea(int[] heights) {
         int N = heights.length;
         int[] L = new int[N], R = new int[N];
-        // int p = L[i] - 1
-        // heights[p] < heights[i]
-        // heights[p + k] >= heights[i]
-        // p 即 i 左侧首个小于 height[i] 的坐标
+		// L[i]: 以 heighs[i] 为最小值的左边界 # 闭区间
         for (int i = 0; i < N; i++) {
             int p = i - 1;
             while (p >= 0 && heights[i] <= heights[p]) p = L[p] - 1;
             L[i] = p + 1;
         }
-        // System.out.println(Arrays.toString(L));
         for (int i = N - 1; i >= 0; i--) {
             int p = i + 1;
             while (p < N && heights[i] <= heights[p]) p = R[p] + 1;

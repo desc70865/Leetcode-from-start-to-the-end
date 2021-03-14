@@ -28,57 +28,21 @@ Note:
 
 class Solution {
     public int flipgame(int[] fronts, int[] backs) {
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-        Set<Integer> set = new HashSet<>();
+        boolean[] illegal = new boolean[2001];
+        boolean[] bucket = new boolean[2001];
         int len = fronts.length;
         for (int i = 0; i < len; i++) {
             if (fronts[i] == backs[i]) {
-                set.add(fronts[i]);
+                illegal[fronts[i]] = true;
             } else {
-                pq.offer(fronts[i]);
-                pq.offer(backs[i]);
+                bucket[fronts[i]] = true;
+                bucket[backs[i]] = true;
             }
         }
-        while (! pq.isEmpty()) {
-            if (set.contains(pq.peek())) {
-                pq.poll();
-            } else {
-                return pq.poll();
-            }
+        for (int i = 1; i <= 2000; i++) {
+            if (illegal[i]) continue;
+            if (bucket[i]) return i;
         }
         return 0;
-    }
-}
-
-
-
-class Solution {
-    int[] set;
-    int max = 0;
-
-    public int flipgame(int[] fronts, int[] backs) {
-        set = new int[2001];
-        int len = fronts.length;
-        for (int i = 0; i < len; i++) {
-            if (fronts[i] == backs[i]) {
-                set[fronts[i]] = -1;
-            } else {
-                insert(fronts[i]);
-                insert(backs[i]);
-            }
-        }
-        for (int i = 1; i <= max; i++) {
-            if (set[i] == 1) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    private void insert(int x) {
-        if (set[x] >= 0) {
-            set[x] = 1;
-            max = Math.max(max, x);
-        }
     }
 }

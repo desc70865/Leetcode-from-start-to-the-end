@@ -22,11 +22,15 @@ class Solution {
         int len = chs.length;
         for (int i = 0; i < len - 1; i++) {
             if (chs[i] > chs[i + 1]) {
-                chs[i] -= 1;
+                chs[i]--;
+                if (i > 0 && chs[i - 1] > chs[i]) {
+                    i -= 2;
+                    continue;
+                }
                 for (int j = i + 1; j < len; j++) {
                     chs[j] = '9';
                 }
-                return monotoneIncreasingDigits(Integer.valueOf(new String(chs)));
+                return Integer.valueOf(new String(chs));
             }
         }
         return N;

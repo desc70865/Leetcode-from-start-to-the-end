@@ -23,17 +23,42 @@ Each word has only lowercase letters.
 
 class Solution {
     public int minimumLengthEncoding(String[] words) {
-        Arrays.sort(words, (a, b) -> a.length() - b.length());
-        int len = words.length;
-        int sum = 0;
-        for (int i = 0; i < len; i++) {
-            int j = i + 1;
-            for (; j < len; j++) {
-                if (words[j].endsWith(words[i])) break;
+        Arrays.sort(words, (a, b) -> b.length() - a.length());
+        Trie trie = new Trie();
+        for (String word: words) trie.insert(word);
+        return trie.sum;
+    }
+}
+
+class TrieNode {
+    TrieNode[] next;
+
+    public TrieNode() {
+        next = new TrieNode[26];
+    }
+}
+
+class Trie {
+    TrieNode node;
+    int sum;
+
+    public Trie() {
+        this.node = new TrieNode();
+        this.sum = 0;
+    }
+
+    public void insert(String word) {
+        char[] chs = word.toCharArray();
+        int len = chs.length;
+        TrieNode cur = this.node;
+        for (int i = len - 1; i >= 0; i--) {
+            int p = chs[i] - 'a';
+            if (cur.next[p] == null) {
+                cur.next[p] = new TrieNode();
+                if (i == 0) this.sum += len + 1;
             }
-            if (j == len) sum += words[i].length() + 1;
+            cur = cur.next[p];
         }
-        return sum;
     }
 }
 
@@ -41,35 +66,119 @@ class Solution {
 
 class Solution {
     public int minimumLengthEncoding(String[] words) {
-        Arrays.sort(words, (a, b) -> b.length() - a.length());
-        Trie trie = new Trie();
-        for (String word: words) {
-            trie.insert(word);
+        int len = words.length;
+        String[] strs = new String[len];
+        for (int i = 0; i < len; i++) strs[i] = reverse(words[i]);
+        Arrays.sort(strs);
+        int ans = strs[len - 1].length() + 1;
+        for (int i = len - 2; i >= 0; i--) {
+            if (strs[i + 1].startsWith(strs[i])) continue;
+            ans += strs[i].length() + 1;
         }
-        return trie.sum;
+        return ans;
+    }
+
+    private String reverse(String s) {
+        return new StringBuffer(s).reverse().toString();
+    }
+}
+
+
+
+class Solution {
+    public int minimumLengthEncoding(String[] words) {
+        Trie trie = new Trie();
+        int ans = 0;
+        for (String word: words) {
+            ans += trie.insert(word);
+        }
+        return ans;
+    }
+}
+
+class TrieNode {
+    TrieNode[] next;
+    boolean end;
+
+    public TrieNode() {
+        this.next = new TrieNode[26];
+        this.end = false;
     }
 }
 
 class Trie {
-    Trie[] next;
-    int sum = 0;
+    TrieNode node;
 
     public Trie() {
-        next = new Trie[26];
+        this.node = new TrieNode();
     }
 
-    public void insert(String word) {
+    public int insert(String word) {
         char[] chs = word.toCharArray();
         int len = chs.length;
-        Trie node = this;
+        TrieNode cur = this.node;
+        int ans = len + 1;
+        boolean update = false;
         for (int i = len - 1; i >= 0; i--) {
-            if (node.next[chs[i] - 97] == null) {
-                node.next[chs[i] - 97] = new Trie();
-                if (i == 0) {
-                    this.sum += len + 1;
-                }
+            int p = chs[i] - 'a';
+            if (cur.end) {
+                cur.end = false;
+                // common suffix
+                ans -= len - i;
             }
-            node = node.next[chs[i] - 97];
+            if (cur.next[p] == null) {
+                cur.next[p] = new TrieNode();
+                update = true;
+            }
+            cur = cur.next[p];
+        }
+        if (update) {
+            cur.end = true;
+            return ans;
+        } else {
+            return 0;
+        }
+    }
+}
+
+
+
+class Solution {
+    public int minimumLengthEncoding(String[] words) {
+        int len = words.length;
+        char[][] strs = new char[len][];
+        for (int i = 0; i < len; i++) {
+            strs[i] = words[i].toCharArray();
+        }
+        Arrays.sort(strs, new cmp());
+        int ans = strs[len - 1].length + 1;
+        for (int i = len - 2; i >= 0; i--) {
+            if (endsWith(strs[i + 1], strs[i])) continue;
+            ans += strs[i].length + 1;
+        }
+        return ans;
+    }
+
+    private boolean endsWith(char[] a, char[] b) {
+        if (a.length < b.length) return false;
+        for (int i = 0; i < b.length; i++) {
+            if (a[a.length - 1 - i] != b[b.length - 1 - i]) return false;
+        }
+        return true;
+    }
+
+    public class cmp implements Comparator<char[]> {
+        @Override
+        public int compare(char[] a, char[] b) {
+            for (int i = 0; i < a.length || i < b.length; i++) {
+                if (i == a.length) return -1;
+                if (i == b.length) return 1;
+                char A = a[a.length - 1 - i];
+                char B = b[b.length - 1 - i];
+                if (A == B) continue;
+                return A < B ? -1 : 1;
+            }
+            return 0;
         }
     }
 }
