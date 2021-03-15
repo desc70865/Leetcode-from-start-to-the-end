@@ -22,132 +22,29 @@ Output: [1,2,3,4,8,12,11,10,9,5,6,7]
  */
 
 class Solution {
-    int height;
-    int width;
-    int x = 0;
-    int y = 0;
-    
+    List<Integer> res = new ArrayList<>();
+
     public List<Integer> spiralOrder(int[][] matrix) {
-        ArrayList<Integer> result = new ArrayList<Integer>();
-        if(matrix == null || matrix.length == 0)
-            return result;
-        height = matrix.length;
-        width = matrix[0].length;
-        int count = Math.min(height, width);
-        helper(matrix, result, height, width, count);
-        return result;
-    }
-    
-    private void helper (int[][] matrix, ArrayList<Integer> result, int height, int width, int count) {
-        if (count == 0) {
-            return;
-        } else if (count == 1) {
-            if (height > width) {
-                for (int i = 0; i < height; i++) {
-                    result.add(matrix[x++][y]);
-                }
-            } else {
-                for (int i = 0; i < width; i++) {
-                    result.add(matrix[x][y++]);
-                }
-            }
-            return;
-        }
-        for (int i = 0; i < width-1; i++)
-            result.add(matrix[x][y++]);
-        for (int i = 0; i < height-1; i++)
-            result.add(matrix[x++][y]);
-        for (int i = 0; i < width-1; i++)
-            result.add(matrix[x][y--]);
-        for (int i = 0; i < height-1; i++)
-            result.add(matrix[x--][y]);
-        x++;
-        y++;
-        helper(matrix, result, height-2, width-2, count-2);
-    }
-}
-
-// -?
-
-class Solution {
-    int m;
-    int n;
-    int x = 0;
-    int y = 0;
-    int idx = 0;
-
-    public int[] spiralOrder(int[][] matrix) {
-        m = matrix.length;
-        if (matrix == null || m == 0) return new int[0];
-        n = matrix[0].length;
-        int[] res = new int[m * n];
-        int count = Math.min(m, n);
-        helper(matrix, res, m, n, count);
+        dfs(matrix, 0, 0, matrix.length, matrix[0].length);
         return res;
     }
 
-    private void helper (int[][] matrix, int[] res, int m, int n, int count) {
-        if (count == 0) {
+    private void dfs(int[][] matrix, int x, int y, int m, int n) {
+        if (m < 1 || n < 1) return;
+        if (m == 1 && n == 1) {
+            res.add(matrix[x][y]);
             return;
-        } else if (count == 1) {
-            if (m > n) for (int i = 0; i < m; i++) res[idx++] = matrix[x++][y];
-            else for (int i = 0; i < n; i++) res[idx++] = matrix[x][y++];
+        } else if (m == 1) {
+            for (int j = y; j < y + n; j++) res.add(matrix[x][j]);
+            return;
+        } else if (n == 1) {
+            for (int i = x; i < x + m; i++) res.add(matrix[i][y]);
             return;
         }
-        for (int i = 0; i < n-1; i++) res[idx++] = matrix[x][y++];
-        for (int i = 0; i < m-1; i++) res[idx++] = matrix[x++][y];
-        for (int i = 0; i < n-1; i++) res[idx++] = matrix[x][y--];
-        for (int i = 0; i < m-1; i++) res[idx++] = matrix[x--][y];
-        x++;
-        y++;
-        helper(matrix, res, m-2, n-2, count-2);
-    }
-}
-
-// 设置 helper 传 count 参数
-// 每次打印一圈
-
-class Solution {
-    public ArrayList<Integer> spiralOrder(int[][] matrix) {
-        ArrayList<Integer> result = new ArrayList<Integer>();
-        if (matrix == null || matrix.length == 0)
-            return result;
-        int m = matrix.length;
-        int n = matrix[0].length;
-        int x = 0;
-        int y = 0;
-        while (m > 0 && n > 0) {
-            //if one row/column left, no circle can be formed
-            if (m == 1 || n == 1) {
-                if(m == 1){
-                    for (int i = 0; i < n; i++) {
-                        result.add(matrix[x][y++]);
-                    }
-                }else if(n == 1){
-                    for (int i = 0; i < m; i++) {
-                        result.add(matrix[x++][y]);
-                    }
-                }
-                return result;
-            }
-            //below, process a circle
-            //top - move right
-            for (int i = 0; i < n-1; i++)
-                result.add(matrix[x][y++]);
-            //right - move down
-            for (int i = 0; i < m-1; i++)
-                result.add(matrix[x++][y]);
-            //bottom - move left
-            for (int i = 0; i < n-1; i++)
-                result.add(matrix[x][y--]);
-            //left - move up
-            for (int i = 0; i < m-1; i++)
-                result.add(matrix[x--][y]);
-            x++;
-            y++;
-            m -= 2;
-            n -= 2;
-        }
-        return result;
+        for (int j = y; j < y + n - 1; j++) res.add(matrix[x][j]);
+        for (int i = x; i < x + m - 1; i++) res.add(matrix[i][y + n - 1]);
+        for (int j = y + n - 1; j > y; j--) res.add(matrix[x + m - 1][j]);
+        for (int i = x + m - 1; i > x; i--) res.add(matrix[i][y]);
+        dfs(matrix, x + 1, y + 1, m - 2, n - 2);
     }
 }
