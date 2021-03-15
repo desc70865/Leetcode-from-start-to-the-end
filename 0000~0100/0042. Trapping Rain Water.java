@@ -12,34 +12,50 @@ Output: 6
 
 class Solution {
     public int trap(int[] height) {
-        Stack<Integer> s = new Stack<Integer>();
-        int i = 0, n = height.length, res = 0;
-        while (i < n) {
-            if (s.isEmpty() || height[i] <= height[s.peek()]) {
-                s.push(i++);
-            } else {
-                int t = s.pop();
-                if (s.isEmpty()) continue;
-                res += (Math.min(height[i], height[s.peek()]) - height[t]) * (i - s.peek() - 1);
+        Deque<Integer> stack = new ArrayDeque<Integer>();
+        int ans = 0;
+        for (int i = 0; i < height.length;) {
+            while (stack.size() > 0 && height[i] > height[stack.peek()]) {
+                int cur = stack.pop();
+                if (stack.size() == 0) break;
+                ans += (Math.min(height[i], height[stack.peek()]) - height[cur]) * (i - stack.peek() - 1);
             }
+            stack.push(i++);
         }
-        return res;
+        return ans;
     }
 }
 
-// 栈也太辣鸡了吧
+
 
 class Solution {
     public int trap(int[] height) {
-        int l = 0, r = height.length - 1, level = 0, res = 0;
-        while (l < r) {
-            int lower = height[(height[l] < height[r]) ? l++ : r--];
-            level = Math.max(level, lower);
-            res += level - lower;
+        int len = height.length;
+        int[] stack = new int[len];
+        int idx = -1;
+        int ans = 0;
+        for (int i = 0; i < len;) {
+            while (idx >= 0 && height[i] > height[stack[idx]]) {
+                int cur = stack[idx--];
+                if (idx < 0) break;
+                ans += (Math.min(height[i], height[stack[idx]]) - height[cur]) * (i - stack[idx] - 1);
+            }
+            stack[++idx] = i++;
         }
-        return res;
+        return ans;
     }
 }
 
-// 思路很简单,基于遍历的算法核心应当是查找数组中的一个局部最大值.
-// 有宽度代表相邻元素需额外考虑
+
+
+class Solution {
+    public int trap(int[] height) {
+        int ans = 0;
+        for (int l = 0, r = height.length - 1, level = 0; l < r;) {
+            int boundary = height[height[l] < height[r] ? l++ : r--];
+            level = Math.max(level, boundary);
+            ans += level - boundary;
+        }
+        return ans;
+    }
+}
