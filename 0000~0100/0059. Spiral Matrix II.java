@@ -13,30 +13,25 @@ Output:
  */
 
 class Solution {
+    int[][] ans;
+    int idx = 1;
+
     public int[][] generateMatrix(int n) {
-        int[][] matrix = new int[n][n];
-        int x = 0;
-        int y = 0;
-        int index = 0;
-        while (n > 0) {
-            if (n == 1) {
-                matrix[x][y++] = ++index;
-                return matrix;
-            }
-            for (int i = 0; i < n-1; i++)
-                matrix[x][y++] = ++index;
-            for (int i = 0; i < n-1; i++)
-                matrix[x++][y] = ++index;
-            for (int i = 0; i < n-1; i++)
-                matrix[x][y--] = ++index;
-            for (int i = 0; i < n-1; i++)
-                matrix[x--][y] = ++index;
-            x++;
-            y++;
-            n -= 2;
+        ans = new int[n][n];
+        dfs(0, n);
+        return ans;
+    }
+
+    private void dfs(int x, int side) {
+        if (side < 1) return;
+        if (side == 1) {
+            ans[x][x] = idx;
+            return;
         }
-        return matrix;
+        for (int j = x; j < x + side - 1; j++) ans[x][j] = idx++;
+        for (int i = x; i < x + side - 1; i++) ans[i][x + side - 1] = idx++;
+        for (int j = x + side - 1; j > x; j--) ans[x + side - 1][j] = idx++;
+        for (int i = x + side - 1; i > x; i--) ans[i][x] = idx++;
+        dfs(x + 1, side - 2);
     }
 }
-
-// ...

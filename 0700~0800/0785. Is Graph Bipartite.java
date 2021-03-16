@@ -105,9 +105,7 @@ class Solution {
         int len = graph.length;
         color = new Boolean[len];
         for (int i = 0; i < len; i++) {
-            if (color[i] != null) continue;
-            if (dfs(i, true, graph) || dfs(i, false, graph)) continue;
-            return false;
+            if (color[i] == null && ! dfs(i, true, graph)) return false;
         }
         return true;
     }
