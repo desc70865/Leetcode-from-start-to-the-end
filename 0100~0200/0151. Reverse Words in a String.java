@@ -33,51 +33,15 @@ For C programmers, try to solve it in-place in O(1) extra space.
 
 class Solution {
     public String reverseWords(String s) {
-        if (s == null || s.length() == 0) {
-            return "";
-        }
-        String[] str = s.split(" ");
-        int LEN = str.length;
-        if (LEN == 0) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = LEN - 1; i > 0; i--) {
-            if (str[i].length() == 0) {
-                continue;
-            }
-            sb.append(str[i]);
-            sb.append(" ");
-        }
-        /* if (str[0].length() == 0) {
-            sb.deleteCharAt(sb.length() - 1);
-        } else {
-            sb.append(str[0]);
-        }
-        return sb.toString(); */
-        sb.append(str[0]);
-        return sb.toString().trim();
-    }
-}
-
-
-
-class Solution {
-    public String reverseWords(String s) {
-        if (s == null) {
-            return s;
-        }
-        
+        if (s == null) return s;
         StringBuilder ans = new StringBuilder();
-        
-        for (int i = s.length()-1, j; i >= 0; i--) {
-            if (s.charAt(i) != ' ') {
-                j = i;
-                i = s.lastIndexOf(' ', i);
-                ans.append(s, i+1, j+1).append(" ");
+        for (int l = s.length() - 1; l >= 0; l--) {
+            if (s.charAt(l) != ' ') {
+                int r = l;
+                l = s.lastIndexOf(' ', l);
+                ans.append(s, l + 1, r + 1).append(' ');
             }
         }
-        
         return ans.toString().trim();
     }
 }
