@@ -77,17 +77,17 @@ class Solution {
     public int numDistinct(String s, String t) {
         char[] chs = s.toCharArray();
         char[] cht = t.toCharArray();
-        int len1 = chs.length, len2 = cht.length;
-        int[] dp = new int[len2 + 1];
+        int len = cht.length;
+        int[] dp = new int[len + 1];
         dp[0] = 1;
-        for (int i = 1; i <= len1; i++) {
-            for (int j = len2; j > 0; j--) {
-                if (chs[i - 1] == cht[j - 1]) {
-                    dp[j] += dp[j - 1];
+        for (int i = 0; i < chs.length; i++) {
+            for (int j = len - 1; j >= 0; j--) {
+                if (chs[i] == cht[j]) {
+                    dp[j + 1] += dp[j];
                 }
             }
         }
-        return dp[len2];
+        return dp[len];
     }
 }
 

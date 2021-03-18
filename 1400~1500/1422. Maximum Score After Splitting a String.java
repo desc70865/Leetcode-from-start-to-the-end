@@ -35,16 +35,16 @@ The string s consists of characters '0' and '1' only.
 
 class Solution {
     public int maxScore(String s) {
-        char[] str = s.toCharArray();
-        int N = str.length;
+        char[] chs = s.toCharArray();
+        int len = chs.length;
         int l = 0, r = 0;
-        if (str[0] == '0') l++;
+        if (chs[0] == '0') l++;
         int max = l + r;
-        for (int i = 1; i < N - 1; i++) {
-            if (str[i] == '1') r--;
+        for (int i = 1; i < len - 1; i++) {
+            if (chs[i] == '1') r--;
             else max = Math.max(max, ++l + r);
         }
-        if (str[N - 1] == '1') r--;
+        if (chs[len - 1] == '1') r--;
         return max - r;
     }
 }

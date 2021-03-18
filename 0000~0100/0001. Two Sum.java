@@ -33,13 +33,13 @@ class Solution {
 
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        int bitMode = 2047, c = 0;
-        int[] res = new int[bitMode + 1];
+        int mod = 2047, c = 0;
+        int[] res = new int[mod + 1];
         
         for (int i = 0; i < nums.length; i++) {
-            c = (target - nums[i]) & bitMode;
-            if (res[c] > 0) return new int[]{ res[c]-1, i };
-            res[nums[i] & bitMode] = i + 1;
+            c = (target - nums[i]) & mod;
+            if (res[c] > 0) return new int[]{ res[c] - 1, i };
+            res[nums[i] & mod] = i + 1;
         }
         return null;
     }

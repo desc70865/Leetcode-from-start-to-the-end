@@ -44,15 +44,18 @@ Constraints:
 
 class Solution {
     public int findTheDistanceValue(int[] arr1, int[] arr2, int d) {
-        int res = 0;
-        for (int v1: arr1) if (helper(arr2, d, v1)) res++;
-        return res;
-    }
-    
-    private boolean helper(int[] arr2, int d, int value) {
-        for (int v: arr2) if (Math.abs(v - value) <= d) return false;
-        return true;
+        int[] map = new int[2002];
+        for (int num: arr2) {
+            map[Math.max(0, num - d + 1000)]++;
+            map[Math.min(2001, num + d + 1001)]--;
+        }
+        for (int i = 1; i <= 2001; i++) {
+            map[i] += map[i - 1];
+        }
+        int ans = 0;
+        for (int num: arr1) {
+            if (map[num + 1000] == 0) ans++;
+        }
+        return ans;
     }
 }
-
-// binary search...

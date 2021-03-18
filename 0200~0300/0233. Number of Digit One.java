@@ -10,11 +10,19 @@ Explanation: Digit 1 occurred in the following numbers: 1, 10, 11, 12, 13.
 
 class Solution {
     public int countDigitOne(int n) {
+        return countDigitiK(n, 1);
+    }
+
+    private int countDigitiK(int n, int k) {
         int cnt = 0;
         for (long base = 1; base <= n; base *= 10) {
-            long ordinal = n / base, tail = n % base;
-            cnt += (ordinal + 8) / 10 * base + (ordinal % 10 == 1 ? tail + 1 : 0);
+            long ordinal = n / base;
+            cnt += (ordinal + (9 - k)) / 10 * base + (ordinal % 10 == k ? n % base + 1 : 0);
         }
         return cnt;
     }
 }
+
+// 逐位计算出现次数
+
+// https://leetcode-cn.com/problems/number-of-2s-in-range-lcci/
