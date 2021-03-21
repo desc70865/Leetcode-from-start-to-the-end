@@ -38,19 +38,3 @@ class Solution {
         return cor;
     }
 }
-
-
-
-class Solution {
-    public int findMaximumXOR(int[] nums) {
-        if (nums.length >= 20000) return 2147483644;
-        int max = 0;
-        for (int i = 0; i < nums.length; i++) {
-            for (int j=i+1; j < nums.length; j++) {
-                int temp = nums[i] ^ nums[j];
-                if (temp > max) max = temp;
-            }
-        }
-        return max;
-    }
-}
