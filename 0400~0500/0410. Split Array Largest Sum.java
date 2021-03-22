@@ -37,18 +37,18 @@ class Solution {
             low = Math.max(low, num);
         }
         while (low < high) {
-            int mid = (high - low) / 2 + low;
+            int mid = low + high >> 1;
             if (check(nums, mid, m)) high = mid;
             else low = mid + 1;
         }
         return low;
     }
 
-    public boolean check(int[] nums, int x, int m) {
+    public boolean check(int[] nums, int threshold, int m) {
         int sum = 0, cnt = 1;
         for (int num: nums) {
             sum += num;
-            if (sum > x) {
+            if (sum > threshold) {
                 if (++cnt > m) return false;
                 sum = num;
             }

@@ -32,22 +32,23 @@ Explanation:
  */
 
 class Solution {
-    public int evalRPN(String[] tokens) {
-        if (tokens == null) return 0;
-        Map<String, BiFunction<Integer, Integer, Integer>> operator = new HashMap<>();
+    static Map<String, BiFunction<Integer, Integer, Integer>> operator = new HashMap<>();
+
+    static {
         operator.put("+", (a, b) -> a + b);
         operator.put("-", (a, b) -> a - b);
         operator.put("*", (a, b) -> a * b);
         operator.put("/", (a, b) -> a / b);
-        int[] stack = new int[tokens.length];
+    }
+    
+    public int evalRPN(String[] tokens) {
+        if (tokens == null) return 0;
+        int[] stack = new int[tokens.length / 2 + 1];
         int idx = -1;
         for (String token: tokens) {
-            if (! operator.containsKey(token)) {
-                stack[++idx] = Integer.parseInt(token);
-            } else {
-                stack[--idx] = operator.get(token).apply(stack[idx], stack[idx + 1]);
-            }
+            if (! operator.containsKey(token)) stack[++idx] = Integer.parseInt(token);
+            else stack[--idx] = operator.get(token).apply(stack[idx], stack[idx + 1]);
         }
-        return stack[idx];
+        return stack[0];
     }
 }
