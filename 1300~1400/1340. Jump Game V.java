@@ -107,18 +107,18 @@ class Solution {
 
 
 class Solution {
-   public int maxJumps(int[] arr, int d) {
+    public int maxJumps(int[] arr, int d) {
         int len = arr.length;
         int[] dp = new int[len], stack = new int[len];
         for (int i = 0, top = -1; i <= len; i++) {
             while (top >= 0 && (i == len || arr[stack[top]] < arr[i])) {
-                int r = top, l = r - 1;
-                while (l >= 0 && arr[stack[l]] == arr[stack[r]]) l--;
-                for (int cur = l + 1; cur <= r; cur++) {
-                    if (l >= 0 && stack[cur] - stack[l] <= d) dp[stack[l]] = Math.max(dp[stack[l]], 1 + dp[stack[cur]]);
+                int bottom = top - 1;
+                while (bottom >= 0 && arr[stack[bottom]] == arr[stack[top]]) bottom--;
+                for (int cur = bottom + 1; cur <= top; cur++) {
+                    if (bottom >= 0 && stack[cur] - stack[bottom] <= d) dp[stack[bottom]] = Math.max(dp[stack[bottom]], 1 + dp[stack[cur]]);
                     if (i < len && i - stack[cur] <= d) dp[i] = Math.max(dp[i], 1 + dp[stack[cur]]);
                 }
-                top -= r - l;
+                top = bottom;
             }
             stack[++top] = i;
         }
