@@ -14,27 +14,51 @@ Output: 28
 Explanation: The maximum result is 5 ^ 25 = 28.
  */
 
-class Solution {
+public class Solution {
     public int findMaximumXOR(int[] nums) {
-        int max = 0;
-        for (int num: nums) max = Math.max(num, max);
-
-        int maxLen = Integer.toBinaryString(max).length();
-
-        int cor = 0;
-        Set<Integer> pre = new HashSet<>();
-        for (int i = maxLen - 1; i >= 0; i--) {
-            cor <<= 1;
-            int curMax = cor | 1;
-            pre.clear();
-            for (int num: nums) pre.add(num >> i);
-            for (int a: pre) {
-                if (pre.contains(a ^ curMax)) {
-                    cor = curMax;
+        int res = 0;
+        int mask = 0;
+        for (int i = 30; i >= 0; i--) {
+            mask |= 1 << i;
+            Set<Integer> prefix = new HashSet<>();
+            for (int num: nums) {
+                prefix.add(num & mask);
+            }
+            int cur = res | (1 << i);
+            for (Integer p: prefix) {
+                if (prefix.contains(p ^ cur)) {
+                    res = cur;
                     break;
                 }
             }
         }
-        return cor;
+        return res;
+    }
+}
+
+
+
+class Solution {
+    public int findMaximumXOR(int[] nums) {
+        int max = 0;
+        for (int num: nums) {
+            max = Math.max(max, num);
+        }
+        int len = 32 - Integer.numberOfLeadingZeros(max);
+        Set<Integer> prefix = new HashSet<>();
+        int maxXOR = 0;
+        for (int i = len - 1; i >= 0; i--) {
+            maxXOR <<= 1;
+            int curPrefix = maxXOR | 1;
+            prefix.clear();
+            for (int num: nums) {
+                prefix.add(num >> i);
+                if (prefix.contains(num >> i ^ curPrefix)) {
+                    maxXOR |= 1;
+                    break;
+                }
+            }
+        }
+        return maxXOR;
     }
 }

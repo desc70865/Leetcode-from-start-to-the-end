@@ -111,6 +111,7 @@ class Solution {
         int len = arr.length;
         int[] dp = new int[len], stack = new int[len];
         for (int i = 0, top = -1; i <= len; i++) {
+            // nonstrictly monotonically increasing stack
             while (top >= 0 && (i == len || arr[stack[top]] < arr[i])) {
                 int bottom = top - 1;
                 while (bottom >= 0 && arr[stack[bottom]] == arr[stack[top]]) bottom--;
