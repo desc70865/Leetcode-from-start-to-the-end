@@ -108,9 +108,9 @@ class Solution {
 
 class Solution {
    public int maxJumps(int[] arr, int d) {
-        int len = arr.length, top = -1;
+        int len = arr.length;
         int[] dp = new int[len], stack = new int[len];
-        for (int i = 0; i <= len; i++) {
+        for (int i = 0, top = -1; i <= len; i++) {
             while (top >= 0 && (i == len || arr[stack[top]] < arr[i])) {
                 int r = top, l = r - 1;
                 while (l >= 0 && arr[stack[l]] == arr[stack[r]]) l--;
