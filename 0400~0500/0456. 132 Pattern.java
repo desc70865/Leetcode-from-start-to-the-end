@@ -33,20 +33,20 @@ n == nums.length
 
 class Solution {
     public boolean find132pattern(int[] nums) {
-        int N = nums.length;
-        if (N < 3) return false;
-        Deque<Integer> stack = new LinkedList<>();
-        int[] min = new int[N];
+        int len = nums.length;
+        if (len < 3) return false;
+        int[] min = new int[len];
         min[0] = nums[0];
-        for (int i = 1; i < N; i++)
+        for (int i = 1; i < len; i++) {
             min[i] = Math.min(min[i - 1], nums[i]);
-        for (int j = N - 1; j >= 0; j--) {
+        }
+        int[] stack = new int[len];
+        int idx = -1;
+        for (int j = len - 1; j >= 0; j--) {
             if (nums[j] <= min[j]) continue;
-            while (! stack.isEmpty() && stack.peek() <= min[j])
-                stack.pop();
-            if (! stack.isEmpty() && stack.peek() < nums[j])
-                return true;
-            stack.push(nums[j]);
+            while (idx >= 0 && stack[idx] <= min[j]) idx--;
+            if (idx >= 0 && stack[idx] < nums[j]) return true;
+            stack[++idx] = nums[j];
         }
         return false;
     }

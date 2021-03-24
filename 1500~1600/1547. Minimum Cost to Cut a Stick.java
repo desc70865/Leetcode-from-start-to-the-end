@@ -39,7 +39,22 @@ All the integers in cuts array are distinct.
 
 class Solution {
     public int minCost(int n, int[] cuts) {
-        
+        int len = cuts.length + 2;
+        int[] arr = new int[len];
+        System.arraycopy(cuts, 0, arr, 0, len - 2);
+        arr[len - 2] = 0;
+        arr[len - 2] = n;
+        Arrays.sort(arr);
+        int[][] dp = new int[len][len];
+        for (int intervalSize = 2; intervalSize < len; intervalSize++) {
+            for (int l = 0, r = intervalSize; r < len; l++, r++) {
+                dp[l][r] = Integer.MAX_VALUE;
+                for (int m = l + 1; m < r; m++) {
+                    dp[l][r] = Math.min(dp[l][r], dp[l][m] + arr[r] - arr[l] + dp[m][r]);
+                }
+            }
+        }
+        return dp[0][len - 1];
     }
 }
 
@@ -47,20 +62,20 @@ class Solution {
 
 class Solution {
     public int minCost(int n, int[] cuts) {
-        Arrays.sort(cuts);
-        int m = cuts.length + 2;
-        int[][] dp = new int[m][m];
+        Arrays.parallelSort(cuts);
+        int len = cuts.length + 2;
+        int[][] dp = new int[len][len];
         int pl = 0, pr = 0;
-        for (int r = 2; r < m; r++) {
-            pr = r == m - 1 ? n : cuts[r-1];
+        for (int r = 2; r < len; r++) {
+            pr = r == len - 1 ? n : cuts[r - 1];
             for (int l = r - 2; l >= 0; l--) {
-                pl = l == 0 ? 0 : cuts[l-1];
+                pl = l == 0 ? 0 : cuts[l - 1];
                 int cost = Integer.MAX_VALUE;
-                for (int k = l + 1; k < r; k++) // k ∈ (l, r)
-                    cost = Math.min(cost, dp[l][k] + dp[k][r]);
+                for (int m = l + 1; m < r; m++) // m ∈ (l, r)
+                    cost = Math.min(cost, dp[l][m] + dp[m][r]);
                 dp[l][r] = cost + pr - pl;
             }
         }
-        return dp[0][m-1];
+        return dp[0][len - 1];
     }
 }
