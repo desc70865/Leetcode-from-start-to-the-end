@@ -49,80 +49,72 @@ Output: false
 
 class Solution {
     public boolean isScramble(String s1, String s2) {
-        if(s1.length()==1) return s1.equals(s2);
-        
-        String s11;
-        String s12;
-        String s21;
-        String s22;
-        for(int i = 1; i <= s1.length(); i++){
-            s11 = s1.substring(0, i);
-            s12 = s1.substring(i);
-            s21 = s2.substring(0,i);
-            s22 = s2.substring(i);
-            if(isScramble(s11,s21) && isScramble(s12,s22)) return true;
-            if(isScramble(s11,s22) && isScramble(s12,s21)) return true;
+        char[] chs = s1.toCharArray();
+        char[] cht = s2.toCharArray();
+        int len = chs.length;
+        boolean dp[][][] = new boolean[len][len][len + 1];
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < len; j++) {
+                dp[i][j][1] = chs[i] == cht[j];
+            }
         }
-        return false;
-    }
-}
-
-// wtf
-
-
-class Solution {
-    public boolean isScramble(String s1, String s2) {
-        int n = s1.length();
-        boolean dp[][][] = new boolean[n][n][n + 1];
-        for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) dp[i][j][1] = (s1.charAt(i) == s2.charAt(j));
-        for (int len = 2; len <= n; len++) {
-            for (int i = 0; i <= n - len; i++) {
-                for (int j = 0; j <= n - len; j++) {
-                    for (int k = 1; k <= len - 1; k++) {
-                        if (dp[i][j][k] && dp[i + k][j + k][len - k]) {
-                            dp[i][j][len] = true; // AB = ~A~B
+        for (int intervalSize = 2; intervalSize <= len; intervalSize++) {
+            for (int i = 0; i <= len - intervalSize; i++) {
+                for (int j = 0; j <= len - intervalSize; j++) {
+                    for (int k = 1, l = intervalSize - 1; k < intervalSize; k++, l--) {
+                        if (dp[i][j][k] && dp[i + k][j + k][l]) {
+                            dp[i][j][intervalSize] = true; // AB = ~A~B
                             break;
                         }
-                        if (dp[i][j + len - k][k] && dp[i + k][j][len - k]) {
-                            dp[i][j][len] = true; // AB = ~B~A
+                        if (dp[i][j + l][k] && dp[i + k][j][l]) {
+                            dp[i][j][intervalSize] = true; // AB = ~B~A
                             break;
                         }
                     }
                 }
             }
         }
-        return dp[0][0][n];
+        return dp[0][0][len];
     }
 }
 
 
+
 class Solution {
+    Map<String, Map<String, Boolean>> map = new HashMap<>();
+
     public boolean isScramble(String s1, String s2) {
-        if (s1.length() != s2.length()) return false;
-        if (s1.equals(s2)) return true;
-
-        int[] letters = new int[26]; // 字符匹配
-        for (int i = 0; i < s1.length(); i++) {
-            letters[s1.charAt(i) - 'a']++;
-            letters[s2.charAt(i) - 'a']--;
+        if (s1.equals(s2)) {
+            return true;
         }
-        for (int i : letters) {
-            if (i != 0) return false; // 剪枝
+        if (hashCode(s1) != hashCode(s2)) {
+            return false;
         }
-
-        // 遍历
-        for (int i = 1; i < s1.length(); i++) {
-            
-            if (isScramble(s1.substring(0, i), s2.substring(0, i)) &&
-            isScramble(s1.substring(i), s2.substring(i))) {
-                return true;
-            }
-            
-            if (isScramble(s1.substring(i), s2.substring(0, s2.length() - i)) &&
-               isScramble(s1.substring(0, i), s2.substring(s2.length() - i)) ) {
+        int len = s1.length();
+        if (len <= 3) {
+            return true;
+        }
+        if (map.containsKey(s1) && map.get(s1).containsKey(s2)) {
+            return map.get(s1).get(s2);
+        }
+        for (int i = 1; i < len; i++) {
+            String s1L = s1.substring(0, i);
+            String s1R = s1.substring(i);
+            if (isScramble(s1L, s2.substring(0, i)) && isScramble(s1R, s2.substring(i))
+            || isScramble(s1L, s2.substring(len - i)) && isScramble(s1R, s2.substring(0, len - i))) {
+                map.computeIfAbsent(s1, z -> new HashMap<>()).put(s2, true);
                 return true;
             }
         }
+        map.computeIfAbsent(s1, z -> new HashMap<>()).put(s2, false);
         return false;
+    }
+
+    private int hashCode(String s) {
+        int hash = 0;
+        for (char c: s.toCharArray()) {
+            hash += 1 << c - 'a';
+        }
+        return hash;
     }
 }
