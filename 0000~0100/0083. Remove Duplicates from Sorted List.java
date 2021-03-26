@@ -23,21 +23,6 @@ Output: 1->2->3
  */
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-        if (head == null) return head;
-        if (head.next != null && head.val == head.next.val) {
-            while (head.next != null && head.val == head.next.val) {
-                head = head.next;
-            }
-            return deleteDuplicates(head); // 复制粘贴又是全新的代码呢
-        }
-        head.next = deleteDuplicates(head.next);
-        return head;
-    }
-}
-
-
-class Solution {
-    public ListNode deleteDuplicates(ListNode head) {
         if (head == null || head.next == null) return head;
         head.next = deleteDuplicates(head.next);
         return (head.val == head.next.val) ? head.next : head;
@@ -49,11 +34,14 @@ class Solution {
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
         if (head == null) return head;
-        ListNode t = head;
-        while (t.next != null) {
-            if (t.val == t.next.val) t.next = t.next.next;
-            else t = t.next;
+        ListNode ans = head;
+        while (head.next != null) {
+            if (head.val == head.next.val) {
+                head.next = head.next.next;
+            } else {
+                head = head.next;
+            }
         }
-        return head;
+        return ans;
     }
 }
