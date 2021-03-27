@@ -31,48 +31,20 @@ rotate 4 steps to the right: 2->0->1->NULL
  */
 class Solution {
     public ListNode rotateRight(ListNode head, int k) {
-        if (head == null || head.next == null)
-            return head;
-        ListNode cur = head;
-        int n = 1;
-        while (cur.next != null) {
-            ++n;
-            cur = cur.next;
+        if (head == null) return head;
+        int size = 1;
+        ListNode node = head;
+        for (; node.next != null; size++) {
+            node = node.next;
         }
-        int m = n - k % n;
-        cur.next = head;
-        for (int i = 0; i < m; ++i) {
-            cur = cur.next;
-        }
-        ListNode newlist = cur.next;
-        cur.next = null;
-        return newlist;
-    }
-}
-
-// 找到链接的倒序第k个节点
-// 因为只能正向遍历,因此至少需要遍历 l + l - k 个节点
-// 应该可以加入 k == n 的判定减少某些情况至 l
-
-class Solution {
-    public ListNode rotateRight(ListNode head, int k) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        ListNode p = head;
-        int len = 1;// since p is already point to head
-        while (p.next != null) {
-            len++;
-            p = p.next;
-        }
-        k = k % len;
+        k %= size;
         if (k == 0) return head;
-        p.next = head; // form a loop
-        for (int i = 0; i < len - k; i++) {
-            p = p.next;
-        } // now p points to the prev of the new head
-        head = p.next;
-        p.next = null;
+        node.next = head;
+        for (int i = 0; i < size - k; i++) {
+            node = node.next;
+        }
+        head = node.next;
+        node.next = null;
         return head;
     }
 }

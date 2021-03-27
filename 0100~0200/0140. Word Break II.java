@@ -37,42 +37,38 @@ Output:
  */
 
 class Solution {
-    List<String> res;
-    Set<String> set;
-    int min, max;
-    boolean v[];
+    List<String> res = new ArrayList<>();
+    Set<String> set = new HashSet<>();
+    int minSize = Integer.MAX_VALUE, maxSize = 0;
 
     public List<String> wordBreak(String s, List<String> wordDict) {
-        set = new HashSet<>();
-        min = Integer.MAX_VALUE;
-        max = 0;
+        set = new HashSet<>(wordDict);
         for (String word: wordDict) {
-            set.add(word);
-            int k = word.length();
-            if (k > max) max = k;
-            if (k < min) min = k;
+            // set.add(word);
+            int wordSize = word.length();
+            if (wordSize > maxSize) maxSize = wordSize;
+            if (wordSize < minSize) minSize = wordSize;
         }
-        res = new ArrayList<>();
-        v = new boolean[s.length() + 1];
-        wordBreak(s, 0, new ArrayList<>());
+        wordBreak(s, 0, new ArrayList<>(), new boolean[s.length() + 1]);
         return res;
     }
 
-    private void wordBreak(String s, int idx, List<String> tmp) {
+    private void wordBreak(String s, int idx, List<String> tmpList, boolean[] v) {
         if (idx == s.length()) {
-            res.add(String.join(" ", tmp));
+            res.add(String.join(" ", tmpList));
             return;
         }
-        if (idx > s.length() - min) return;
-        for (int i = min; i <= Math.min(max, s.length() - idx); i++) {
-            if (v[idx + i]) continue;
-            String m = s.substring(idx, idx + i);
-            if (set.contains(m)) {
-                tmp.add(m);
-                int x = res.size();
-                wordBreak(s, idx + i, tmp);
-                if (res.size() == x) v[idx + i] = true;
-                tmp.remove(tmp.size() - 1);
+        for (int size = minSize; size <= Math.min(maxSize, s.length() - idx); size++) {
+            if (v[idx + size]) continue;
+            String sub = s.substring(idx, idx + size);
+            if (set.contains(sub)) {
+                tmpList.add(sub);
+                int mem = res.size();
+                wordBreak(s, idx + size, tmpList, v);
+                // 从 nextIdx = idx + size 处开始不存在新的拆分方法
+                // 标记终止后续从此下标开始的递归以降低复杂度
+                if (res.size() == mem) v[idx + size] = true;
+                tmpList.remove(tmpList.size() - 1);
             }
         }
     }

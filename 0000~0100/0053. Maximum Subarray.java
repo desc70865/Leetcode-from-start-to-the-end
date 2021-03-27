@@ -13,10 +13,10 @@ If you have figured out the O(n) solution, try coding another solution using the
 
 class Solution {
     public int maxSubArray(int[] nums) {
-        int cur = 0, max = Integer.MIN_VALUE;
+        int sum = 0, max = Integer.MIN_VALUE;
         for (int num: nums) {
-            cur = Math.max(cur, 0) + num;
-            max = Math.max(cur, max);
+            sum = Math.max(sum, 0) + num;
+            max = Math.max(sum, max);
         }
         return max;
     }

@@ -43,31 +43,82 @@ Constraints:
 1 <= k <= nums.length
  */
 
-class Solution {
-    Deque<Integer> q;
-    
+class Solution{
     public int[] maxSlidingWindow(int[] nums, int k) {
-        int N = nums.length;
-        if (N == 0 || k == 0) return new int[0];
-        q = new LinkedList<>();
-        int[] res = new int[N - k + 1];
-        for (int i = 0; i < k; i++) update(nums, i);
-        res[0] = nums[q.peekFirst()];
-        for (int i = k; i < N; i++) {
-            if (q.peekFirst() == i - k) q.removeFirst();
-            update(nums, i);
-            res[i - k + 1] = nums[q.peekFirst()];
+        int[] ans = new int[nums.length - k + 1];
+        Deque<Integer> queue = new ArrayDeque<>();
+        for (int right = 0; right < nums.length; right++) {
+            while (! queue.isEmpty() && nums[right] >= nums[queue.peekLast()]) {
+                queue.removeLast();
+            }
+            queue.offerLast(right);
+            int left = right - k + 1;
+            if (queue.peekFirst() < left) {
+                queue.removeFirst();
+            }
+            if (right + 1 >= k) {
+                ans[left] = nums[queue.peekFirst()];
+            }
         }
-        return res;
+        return ans;
+    }
+}
+
+
+
+class Solution{
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int len = nums.length;
+        int[] ans = new int[len - k + 1];
+        int[] queue = new int[len];
+        for (int head = 0, rear = 0, left = 1 - k, right = 0; right < len; left++, right++) {
+            while (head < rear && nums[right] >= nums[queue[rear - 1]]) {
+                rear--;
+            }
+            queue[rear++] = right;
+            if (queue[head] < left) {
+                head++;
+            }
+            if (right + 1 >= k) {
+                ans[left] = nums[queue[head]];
+            }
+        }
+        return ans;
+    }
+}
+
+
+
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int len = nums.length;
+        int[] ans = new int[len - k + 1];
+        for (int left = 0, right = k - 1, maxIndex = maxNum(nums, 0, k - 1); ;) {
+            if (left <= maxIndex) {
+                ans[left++] = nums[maxIndex];
+                right++;
+                if (right == len) break;
+                if (nums[right] >= nums[maxIndex]) maxIndex = right; 
+            } else {
+                if (nums[left] >= nums[maxIndex] - 1) {
+                    maxIndex = left;
+                } else if (nums[right] >= nums[maxIndex] - 1) {
+                    maxIndex = right;
+                } else {
+                    maxIndex = maxNum(nums, left, right);
+                }
+            }
+        }
+        return ans;
     }
 
-    private void update(int[] A, int i) {
-        if (! q.isEmpty() && A[i] >= A[q.peekFirst()]) {
-            q.clear();
-            q.addLast(i);
-            return;
+    public int maxNum(int[] nums, int start, int end) {
+        int ans = start;
+        for (int i = start + 1; i <= end; i++) {
+            if (nums[i] >= nums[ans]) {
+                ans = i;
+            }
         }
-        while (! q.isEmpty() && A[q.peekLast()] < A[i]) q.removeLast();
-        q.addLast(i);
+        return ans;
     }
 }

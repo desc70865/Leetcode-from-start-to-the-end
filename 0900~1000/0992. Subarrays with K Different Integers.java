@@ -26,7 +26,7 @@ Note:
 1 <= K <= A.length
  */
 
-public class Solution {
+class Solution {
     public int subarraysWithKDistinct(int[] A, int K) {
         return helper(A, K) - helper(A, K - 1);
     }
@@ -36,15 +36,13 @@ public class Solution {
         if (len == 0 || k == 0) {
             return 0;
         }
-        int ans = 0;
-        int l = 0, r = 0;
         Map<Integer, Integer> map = new HashMap<>();
-        for (; r < len; r++) {
+        int ans = 0;
+        for (int l = 0, r = 0; r < len; ans += ++r - l) {
             map.merge(arr[r], 1, Integer::sum);
             while (map.size() > k) {
                 remove(map, arr[l++]);
             }
-            ans += r - l + 1;
         }
         return ans;
     }
@@ -58,7 +56,7 @@ public class Solution {
 
 
 
-public class Solution {
+class Solution {
     public int subarraysWithKDistinct(int[] A, int K) {
         return helper(A, K) - helper(A, K - 1);
     }
@@ -68,20 +66,17 @@ public class Solution {
         if (len == 0 || k == 0) {
             return 0;
         }
-        int ans = 0;
-        int l = 0, r = 0;
-        int size = 0;
         int[] map = new int[20001];
-        while (r < len) {
+        int ans = 0;
+        for (int l = 0, r = 0, size = 0; r < len; ans += r - l) {
             if (map[arr[r++]]++ == 0) {
                 size++;
             }
             while (size > k) {
-                if (map[arr[l++]]-- == 1) {
+                if (--map[arr[l++]] == 0) {
                     size--;
                 }
             }
-            ans += r - l;
         }
         return ans;
     }
@@ -89,32 +84,25 @@ public class Solution {
 
 
 
-public class Solution {
+class Solution {
     public int subarraysWithKDistinct(int[] A, int K) {
         int len = A.length;
+        int[] count = new int[len + 1];
+        int[] lastIndexOf = new int[len + 1];
         int ans = 0;
-        int l = 0, r = 0;
-        int size = 0;
-        int[] map = new int[len + 1];
-        int[] loc = new int[len + 1];
-        while (r < len) {
-            loc[A[r]] = r;
-            if (map[A[r++]]++ == 0) {
+        for (int l = 0, r = 0, size = 0; r < len; r++) {
+            lastIndexOf[A[r]] = r;
+            if (count[A[r]]++ == 0) {
                 size++;
             }
             while (size > K) {
-                if (map[A[l++]]-- == 1) {
+                if (--count[A[l++]] == 0) {
                     size--;
                 }
             }
             if (size == K) {
-                int m = l;
-                while (true) {
-                    if (loc[A[m]] == m++) {
-                        ans += m - l;
-                        break;
-                    }
-                }
+                for (int x = l; lastIndexOf[A[x]] != x++; ans++) ;
+                ans++;
             }
         }
         return ans;
