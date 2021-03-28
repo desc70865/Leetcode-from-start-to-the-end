@@ -37,54 +37,27 @@ You may assume that next() call will always be valid, that is, there will be at 
  * }
  */
 class BSTIterator {
-    ListNode head, cur;
+    ListIterator<Integer> iterator;
+    List<Integer> list = new ArrayList<>();
+
     public BSTIterator(TreeNode root) {
-        head = new ListNode(-1);
-        cur = head;
         dfs(root);
-        cur = head;
-        // cur.print();
+        iterator = list.listIterator();
+    }
+    
+    public int next() {
+        return (int) iterator.next();
+    }
+    
+    public boolean hasNext() {
+        return iterator.hasNext();
     }
 
     private void dfs(TreeNode node) {
         if (node == null) return;
         dfs(node.left);
-        cur.add(node.val);
-        cur = cur.next;
+        list.add(node.val);
         dfs(node.right);
-    }
-    
-    /** @return the next smallest number */
-    public int next() {
-        cur = cur.next;
-        return cur.val;
-    }
-    
-    /** @return whether we have a next smallest number */
-    public boolean hasNext() {
-        return cur.next != null;
-    }
-}
-
-class ListNode {
-    int val;
-    ListNode next;
-
-    ListNode(int val) {
-        this.val = val;
-    }
-
-    public void add(int newval) {
-        if (this.next == null) this.next = new ListNode(newval);
-        else this.next.add(newval);
-    }
-
-    public void print() {
-        System.out.print(this.val);
-        if (this.next != null) {
-            System.out.print("->");
-            this.next.print();
-        }
     }
 }
 

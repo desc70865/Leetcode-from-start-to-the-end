@@ -37,6 +37,6 @@ class Solution {
 class Solution {
     private int[] aux = new int[] { 3, 4, 6 };
     public int integerBreak(int n) {
-        return n <= 3 ? n-1 : (int) Math.pow(3, n / 3 - 1) * aux[n % 3];
+        return n <= 3 ? n - 1 : (int) Math.pow(3, n / 3 - 1) * aux[n % 3];
     }
 }

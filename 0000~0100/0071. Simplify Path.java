@@ -44,9 +44,10 @@ class Solution {
         for (String p: paths) {
             if ("..".equals(p)) {
                 if (idx > 0) idx--;
+            } else if (".".equals(p) || p.isEmpty()) {
+                ;
             } else {
-                if (".".equals(p) || p.isEmpty()) ;
-                else stack[idx++] = p;
+                stack[idx++] = p;
             }
         }
         if (idx == 0) return "/";
@@ -61,6 +62,7 @@ class Solution {
 
 
 import java.nio.file.*;
+
 class Solution {
     public static String simplifyPath(String path) {
         try {
