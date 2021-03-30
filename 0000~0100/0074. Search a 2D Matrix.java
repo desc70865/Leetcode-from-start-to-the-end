@@ -28,68 +28,10 @@ Output: false
 
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-        int m = matrix.length;
-        if (m == 0)  return false;
-        int n = matrix[0].length;
-        if (n == 0)  return false;
-        
-        int i = 0, j = n - 1;
-        while (i < m && j >= 0) {
+        for (int m = matrix.length, n = matrix[0].length, i = m - 1, j = 0; i >= 0 && j < n;) {
             if (matrix[i][j] == target) return true;
-            else if (matrix[i][j] > target) j--;
-            else i++;
-        }
-        return false;
-    }
-}
-
-
-
-class Solution {
-    public boolean searchMatrix(int[][] matrix, int target) {
-        int m = matrix.length;
-        if (m == 0)  return false;
-        int n = matrix[0].length;
-        if (n == 0)  return false;
-        
-        int left = 0, right = m;
-        while (left < right) {
-            int mid = (left + right) / 2;
-            if (matrix[mid][0] == target) return true;
-            if (matrix[mid][0] <= target) left = mid + 1;
-            else right = mid;
-        }
-        int tmp = (right > 0) ? (right - 1) : right;
-        left = 0;
-        right = matrix[tmp].length;
-        while (left < right) {
-            int mid = (left + right) / 2;
-            if (matrix[tmp][mid] == target) return true;
-            if (matrix[tmp][mid] < target) left = mid + 1;
-            else right = mid;
-        }
-        return false;
-    }
-}
-
-
-
-class Solution {
-    public boolean searchMatrix(int[][] matrix, int target) {
-        int m = matrix.length;
-        if (m == 0)  return false;
-        int n = matrix[0].length;
-        if (n == 0)  return false;
-        if (matrix[0][0] > target || matrix[m-1][n-1] < target) return false;
-        
-        int left = 0, right = m*n;
-        while (left < right) {
-            int mid = (left + right - 1) / 2;
-            int row = mid / n;
-            int col = mid % n;
-            if (matrix[row][col] == target) return true;
-            else if (matrix[row][col] < target) left = mid + 1;
-            else right = mid;
+            else if (matrix[i][j] < target) j++;
+            else i--;
         }
         return false;
     }
