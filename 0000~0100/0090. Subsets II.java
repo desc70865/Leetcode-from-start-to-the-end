@@ -18,9 +18,9 @@ Output:
  */
 
 class Solution {
-    List<List<Integer>> res;
+    List<List<Integer>> res = new ArrayList<>();
+	
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        res = new ArrayList<>();
         Arrays.sort(nums);
         helper(nums, 0, new ArrayList<Integer>());
         return res;
@@ -40,9 +40,9 @@ class Solution {
 
 
 class Solution {
-    private List<List<Integer>> res;
+    private List<List<Integer>> res = new ArrayList<>();
+	
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        res = new ArrayList<>();
         Arrays.sort(nums);
         helper(nums, 0, new ArrayList<Integer>());
         return res;
