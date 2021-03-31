@@ -45,33 +45,20 @@ Constraints:
 target is strictly increasing.
  */
 
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/build-an-array-with-stack-operations/solution/nshi-shi-yao-by-keylol/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ */
 class Solution {
-    List<String> res;
-    String a, b;
-    int k;
     public List<String> buildArray(int[] target, int n) {
-        res = new ArrayList<>();
-        a = "Push";
-        b = "Pop";
-        k = 1;
+        List<String> res = new ArrayList<>();
+        int cur = 1;
         for (int num: target) {
-            while (k < num) stupid();
-            push();
+            while (cur++ < num) { res.add("Push"); res.add("Pop"); }
+            res.add("Push");
         }
         return res;
-    }
-
-    private void push() {
-        res.add(a);
-        k++;
-    }
-
-    private void stupid() {
-        push();
-        pop();
-    }
-
-    private void pop() {
-        res.add(b);
     }
 }

@@ -13,6 +13,12 @@ Output: 3
 Explanation: The maximum number of envelopes you can Russian doll is 3 ([2,3] => [5,4] => [6,7]).
  */
 
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/russian-doll-envelopes/solution/5ms-100-by-keylol-6fr6/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ */
 class Solution {
     public int maxEnvelopes(int[][] envelopes) {
         quickSort(envelopes, 0, envelopes.length - 1);

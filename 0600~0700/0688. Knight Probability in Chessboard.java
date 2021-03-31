@@ -31,6 +31,12 @@ K will be between 0 and 100.
 The knight always initially starts on the board.
  */
 
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/knight-probability-in-chessboard/solution/biao-zhun-dfsdong-tai-gui-hua-by-keylol/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ */
 class Solution {
     int[][] dirs = new int[][] {{2, 1}, {1, 2}, {-1, 2}, {-2, 1}, {-2, -1}, {-1, -2}, {1, -2}, {2, -1}};
     Double[][][] dp;

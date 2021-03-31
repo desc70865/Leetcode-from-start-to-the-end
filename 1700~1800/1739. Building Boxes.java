@@ -38,6 +38,12 @@ Constraints:
 1 <= n <= 109
  */
 
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/building-boxes/solution/yao-you-ya-by-keylol-l0on/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ */
 class Solution {
     static int SIZE = 2000;
     static int[] base;

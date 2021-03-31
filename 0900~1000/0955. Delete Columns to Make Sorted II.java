@@ -41,6 +41,12 @@ Note:
 1 <= A[i].length <= 100
  */
 
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/delete-columns-to-make-sorted-ii/solution/sao-miao-by-keylol/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ */
 class Solution {
     public int minDeletionSize(String[] A) {
         int m = A.length;

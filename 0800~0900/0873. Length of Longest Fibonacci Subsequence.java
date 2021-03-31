@@ -31,6 +31,12 @@ Note:
 (The time limit has been reduced by 50% for submissions in Java, C, and C++.)
  */
 
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence/solution/kuai-jiu-wan-shi-liao-by-keylol-va3t/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ */
 class Solution {
     public int lenLongestFibSubseq(int[] A) {
         int len = A.length;

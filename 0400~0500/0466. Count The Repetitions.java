@@ -15,6 +15,12 @@ Return:
 2
  */
 
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/count-the-repetitions/solution/xia-ci-yi-ding-by-keylol-hoju/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ */
 class Solution {
     public int getMaxRepetitions(String s1, int n1, String s2, int n2) {
         if (n1 == 0) return 0;
