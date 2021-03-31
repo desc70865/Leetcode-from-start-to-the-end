@@ -24,7 +24,7 @@ class Solution {
         for (int i = A.length - 1; i >= 0; i--) {
             for (int j = 0; j < B.length; j++) {
                 if (A[i] == B[j]) {
-                    dp[j] = dp[j+1] + 1;
+                    dp[j] = dp[j + 1] + 1;
                     ans = Math.max(ans, dp[j]);
                 } else {
                     dp[j] = 0;
@@ -54,6 +54,7 @@ class Solution {
         return ans;
     }
 }
+
 
 
 
