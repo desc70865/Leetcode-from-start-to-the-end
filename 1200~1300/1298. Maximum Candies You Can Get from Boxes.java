@@ -54,6 +54,12 @@ Each box is contained in one box at most.
 0 <= initialBoxes[i] < status.length
  */
 
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/maximum-candies-you-can-get-from-boxes/solution/bfs-by-keylol/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ */
 class Solution {
     public int maxCandies(int[] status, int[] candies, int[][] keys, int[][] containedBoxes, int[] initialBoxes) {
         Deque<Integer> q = new LinkedList<>();

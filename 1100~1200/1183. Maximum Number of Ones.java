@@ -32,6 +32,12 @@ Constraints:
 0 <= maxOnes <= sideLength * sideLength
  */
 
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/maximum-number-of-ones/solution/java-0ms-by-keylol-2rp0/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ */
 class Solution {
     public int maximumNumberOfOnes(int width, int height, int sideLength, int maxOnes) {
         int a = width / sideLength, b = height / sideLength;

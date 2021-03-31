@@ -38,6 +38,12 @@ There will be at most 10000 operations considering both recordTweet and getTweet
 0 <= endTime - startTime <= 10^4
  */
 
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/tweet-counts-per-frequency/solution/ni-xie-na-yao-duo-xing-gan-ma-by-keylol/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ */
 class TweetCounts {
     int[] p = new int[] {0, 0, 0, 86400, 3600, 0, 60};
     Map<String, TreeMap<Integer, Integer>> map;

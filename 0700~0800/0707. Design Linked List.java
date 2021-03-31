@@ -35,51 +35,12 @@ Please do not use the built-in LinkedList library.
 At most 2000 calls will be made to get, addAtHead, addAtTail,  addAtIndex and deleteAtIndex.
  */
 
-class MyLinkedList {
-
-    /** Initialize your data structure here. */
-    public MyLinkedList() {
-        
-    }
-    
-    /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
-    public int get(int index) {
-        
-    }
-    
-    /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
-    public void addAtHead(int val) {
-        
-    }
-    
-    /** Append a node of value val to the last element of the linked list. */
-    public void addAtTail(int val) {
-        
-    }
-    
-    /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
-    public void addAtIndex(int index, int val) {
-        
-    }
-    
-    /** Delete the index-th node in the linked list, if the index is valid. */
-    public void deleteAtIndex(int index) {
-        
-    }
-}
-
-/**
- * Your MyLinkedList object will be instantiated and called as such:
- * MyLinkedList obj = new MyLinkedList();
- * int param_1 = obj.get(index);
- * obj.addAtHead(val);
- * obj.addAtTail(val);
- * obj.addAtIndex(index,val);
- * obj.deleteAtIndex(index);
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/design-hashset/solution/uthash-by-keylol-g5r6/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
  */
-
-// 
-
 public class ListNode {
     int val;
     ListNode next;
