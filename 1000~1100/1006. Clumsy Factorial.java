@@ -31,12 +31,6 @@ Note:
 
 class Solution {
     public int clumsy(int N) {
-        if (N < 5) return new int[] {0, 1, 2, 6, 7}[N];
-        return N * (N - 1) / (N - 2) + helper(N - 3);
-    }
-
-    private int helper(int N) {
-        if (N < 4) return new int[] {0, 1, 1, 1}[N];
-        return N - (N - 1) * (N - 2) / (N - 3) + helper(N - 4);
+        return N > 4 ? N + new int[]{1, 2, 2, -1}[N % 4] : (N > 2 ? N + 3 : N);
     }
 }
