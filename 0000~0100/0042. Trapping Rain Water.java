@@ -53,8 +53,8 @@ class Solution {
         int ans = 0;
         for (int l = 0, r = height.length - 1, level = 0; l < r;) {
             int boundary = height[height[l] < height[r] ? l++ : r--];
-            level = Math.max(level, boundary);
-            ans += level - boundary;
+            if (level > boundary) ans += level - boundary;
+            else level = boundary;
         }
         return ans;
     }

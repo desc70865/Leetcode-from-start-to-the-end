@@ -13,22 +13,21 @@ If there is such window, you are guaranteed that there will always be only one u
 
 class Solution {
     public String minWindow(String s, String t) {
-        int m = s.length(), n = t.length();
-        if (n == 0 || n > m) return "";
+        int sLen = s.length(), tLen = t.length();
+        if (tLen == 0 || tLen > sLen) return "";
+        char[] chs = s.toCharArray();
         int[] map = new int[128];
-        char[] sArr = s.toCharArray();
-        int left = 0, cnt = 0, minLeft = -1, minLen = Integer.MAX_VALUE;
-        for (char c : t.toCharArray()) map[c]++;
-        for (int i = 0; i < m; ++i) {
-            if (--map[sArr[i]] >= 0) ++cnt;
-            while (cnt == n) {
-                if (minLen > i - left + 1) {
-                    minLen = i - left + 1;
+        for (char c: t.toCharArray()) map[c]++;
+        int minLeft = -1, minLen = Integer.MAX_VALUE;
+        for (int right = 0, left = 0, cnt = 0; right < sLen; right++) {
+            if (--map[chs[right]] >= 0) ++cnt;
+            while (cnt == tLen) {
+                if (minLen > right - left + 1) {
+                    minLen = right - left + 1;
                     minLeft = left;
-                    if (minLen == n) return s.substring(minLeft, minLeft + minLen);
+                    if (minLen == tLen) return s.substring(minLeft, minLeft + minLen);
                 }
-                if (++map[sArr[left]] > 0) --cnt;
-                ++left;
+                if (++map[chs[left++]] > 0) --cnt;
             }
         }
         return minLeft == -1 ? "" : s.substring(minLeft, minLeft + minLen);
@@ -40,57 +39,38 @@ class Solution {
 
 class Solution {
     public String minWindow(String s, String t) {
-        char[] sArr = s.toCharArray();
-
+        char[] chs = s.toCharArray();
+        int sLen = chs.length;
         Map<Character, Integer> window = new HashMap<>(t.length() >> 1);
-        Map<Character, Integer> tMap = new HashMap<>(t.length() >> 1);
-        // 初始化Map
-        for (char ch : t.toCharArray()) {
-            tMap.put(ch, tMap.getOrDefault(ch, 0) + 1);
+        Map<Character, Integer> map = new HashMap<>(t.length() >> 1);
+        for (char c: t.toCharArray()) {
+            map.merge(c, 1, Integer::sum);
         }
-
-        // 滑动窗口中满足条件且不重复的字符个数
         int numOfValidUnrepeatedCharInWindow = 0;
-        // 窗口边界，[left, right)
         int left = 0, right = 0;
-        // 最小覆盖子串的起始索引和长度
-        int minLeft = 0, minLen = s.length() + 1;
-        // 扩大窗口
-        while (right < s.length()) {
-            // 进入窗口的字符，并右移窗口右边界
-            char enterChar = sArr[right++];
-            // 判断字符串t中是否有该字符
-            if (tMap.containsKey(enterChar)) {
-                // 如果有该字符，更新数据
-                // 窗口中该字符个数加1
-                window.put(enterChar, window.getOrDefault(enterChar, 0) + 1);
-                // 判断窗口中该字符的个数是否等于满足条件
-                if (window.get(enterChar).equals(tMap.get(enterChar))) {
-                    // 满足条件，个数加1
+        int minLeft = 0, minLen = sLen + 1;
+        while (right < sLen) {
+            char cur = chs[right++];
+            if (map.containsKey(cur)) {
+                window.merge(cur, 1, Integer::sum);
+                if (window.get(cur).equals(map.get(cur))) {
                     numOfValidUnrepeatedCharInWindow++;
                 }
             }
-            // 判断窗口是否满足缩小的条件
-            while (numOfValidUnrepeatedCharInWindow == tMap.size()) {
-                // 判断当前窗口长度是否小于最小长度
+            while (numOfValidUnrepeatedCharInWindow == map.size()) {
                 if (minLen > right - left) {
                     minLen = right - left;
                     minLeft = left;
                 }
-                // 移出窗口的字符，并右移窗口左边界
-                char outChar = sArr[left++];
-                // 判断窗口中是否有该字符
-                if (window.containsKey(outChar)) {
-                    // 判断该字符个数是否刚好满足条件
-                    if (window.get(outChar).equals(tMap.get(outChar))) {
-                        // 不满足条件，个数减1
+                char del = chs[left++];
+                if (window.containsKey(del)) {
+                    if (window.get(del).equals(map.get(del))) {
                         numOfValidUnrepeatedCharInWindow--;
                     }
-                    // 字符个数减1
-                    window.put(outChar, window.get(outChar) - 1);
+                    window.merge(del, -1, Integer::sum);
                 }
             }
         }
-        return minLeft + minLen > s.length() ? "" : s.substring(minLeft, minLeft + minLen);
+        return minLeft + minLen > sLen ? "" : s.substring(minLeft, minLeft + minLen);
     }
 }

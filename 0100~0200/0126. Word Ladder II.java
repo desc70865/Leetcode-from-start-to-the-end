@@ -37,30 +37,31 @@ Explanation: The endWord "cog" is not in wordList, therefore no possible transfo
 class Solution {
     private int cnt;
     private boolean finish;
+    List<List<String>> res = new ArrayList<>();
+    Map<String, List<String>> map = new HashMap<>(); // core
+    Set<String> set = new HashSet<>();
+
     public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        List<List<String>> res = new ArrayList<>();
         if (wordList == null || wordList.size() == 0) return res;
         
         Set<String> wordDict = new HashSet<>(wordList);
         if (! wordDict.contains(endWord)) return res;
 
-        Map<String, List<String>> map = new HashMap<>(); // core
-        
         Set<String> startSet = new HashSet<>();
         startSet.add(beginWord);
         Set<String> endSet = new HashSet<>();
         endSet.add(endWord);
-        bfs(startSet, endSet, map, wordDict, false);
+        bfs(startSet, endSet, wordDict, false);
 
         if (finish) {
             List<String> list = new ArrayList<>();
             list.add(beginWord);
-            dfs(beginWord, endWord, res, map, list);
+            dfs(beginWord, endWord, list);
         }
         return res;
     }
 
-    private void bfs(Set<String> startSet, Set<String> endSet, Map<String, List<String>> map, Set<String> wordDict, boolean reverse) {
+    private void bfs(Set<String> startSet, Set<String> endSet, Set<String> wordDict, boolean reverse) {
         if (startSet.size() == 0) return;
         Set<String> nextSet = new HashSet<>();
         wordDict.removeAll(startSet);
@@ -88,21 +89,24 @@ class Solution {
         if (! finish) { // bidirectional - choose
             cnt++;
             if (nextSet.size() < endSet.size())
-                bfs(nextSet, endSet, map, wordDict, reverse);
+                bfs(nextSet, endSet, wordDict, reverse);
             else
-                bfs(endSet, nextSet, map, wordDict, ! reverse);
+                bfs(endSet, nextSet, wordDict, ! reverse);
         }
     }
 
-    private void dfs(String word, String endWord, List<List<String>> res, Map<String, List<String>> map, List<String> list) {
+    private void dfs(String word, String endWord, List<String> list) {
         if (word.equals(endWord)) {
             res.add(new ArrayList<>(list));
             return;
         }
         if (! map.containsKey(word) || cnt < 0) return;
         for (String next: map.get(word)) {
+            if (set.contains(next)) continue;
             list.add(next); cnt--;
-            dfs(next, endWord, res, map, list);
+            set.add(next);
+            dfs(next, endWord, list);
+            set.remove(next);
             list.remove(list.size() - 1); cnt++;
         }
     }
