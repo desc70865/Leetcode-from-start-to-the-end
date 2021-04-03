@@ -42,24 +42,12 @@ class Solution {
         int len = points.length;
         if (len == 0) return 0;
         Arrays.sort(points, (a, b) -> a[1] < b[1] ? -1 : 1);
-        // Arrays.sort(points, new cmp());
-        int ans = points.length;
+        int ans = len + 1;
         int end = points[0][1];
-        for (int i = 1; i < len; i++) {
-            if (points[i][0] > end) end = points[i][1];
+        for (int[] p: points) {
+            if (p[0] > end) end = p[1];
             else ans--;
         }
         return ans;
-    }
-
-    public class cmp implements Comparator<int[]> {
-        @Override
-        public int compare(int[] a, int[] b) {
-            if (a[1] == b[1]) {
-                if (a[0] == b[0]) return 0;
-                return a[0] < b[0] ? -1 : 1;
-            }
-            return a[1] < b[1] ? -1 : 1;
-        }
     }
 }

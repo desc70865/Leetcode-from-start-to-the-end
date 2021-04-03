@@ -38,27 +38,23 @@ Return:
  * }
  */
 class Solution {
-    List<List<Integer>> res;
+    List<List<Integer>> ans = new ArrayList<>();
+
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
-        res = new ArrayList<>();
-        helper(root, sum, new ArrayList<>());
-        return res;
+        dfs(root, sum, new ArrayList<>());
+        return ans;
     }
 
-    private void helper(TreeNode node, int sum, List<Integer> p) {
+    private void dfs(TreeNode node, int sum, List<Integer> tmpList) {
         if (node == null) return;
-        int k = node.val;
-        if (node.left == null && node.right == null) {
-            if (sum == k) {
-                p.add(k);
-                res.add(new ArrayList<>(p));
-                p.remove(p.size() - 1);
-            }
-            return;
+        int cur = node.val;
+        tmpList.add(cur);
+        if (sum == cur && node.left == null && node.right == null) {
+            ans.add(new ArrayList<>(tmpList));
+        } else {
+            dfs(node.left, sum - cur, tmpList);
+            dfs(node.right, sum - cur, tmpList);
         }
-        p.add(k);
-        helper(node.left, sum - k, p);
-        helper(node.right, sum - k, p);
-        p.remove(p.size() - 1);
+        tmpList.remove(tmpList.size() - 1);
     }
 }

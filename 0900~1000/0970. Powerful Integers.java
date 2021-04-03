@@ -33,24 +33,17 @@ Note:
  */
 
 class Solution {
-    Set<Integer> set = new HashSet<>();
     public List<Integer> powerfulIntegers(int x, int y, int bound) {
-        int a = calc(x, bound), b = calc(y, bound);
-        int s1 = 1, s2 = 1;
-        for (int i = 0; i <= a; i++) {
-            s2 = 1;
-            for (int j = 0; j <= b; j++) {
-                if (s1 + s2 > bound) break;
-                set.add(s1 + s2);
-                s2 *= y;
+        Set<Integer> set = new HashSet<>();
+        for (int p1 = 1; p1 <= bound; p1 *= x) {
+            for (int p2 = 1; p2 <= bound; p2 *= y) {
+                if (p1 + p2 <= bound) {
+                    set.add(p1 + p2);
+                }
+                if (y == 1) break;
             }
-            s1 *= x;
+            if (x == 1) break;
         }
         return new ArrayList<>(set);
-    }
-
-    private int calc(int x, int y) {
-        if (x == 1) return 0;
-        return (int) (Math.log(y) / Math.log(x));
     }
 }

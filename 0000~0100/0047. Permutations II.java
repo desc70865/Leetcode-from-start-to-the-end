@@ -13,32 +13,27 @@ Output:
  */
 
 class Solution {
-    List<List<Integer>> res;
-    boolean[] visited;
-    int N;
+    List<List<Integer>> ans = new ArrayList<>();
 
     public List<List<Integer>> permuteUnique(int[] nums) {
-        res = new ArrayList<>();
-        N = nums.length;
-        visited = new boolean[N];
         Arrays.sort(nums);
-        dfs(nums, 0, new ArrayList<>());
-        return res;
+        dfs(nums, 0, new ArrayList<>(), new boolean[nums.length]);
+        return ans;
     }
 
-    private void dfs(int[] nums, int idx, List<Integer> p) {
-        if (idx == N) {
-            res.add(new ArrayList<>(p));
+    private void dfs(int[] nums, int count, List<Integer> tmpList, boolean[] v) {
+        if (count == nums.length) {
+            ans.add(new ArrayList<>(tmpList));
             return;
         }
-        for (int i = 0; i < N; i++) {
-            if (visited[i]) continue;
-            if (i > 0 && nums[i] == nums[i - 1] && ! visited[i - 1]) continue;
-            visited[i] = true;
-            p.add(nums[i]);
-            dfs(nums, idx + 1, p);
-            p.remove(p.size() - 1);
-            visited[i] = false;
+        for (int i = 0; i < nums.length; i++) {
+            if (v[i]) continue;
+            if (i > 0 && nums[i] == nums[i - 1] && ! v[i - 1]) continue;
+            v[i] = true;
+            tmpList.add(nums[i]);
+            dfs(nums, count + 1, tmpList, v);
+            tmpList.remove(tmpList.size() - 1);
+            v[i] = false;
         }
     }
 }

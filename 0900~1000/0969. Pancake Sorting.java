@@ -39,48 +39,38 @@ All integers in A are unique (i.e. A is a permutation of the integers from 1 to 
  */
 
 class Solution {
-    public List<Integer> pancakeSort(int[] A) {
-        
+    List<Integer> ans = new ArrayList<>();
+
+    public List<Integer> pancakeSort(int[] arr) {
+        sort(arr, 0, arr.length - 1);
+        return ans;
     }
-}
 
-
-
-class Solution {
-    List<Integer> res = new ArrayList<>();
-    public List<Integer> pancakeSort(int[] A) {
-        sort(A, A.length - 1);
-        return res;
-    }
-    // each time select one max ele and reverse twice to send it to the end
-    public void sort(int[] A, int end) {
-        if (end == 0) {
-            return;
-        }
-        int max = Integer.MIN_VALUE;
-        int id = 0;
-        for (int i = 0; i <= end; i++) {
-            if (A[i] > max) {
-                id = i;
-                max = A[i];
+    private void sort(int[] arr, int l, int r) {
+        if (l == r) return;
+        int max = l;
+        for (int i = l + 1; i <= r; i++) {
+            if (arr[i] > arr[max]) {
+                max = i;
             }
         }
-        reverse(A, id);
-        res.add(id+1);
-        reverse(A, end);
-        res.add(end+1);
-        sort(A, end - 1);
-
+        if (max < r) {
+            reverse(arr, l, max);
+            reverse(arr, l, r);
+        }
+        sort(arr, l, r - 1);
     }
 
-    public void reverse(int[] A, int n) {
-        int l = 0, r = n;
+    private void reverse(int[] arr, int l, int r) {
+        ans.add(r + 1);
         while (l < r) {
-            int tmp = A[l];
-            A[l] = A[r];
-            A[r] = tmp;
-            l++;
-            r--;
+            swap(arr, l++, r--);
         }
+    }
+
+    private void swap(int[] arr, int l, int r) {
+        int tmp = arr[l];
+        arr[l] = arr[r];
+        arr[r] = tmp;
     }
 }

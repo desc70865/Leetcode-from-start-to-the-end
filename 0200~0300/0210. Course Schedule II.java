@@ -27,47 +27,35 @@ You may assume that there are no duplicate edges in the input prerequisites.
  */
 
 class Solution {
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        
-    }
-}
-
-
-
-class Solution {
     // DAG -> 拓扑排序 -> 序列
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         if (numCourses == 0) {
             return new int[0];
         }
-
+        Map<Integer, List<Integer>> map = new HashMap<>();
         int[] inDegrees = new int[numCourses];
         // 入度表
-        for (int[] p : prerequisites) {
+        for (int[] p: prerequisites) {
             inDegrees[p[0]]++;
-        }
-        
-        Queue<Integer> queue = new LinkedList<>();
+            map.computeIfAbsent(p[1], z -> new ArrayList<>()).add(p[0]);
+        }        
+        Deque<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < inDegrees.length; i++) {
             if (inDegrees[i] == 0) queue.offer(i);
         }
-        int count = 0;
+        int idx = 0;
         int[] res = new int[numCourses];
-        
         while (!queue.isEmpty()) {
             int curr = queue.poll();
-            res[count++] = curr;
-            for (int[] p : prerequisites) {
-                if (p[1] == curr) {
-                    inDegrees[p[0]]--;
-                    if (inDegrees[p[0]] == 0) {
-                        queue.offer(p[0]);
-                    }
+            res[idx++] = curr;
+            if (!map.containsKey(curr)) continue;
+            for (int next: map.get(curr)) {
+                if (--inDegrees[next] == 0) {
+                    queue.offer(next);
                 }
             }
         }
-        
-        return count == numCourses ? res : new int[0];
+        return idx == numCourses ? res : new int[0];
     }
 }
 
@@ -89,15 +77,15 @@ class Solution {
         next = new int[prerequisites.length];
         course = new int[prerequisites.length];
        
-        for (int i = 0; i < prerequisites.length; ++i) {
+        for (int i = 0; i < prerequisites.length; i++) {
             next[i] = courses[prerequisites[i][0]];
             courses[prerequisites[i][0]] = i;
             course[i] = prerequisites[i][1];
         }
         
-        for (int i = 0; i < numCourses; ++i) {
+        for (int i = 0; i < numCourses; i++) {
             if (cycle(i)) {
-                return new int[0];// has cycle: return empty array
+                return new int[0]; // has cycle: return empty array
             }
         }
        
@@ -109,7 +97,7 @@ class Solution {
         visited[num] = 1; // touched
         for (int i = courses[num]; i != -1; i = next[i]) {
             if (cycle(course[i])) {
-                return true;// will have cycle
+                return true; // has cycle
             }
         }
         visited[num] = 2; // checked

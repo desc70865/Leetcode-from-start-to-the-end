@@ -18,7 +18,30 @@ class Solution {
     public int hIndex(int[] citations) {
         Arrays.sort(citations);
         int len = citations.length;
-        for (int i = 0; i < len; i++) if (citations[i] >= len - i) return len - i;
+        for (int i = 0; i < len; i++) {
+            if (citations[i] >= len - i) {
+                return len - i;
+            }
+        }
         return 0;
+    }
+}
+
+
+
+class Solution {
+    public int hIndex(int[] citations) {
+        int[] bucket = new int[1001];
+        for (int c: citations) {
+            bucket[c]++;
+        }
+        int sum = 0;
+        for (int i = 1000; i >= 0; i--) {
+            sum += bucket[i];
+            if (sum >= i) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

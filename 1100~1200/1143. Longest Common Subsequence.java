@@ -31,6 +31,12 @@ Constraints:
 The input strings consist of lowercase English characters only.
  */
 
+/*
+ * 作者：keylol
+ * 链接：https://leetcode-cn.com/problems/longest-common-subsequence/solution/1143-shuang-zi-fu-chuan-dong-tai-gui-hua-89d8/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ */
 class Solution {
     public int longestCommonSubsequence(String text1, String text2) {
         char[] a = text1.toCharArray();
@@ -59,7 +65,7 @@ class Solution {
         char[] s2 = text2.toCharArray();
         int m = s1.length;
         int n = s2.length;
-        int[][] lcs = new int[m +1][n + 1];
+        int[][] lcs = new int[m + 1][n + 1];
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
                 if (s1[i - 1] == s2[j - 1]) lcs[i][j] = 1 + lcs[i - 1][j - 1];
