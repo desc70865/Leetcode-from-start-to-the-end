@@ -22,19 +22,16 @@ Explanation: It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
 
 class Solution {
     public int numDecodings(String s) {
-        char[] str = s.toCharArray();
-        int N = str.length;
-        int[] dp = new int[N + 1];
+        char[] chs = s.toCharArray();
+        int len = chs.length;
+        int[] dp = new int[len + 1];
         dp[0] = 1;
-        for (int i = 1; i <= N; i++) {
-            dp[i] = str[i - 1] == '0' ? 0 : dp[i - 1];
-            if (i > 1 && (str[i - 2] == '1' || str[i - 2] == '2' && str[i - 1] <= '6')) {
+        for (int i = 1; i <= len; i++) {
+            dp[i] = chs[i - 1] == '0' ? 0 : dp[i - 1];
+            if (i > 1 && (chs[i - 2] == '1' || chs[i - 2] == '2' && chs[i - 1] <= '6')) {
                 dp[i] += dp[i - 2];
             }
         }
-        // System.out.println(Arrays.toString(dp));
-        return dp[N];
+        return dp[len];
     }
 }
-
-// 严格斐波那契
