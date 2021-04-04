@@ -26,14 +26,15 @@ Each answers[i] will be an integer in the range [0, 999].
 
 class Solution {
     public int numRabbits(int[] answers) {
-        if (answers.length == 0) return 0;
-        int[] cnt = new int[1000];
-        for (int num: answers) cnt[num]++;
-        int res = 0;
-        for (int i = 0; i < 1000; i++) {
-            if (cnt[i] > 0) res += ((cnt[i] - 1) / (i + 1) + 1) * (i + 1);
+        int[] bucket = new int[1001];
+        for (int a: answers) {
+            bucket[a + 1]++;
         }
-        return res;
+        int ans = 0;
+        for (int i = 1; i <= 1000; i++) {
+            ans += (bucket[i] + i - 1) / i * i;
+        }
+        return ans;
     }
 }
 
