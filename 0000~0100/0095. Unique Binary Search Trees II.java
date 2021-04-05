@@ -50,23 +50,22 @@ Constraints:
  */
 class Solution {
     public List<TreeNode> generateTrees(int n) {
-        if (n == 0) return new ArrayList<>();
         return dfs(1, n);
     }
 
-    private List<TreeNode> dfs(int start, int end) {
-        List<TreeNode> res = new ArrayList<>();
-        if (start > end) {
-        	res.add(null);
-        	return res;
+    private List<TreeNode> dfs(int l, int r) {
+        List<TreeNode> list = new ArrayList<>();
+        if (l > r) {
+            list.add(null);
+            return list;
         }
-        for (int m = start; m <= end; m++) {
-            for (TreeNode l: dfs(start, m - 1)) {
-                for (TreeNode r: dfs(m + 1, end)) {
-                    res.add(new TreeNode(m, l, r));
+        for (int m = l; m <= r; m++) {
+            for (TreeNode L: dfs(l, m - 1)) {
+                for (TreeNode R: dfs(m + 1, r)) {
+                    list.add(new TreeNode(m, L, R));
                 }
             }
         }
-        return res;
+        return list;
     }
 }
