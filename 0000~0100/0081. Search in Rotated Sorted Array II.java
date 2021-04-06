@@ -21,22 +21,20 @@ Would this affect the run-time complexity? How and why?
 
 class Solution {
     public boolean search(int[] nums, int target) {
-        int L = 0, R = nums.length - 1;
-        while (L <= R) {
+        for (int L = 0, R = nums.length - 1; L <= R; ) {
             int M = L + R >> 1;
-            if (nums[M] == target) return true;
+            if (nums[M] == target) {
+                return true;
+            }
             if (nums[M] < nums[R]) {
-                if (nums[M] < target && nums[R] >= target)
-                    L = M + 1;
-                else
-                    R = M - 1;
-            } else if (nums[M] > nums[R]){
-                if (nums[L] <= target && nums[M] > target)
-                    R = M - 1;
-                else
-                    L = M + 1;
-            } else
-                --R;
+                if (nums[M] < target && nums[R] >= target) L = M + 1;
+                else R = M - 1;
+            } else if (nums[M] > nums[R]) {
+                if (nums[L] <= target && nums[M] > target) R = M - 1;
+                else L = M + 1;
+            } else {
+                R--;
+            }
         }
         return false;
     }
