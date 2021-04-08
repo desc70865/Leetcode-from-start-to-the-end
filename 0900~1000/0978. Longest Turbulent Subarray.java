@@ -40,13 +40,7 @@ class Solution {
         if (len == 1) return 1;
         int[] aux = new int[len];
         for (int i = 1; i < len; i++) {
-            if (arr[i] == arr[i - 1]) {
-                aux[i] = 0;
-            } else if (arr[i] > arr[i - 1]) {
-                aux[i] = 1;
-            } else {
-                aux[i] = -1;
-            }
+            aux[i] = (int) Math.signum(arr[i] - arr[i - 1]);
         }
         // System.out.println(Arrays.toString(aux));
         int max = 1;
@@ -55,7 +49,7 @@ class Solution {
             if (aux[i] == 0 && i > 0 && aux[i - 1] == 0) {
                 continue;
             }
-            if (aux[i] == 0 || i == 0 || aux[i] + aux[i - 1] != 0) {
+            if (i == 0 || aux[i] == 0 || aux[i] + aux[i - 1] != 0) {
                 max = Math.max(max, size + 1);
                 size = 1;
             } else {
