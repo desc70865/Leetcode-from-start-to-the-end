@@ -25,16 +25,18 @@ Input is within the 32-bit signed integer range: [−231,  231 − 1].
  */
 
 class Solution {
-    public boolean isUgly(int num) {
-        if (num < 1) return false;
-        num = divide(num, 2);
-        num = divide(num, 3);
-        num = divide(num, 5);
-        return num == 1;
+    public boolean isUgly(int n) {
+        if (n <= 0) return false;
+        n = f(n, 2);
+        n = f(n, 3);
+        n = f(n, 5);
+        return n == 1;
     }
 
-    private int divide(int num, int m) {
-        while (num % m == 0) num /= m;
-        return num;
+    private int f(int n, int k) {
+        while (n % k == 0) {
+            n /= k;
+        }
+        return n;
     }
 }
