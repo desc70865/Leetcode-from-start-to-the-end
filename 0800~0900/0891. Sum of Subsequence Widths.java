@@ -25,12 +25,6 @@ Note:
 1 <= A[i] <= 20000
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/sum-of-subsequence-widths/solution/0891-tong-pai-xu-ji-xian-you-hua-by-keyl-wlrq/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     static final int MOD = 1_000_000_007;
     
@@ -48,7 +42,8 @@ class Solution {
     }
 }
 
-
+// 移项合并降低运算复杂度
+// 根据数据范围选择桶排序进行优化
 
 class Solution {
     static final int MOD = 1_000_000_007;

@@ -37,36 +37,6 @@ A   L S  I G
 Y A   H R
 P     I
  */
- 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/zigzag-conversion/solution/ku-zao-by-keylol/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
-class Solution {
-    public String convert(String s, int numRows) {
-        if (numRows < 0) return "";
-        if (numRows == 1) return s;
-        if (s == null || s.length() <= numRows) return s;
-        char[] str = s.toCharArray();
-        int len = str.length;
-        int T = (numRows - 1) * 2;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; i + j < len; j += T) {
-                sb.append(str[i + j]);
-                if (i == 0 || i == numRows - 1) continue;
-                if (j + T - i < len) {
-                    sb.append(str[j + T - i]);
-                }
-            }
-        }
-        return sb.toString();
-    }
-}
-
-
 
 class Solution {
     public String convert(String s, int numRows) {
@@ -89,3 +59,5 @@ class Solution {
         return new String(res);
     }
 }
+
+// 对定长String的构造，char[]优于StringBuilder

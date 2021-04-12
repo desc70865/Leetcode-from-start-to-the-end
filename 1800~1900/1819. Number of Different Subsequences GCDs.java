@@ -32,66 +32,41 @@ Constraints:
 
 class Solution {
     public int countDifferentSubsequenceGCDs(int[] nums) {
-        int N = 0;
+        int max = 0;
         for (int num: nums) {
-            N = Math.max(N, num + 1);
+            max = Math.max(max, num);
         }
-        boolean[] v = new boolean[N];
+        boolean[] v = new boolean[max + 1];
         for (int num: nums) {
             v[num] = true;
         }
-        int ans = 0;
-        for (int i = 1; i < N; i++) {
-            int cur = -1;
-            for (int j = i; j < N; j += i) {
-                if (! v[j]) continue;
-                if (cur == -1) {
-                    cur = j;
-                } else {
-                    cur = gcd(cur, j);
-                }
+        int count = 0;
+        for (int num = 1; num <= max; num++) {
+            if (v[num]) {
+                count++;
+                continue;
             }
-            if (cur == i) {
-                ans++;
-            }
-        }
-        return ans;
-    }
-
-    private int gcd(int a, int b) {
-        return a == 0 ? b : gcd(b % a, a);
-    }
-}
-
-
-
-class Solution {
-    public int countDifferentSubsequenceGCDs(int[] nums) {
-        int N = 0;
-        for (int num: nums) {
-            N = Math.max(N, num + 1);
-        }
-        int[] cnt = new int[N];
-        for (int num: nums) {
-            cnt[num]++;
-        }
-        int[] sum = new int[N];
-        for (int i = 1; i < N; i++) {
-            for (int j = i; j < N; j += i) {
-                sum[i] += cnt[j];
-            }
-        }
-        int ans = 0;
-        for (int i = 1; i < N; i++) {
-            if (sum[i] == 0) continue;
-            for (int j = i + i; j < i + N; j += i) {
-                if (j >= N) {
-                    ans++;
-                } else if (sum[i] == sum[j]) {
+            for (int e = num * 2, divisor = 0; e <= max; e += num) {
+                if (! v[e]) continue;
+                divisor = gcd(e, divisor);
+                if (divisor == num) {
+                    count++;
                     break;
                 }
             }
         }
-        return ans;
+        return count;
+    }
+    
+    // 速度是递归形式的两倍???
+    private int gcd(int x, int y) {
+        for (int tmp = 0; y != 0; ) {
+            tmp = x % y;
+            x = y;
+            y = tmp;
+        }
+        return x;
     }
 }
+
+// 埃氏筛

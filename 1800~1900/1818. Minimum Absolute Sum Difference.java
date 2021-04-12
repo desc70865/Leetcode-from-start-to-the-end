@@ -52,27 +52,25 @@ class Solution {
         for (int i = 0; i < nums1.length; i++) {
             int cur = abs(nums1[i], nums2[i]);
             sum += cur;
-            max = Math.max(max, cur - search(aux, nums2[i]));
+            max = Math.max(max, cur - binarySearch(aux, nums2[i]));
         }
         return (int) ((sum - max) % 1_000_000_007);
     }
 
-    private int search(int[] arr, int target) {
+    private int binarySearch(int[] arr, int target) {
         int l = 0, r = arr.length - 1;
-        int L = arr[l], R = arr[r];
-        while (l <= r) {
+        while (l < r) {
             int m = l + r >> 1;
             if (arr[m] == target) {
                 return 0;
             } else if (arr[m] < target) {
                 l = m + 1;
-                L = arr[m];
             } else {
-                r = m - 1;
-                R = arr[m];
+                r = m;
             }
         }
-        return Math.min(abs(target, L), abs(target, R));
+        if (l == 0) return abs(target, arr[0]);
+        return Math.min(abs(target, arr[l]), abs(target, arr[l - 1]));
     }
 
     private int abs(int a, int b) {
