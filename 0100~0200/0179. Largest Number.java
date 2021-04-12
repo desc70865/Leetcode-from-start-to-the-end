@@ -74,16 +74,14 @@ class Solution {
     }
     
     private boolean cmp(int a, int b) {
-        long A = a * 10L, B = b * 10L; // 至少左移一位
-        int _a = a, _b = b;
-        while (_a >= 10) {
-            B *= 10;
-            _a /= 10;
+        return concat(a, b) > concat(b, a);
+    }
+
+    private long concat(int a, int b) {
+        long ans = a * 10L;
+        for (int _b = b; _b >= 10; _b /= 10) {
+            ans *= 10;
         }
-        while (_b >= 10) {
-            A *= 10;
-            _b /= 10;
-        }
-        return (A + b) > (B + a);
+        return ans + b;
     }
 }
