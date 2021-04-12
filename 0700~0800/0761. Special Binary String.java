@@ -34,3 +34,55 @@ class Solution {
         return String.join("", list);
     }
 }
+
+
+
+class Solution {
+    public String makeLargestSpecial(String S) {
+        String[] list = new String[S.length() / 2];
+        int size = 0;
+        char[] chs = S.toCharArray();
+        for (int cnt = 0, left = 0, right = 0; right < chs.length; right++) {
+            if (chs[right] == '1') cnt++;
+            else if (--cnt == 0) {
+                list[size++] = new StringBuilder("1").append(makeLargestSpecial(S.substring(left + 1, right))).append("0").toString();
+                left = right + 1;
+            }
+        }
+        sort(list, 0, size - 1);
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            ans.append(list[i]);
+        }
+        return ans.toString();
+    }
+
+    private void sort(String[] arr, int l, int r) {
+        if (l >= r) return;
+        int p = partition(arr, l, r);
+        sort(arr, l, p - 1);
+        sort(arr, p + 1, r);
+    }
+    
+    public int partition(String[] arr, int l, int r) {
+        String pivot = arr[l];
+        while (l < r) {
+            while (l < r) {
+                if (arr[r].compareTo(pivot) > 0) {
+                    arr[l++] = arr[r];
+                    break;
+                }
+                r--;
+            }
+            while (l < r) {
+                if (arr[l].compareTo(pivot) < 0) {
+                    arr[r--] = arr[l];
+                    break;
+                }
+                l++;
+            }
+        }
+        arr[l] = pivot;
+        return l;
+    }
+}

@@ -57,32 +57,117 @@ All integers in locations are distinct.
  */
 
 class Solution {
-    public int countRoutes(int[] locs, int start, int finish, int fuel) {
-        int n = locs.length;
-        int[][] dp = new int[fuel+1][n];
+    static final int MOD = 1_000_000_007;
+
+    int[][] dp;
+    int[] locations;
+    int finish;
+
+    public int countRoutes(int[] locations, int start, int finish, int fuel) {
+        this.dp = new int[locations.length][fuel + 1];
+        for (int i = 0; i < locations.length; i++) {
+            Arrays.fill(dp[i], -1);
+        }
+        this.locations = locations;
+        this.finish = finish;
+        return dfs(start, fuel);
+    }
+
+    private int dfs(int pos, int rem) {
+        if (dp[pos][rem] >= 0) {
+            return dp[pos][rem];
+        }
+        dp[pos][rem] = pos == finish ? 1 : 0;
+        if (dis(pos, finish) > rem) {
+            return dp[pos][rem];
+        }
+        for (int next = 0; next < locations.length; next++) {
+            if (next == pos) continue;
+            int cost = dis(pos, next);
+            if (cost > rem) continue;
+            dp[pos][rem] += dfs(next, rem - cost);
+            dp[pos][rem] %= MOD;
+        }
+        return dp[pos][rem];
+    }
+
+    private int dis(int x, int y) {
+        return Math.abs(locations[x] - locations[y]);
+    }
+}
+
+
+
+class Solution {
+    static final int MOD = 1_000_000_007;
+
+    public int countRoutes(int[] locations, int start, int finish, int fuel) {
+        int len = locations.length;
+        int[][] dp = new int[fuel+1][len];
         dp[fuel][start] = 1;
-        // dp[i][j] -> 剩余 i 燃料时抵达 j
-        for (int i = fuel; i > 0; --i) {
-            for (int j = 0; j < n; ++j) {
-                if (dp[i][j] == 0)
+        // dp[f][j] -> 剩余 f 燃料时抵达 j
+        for (int f = fuel; f > 0; f--) {
+            for (int j = 0; j < len; j++) {
+                if (dp[f][j] == 0)
                     continue;
-                for (int k = 0; k < n; ++k) {
+                for (int k = 0; k < len; k++) {
                     if (j == k)
                         continue;
-                    int nf = i-Math.abs(locs[j]-locs[k]);
+                    int nf = f - Math.abs(locations[j] - locations[k]);
                     if (nf < 0)
                         continue;
-                    // nf < i
-                    dp[nf][k] += dp[i][j];
-                    dp[nf][k] %= 1000000007;
+                    // nf < f
+                    dp[nf][k] += dp[f][j];
+                    dp[nf][k] %= MOD;
                 }
             }
         }
         int ans = 0;
-        for (int i = 0; i <= fuel; ++i) {
-            ans += dp[i][finish];
-            ans %= 1000000007;
+        for (int f = 0; f <= fuel; f++) {
+            ans += dp[f][finish];
+            ans %= MOD;
         }
         return ans;
+    }
+}
+
+
+
+class Solution {
+    static final int MOD = 1_000_000_007;
+    
+    public int countRoutes(int[] locations, int start, int finish, int fuel) {
+        int len = locations.length;
+        int startPos = locations[start];
+        int endPos = locations[finish];
+        Arrays.sort(locations);
+        for (int i = 0; i < len; i++) {
+            if (startPos == locations[i])
+                start = i;
+            if (endPos == locations[i])
+                finish = i;
+        }
+        long[][] dpL = new long[len][fuel + 1];
+        long[][] dpR = new long[len][fuel + 1];
+        dpL[start][0] = dpR[start][0] = 1;
+        for (int used = 0; used <= fuel; used++) {
+            for (int city = len - 2; city >= 0; city--) {
+                int delta = locations[city + 1] - locations[city];
+                if (used >= delta) {
+                    dpL[city][used] = ((used == delta ? 0 : dpL[city + 1][used - delta]) * 2 + dpR[city + 1][used - delta]) % MOD;
+                }
+            }
+            for (int city = 1; city < len; city++) {
+                int delta = locations[city] - locations[city - 1];
+                if (used >= delta) {
+                    dpR[city][used] = ((used == delta ? 0 : dpR[city - 1][used - delta]) * 2 + dpL[city - 1][used - delta]) % MOD;
+                }
+            }
+        }
+        long res = start == finish ? -1 : 0;
+        for (int used = 0; used <= fuel; used++) {
+            res += dpL[finish][used] + dpR[finish][used];
+        }
+        return (int) (res % MOD);
     }
 }
