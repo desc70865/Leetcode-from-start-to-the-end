@@ -40,19 +40,20 @@ This question is the same as 783: https://leetcode.com/problems/minimum-distance
  * }
  */
 class Solution {
-    private int min = Integer.MAX_VALUE;
     int pre = Integer.MIN_VALUE / 2;
+    int min = Integer.MAX_VALUE;
+    
     public int getMinimumDifference(TreeNode root) {
         if (root == null) return 0;
-        inPrint(root);
+        dfs(root);
         return min;
     }
 
-    public void inPrint(TreeNode node) {
+    private void dfs(TreeNode node) {
         if (node == null) return;
-        inPrint(node.left);
+        dfs(node.left);
         min = Math.min(min, node.val - pre);
         pre = node.val;
-        inPrint(node.right);
+        dfs(node.right);
     }
 }

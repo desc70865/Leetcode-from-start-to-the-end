@@ -40,22 +40,20 @@ This question is the same as 530: https://leetcode.com/problems/minimum-absolute
  * }
  */
 class Solution {
-    List<Integer> p;
+    int pre = Integer.MIN_VALUE / 2;
+    int min = Integer.MAX_VALUE;
+
     public int minDiffInBST(TreeNode root) {
-        p = new ArrayList<>();
-        int min = Integer.MAX_VALUE;
+        if (root == null) return 0;
         dfs(root);
-        Collections.sort(p);
-        for (int i = 1; i < p.size(); i++) {
-            min = Math.min(min, p.get(i) - p.get(i - 1));
-        }
         return min;
     }
-    
+
     private void dfs(TreeNode node) {
         if (node == null) return;
-        p.add(node.val);
         dfs(node.left);
+        min = Math.min(min, node.val - pre);
+        pre = node.val;
         dfs(node.right);
     }
 }
