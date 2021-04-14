@@ -14,21 +14,21 @@ Output: false
  */
 
 class Solution {
-    private char[] arr;
+    private char[] chs;
+
     public boolean isPalindrome(String s) {
         if (s == null || s.length() == 0) return true;
-        arr = s.toCharArray();
-        int i = 0, j = s.length()-1;
-        while (i <= j) {
-            while (!isValid(i) && i < j) i++;
-            while (!isValid(j) && i < j) j--;
-            if (arr[i++] != arr[j--]) return false;
+        chs = s.toCharArray();
+        for (int l = 0, r = chs.length - 1; l <= r; ) {
+            while (!isValid(l) && l < r) l++;
+            while (!isValid(r) && l < r) r--;
+            if (chs[l++] != chs[r--]) return false;
         }
         return true;
     }
     
     private boolean isValid(int c) {
-        if ('A' <= arr[c] && arr[c] <= 'Z') arr[c] += 32;
-        return 'a' <= arr[c] && arr[c] <= 'z' || '0' <= arr[c] && arr[c] <= '9';
+        if ('A' <= chs[c] && chs[c] <= 'Z') chs[c] += 32;
+        return 'a' <= chs[c] && chs[c] <= 'z' || '0' <= chs[c] && chs[c] <= '9';
     }
 }

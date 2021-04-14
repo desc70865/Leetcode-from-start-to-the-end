@@ -18,50 +18,46 @@ All inputs are guaranteed to be non-empty strings.
  */
 
 class Trie {
+    Trie[] child;
+    boolean end;
+
+    /** Initialize your data structure here. */
+    public Trie() {
+        this.child = new Trie[26];
+        this.end = false;
+    }
     
-    private Trie[] children = new Trie['z' - 'a' + 1]; // non-magic
-    private boolean endOfWord = false;
-
+    /** Inserts a word into the trie. */
     public void insert(String word) {
-        insertNode(word, 0);
+        helper(word, true);
     }
-
+    
+    /** Returns if the word is in the trie. */
     public boolean search(String word) {
-        Trie node = searchNode(word, 0);
-        return node != null && node.endOfWord;
+        Trie node = helper(word, false);
+        return node != null && node.end;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        return helper(prefix, false) != null;
     }
 
-    public boolean startsWith(String word) {
-        Trie node = searchNode(word, 0);
-        return node != null;
-    }
-
-    private void insertNode(String word, int pos) {
-        if (pos == word.length()) {
-            endOfWord = true;
-        } else {
-            int childInd = childIndex(word, pos);
-            if (children[childInd] == null) {
-                children[childInd] = new Trie();
+    private Trie helper(String s, boolean insert) {
+        Trie node = this;
+        for (char c: s.toCharArray()) {
+            int next = c - 97;
+            if (node.child[next] == null) {
+                if (insert) node.child[next] = new Trie();
+                else return null;
             }
-            Trie next = children[childInd]; // each Trie contain atmost 26 Trie array
-            next.insertNode(word, pos + 1);
+            node = node.child[next];
         }
-    }
-
-    private Trie searchNode(String word, int pos) {
-        if (pos == word.length()) {
-            return this;
-        } else {
-            int childInd = childIndex(word, pos);
-            return children[childInd] == null ? null : children[childInd].searchNode(word, pos + 1);
-        }
-    }
-
-    private int childIndex(String word, int pos) {
-        return word.charAt(pos) - 'a';
+        if (insert) node.end = true;
+        return node;
     }
 }
+
 /**
  * Your Trie object will be instantiated and called as such:
  * Trie obj = new Trie();
@@ -69,9 +65,3 @@ class Trie {
  * boolean param_2 = obj.search(word);
  * boolean param_3 = obj.startsWith(prefix);
  */
-
-
-
-// 递归数据结构
-// 在定义中引用自身
-// 循环递归 -> calss A { B[]; } CLASS B { A[]; }
