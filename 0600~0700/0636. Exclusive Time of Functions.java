@@ -64,12 +64,6 @@ No two end events will happen at the same timestamp.
 Each function has an "end" log for each "start" log.
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/exclusive-time-of-functions/solution/mei-you-ren-zhi-dao-zhe-shi-shi-yao-by-keylol/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public int[] exclusiveTime(int n, List<String> logs) {
         Deque<int[]> stack = new LinkedList<>();

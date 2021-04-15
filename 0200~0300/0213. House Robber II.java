@@ -30,20 +30,18 @@ Constraints:
 
 class Solution {
     public int rob(int[] nums) {
-        int N = nums.length;
-        if (N == 0) return 0;
-        else if (N == 1) return nums[0];
-        else if (N == 2) return Math.max(nums[0], nums[1]);
-        return Math.max(helper(nums, 0, N - 2), helper(nums, 1, N - 1));
+        int len = nums.length;
+        if (len == 1) return nums[0];
+        return Math.max(rob(nums, 0, len - 2), rob(nums, 1, len - 1));
     }
 
-    private int helper(int[] A, int L, int R) {
-        int a = A[L], b = Math.max(A[L], A[L + 1]);
-        for (int i = L + 2; i <= R; i++) {
-            int t = b;
-            b = Math.max(A[i] + a, b);
-            a = t;
+    private int rob(int[] nums, int l, int r) {
+        int max = 0;
+        for (int i = l, prev = 0, tmp = 0; i <= r; i++) {
+            tmp = max;
+            max = Math.max(prev + nums[i], max);
+            prev = tmp;
         }
-        return b;
+        return max;
     }
 }
