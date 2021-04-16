@@ -29,12 +29,6 @@ Constraints:
 s consists of lowercase English letters.
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/longest-palindromic-subsequence-ii/solution/zhi-xing-yong-shi-9-ms-zai-suo-you-java-99qfs/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public int longestPalindromeSubseq(String s) {
         if (s == null || s.length() < 2) {

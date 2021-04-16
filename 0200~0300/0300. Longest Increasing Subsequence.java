@@ -13,12 +13,6 @@ Your algorithm should run in O(n2) complexity.
 Follow up: Could you improve it to O(n log n) time complexity?
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/longest-increasing-subsequence/solution/er-fen-by-keylol/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public int lengthOfLIS(int[] nums) {
         int[] dp = new int[nums.length];

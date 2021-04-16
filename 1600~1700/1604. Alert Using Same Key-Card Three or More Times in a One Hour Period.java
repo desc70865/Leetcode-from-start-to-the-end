@@ -41,12 +41,6 @@ keyTime are in the format "HH:MM".
 keyName[i] contains only lowercase English letters.
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/alert-using-same-key-card-three-or-more-times-in-a-one-hour-period/solution/zhe-ti-bu-nan-by-keylol-2/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public List<String> alertNames(String[] keyName, String[] keyTime) {
         Map<String, List<Integer>> map = new HashMap<>();

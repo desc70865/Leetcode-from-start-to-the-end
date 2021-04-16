@@ -26,12 +26,6 @@ Note:
 1 <= backs[i] <= 2000.
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/card-flipping-game/solution/wo-you-hao-liao-by-keylol-q52h/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public int flipgame(int[] fronts, int[] backs) {
         boolean[] illegal = new boolean[2001];

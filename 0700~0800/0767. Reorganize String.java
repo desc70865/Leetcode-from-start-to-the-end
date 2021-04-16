@@ -16,12 +16,6 @@ Note:
 S will consist of lowercase letters and have length in range [1, 500].
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/reorganize-string/solution/zhe-ti-bu-nan-by-keylol/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public String reorganizeString(String S) {
         int[] map = count(S);

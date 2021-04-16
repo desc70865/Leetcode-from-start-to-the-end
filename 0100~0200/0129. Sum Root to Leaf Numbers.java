@@ -49,12 +49,6 @@ Therefore, sum = 495 + 491 + 40 = 1026.
  *     }
  * }
  */
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/solution/wan-an-da-gong-gou-by-keylol/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public int sumNumbers(TreeNode root) {
         return dfs(root, 0);

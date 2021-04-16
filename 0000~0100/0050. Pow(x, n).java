@@ -33,3 +33,19 @@ class Solution {
 }
 
 // 正负,奇偶
+
+class Solution {
+    public double myPow(double x, int n) {
+        return n >= 0 ? quickPow(x, n) : 1 / quickPow(x, -n);
+    }
+
+    private double quickPow(double x, int n) {
+        double ans = 1.0;
+        while (n != 0) {
+            if (n % 2 == 1) ans *= x;
+            x *= x;
+            n >>>= 1;
+        }
+        return ans;
+    }
+}

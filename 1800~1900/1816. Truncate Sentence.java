@@ -37,12 +37,6 @@ The words in s are separated by a single space.
 There are no leading or trailing spaces.
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/truncate-sentence/solution/dan-ci-bian-li-by-keylol-zi7k/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public String truncateSentence(String s, int k) {
         char[] chs = s.toCharArray();

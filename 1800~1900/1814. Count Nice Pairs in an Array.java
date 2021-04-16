@@ -26,12 +26,6 @@ Constraints:
 0 <= nums[i] <= 109
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/count-nice-pairs-in-an-array/solution/reverse-hash-sum-by-keylol-cwqy/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public int countNicePairs(int[] nums) {
         Map<Integer, Integer> map = new HashMap<>();

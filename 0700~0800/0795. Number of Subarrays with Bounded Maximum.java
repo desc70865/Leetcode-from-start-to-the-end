@@ -16,12 +16,6 @@ L, R  and A[i] will be an integer in the range [0, 10^9].
 The length of A will be in the range of [1, 50000].
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/number-of-subarrays-with-bounded-maximum/solution/zhong-deng-yi-si-by-keylol/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public int numSubarrayBoundedMax(int[] A, int L, int R) {
         int sum = 0;

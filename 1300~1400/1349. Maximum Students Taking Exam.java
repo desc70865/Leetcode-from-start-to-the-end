@@ -129,3 +129,73 @@ class Solution {
         return mask[level] = ans;
     }
 }
+
+
+
+class Solution {
+    int m, n;
+    int odd, even;
+    boolean clash[][];
+
+    public int maxStudents(char[][] seats) {
+        this.m = seats.length;
+        this.n = seats[0].length;
+        int[][] position = new int[m][n];
+        int[] cnt = new int[2];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (seats[i][j] == '.') {
+                    position[i][j] = cnt[j % 2]++;
+                }
+            }
+        }
+        if (cnt[1] == 0 || cnt[0] == 0) return cnt[1] + cnt[0];
+        this.odd = cnt[1];
+        this.even = cnt[0];
+        this.clash = new boolean[odd][even];
+        for (int y = 1; y < n; y += 2) {
+            for (int x = 0; x < m; x++) {
+                if (seats[x][y] == '.') {
+                    addEdge(position, x, y, seats);
+                }
+            }
+        }
+        // Hungarian algorithm
+        int match = 0;
+        // mapping[evenIdx] = oddIdx;
+        int[] mapping = new int[even];
+        Arrays.fill(mapping, -1);
+        for (int oddIdx = 0; oddIdx < odd; oddIdx++) {
+            if (dfs(mapping, oddIdx, new boolean[even])) {
+                match++;
+            }
+        }
+        // U = V - M
+        return odd + even - match;
+    }
+    
+    public boolean dfs(int mapping[], int oddIdx, boolean[] used) {
+        for (int evenIdx = 0; evenIdx < even; evenIdx++) {
+            if (used[evenIdx] || ! clash[oddIdx][evenIdx]) continue;
+            used[evenIdx] = true;
+            if (mapping[evenIdx] == -1 || dfs(mapping, mapping[evenIdx], used)) {
+                mapping[evenIdx] = oddIdx;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addEdge(int[][] position, int x, int y, char[][] seats) {
+        int pos = position[x][y];
+        for (int dx = -1; dx <= 1; dx++) {
+            if (x + dx < 0 || x + dx >= m) continue;
+            for (int dy = -1; dy <= 1; dy += 2) {
+                if (y + dy < 0 || y + dy >= n) continue;
+                if (seats[x + dx][y + dy] == '.') {
+                    clash[pos][position[x + dx][y + dy]] = true;
+                }
+            }
+        }
+    }
+}

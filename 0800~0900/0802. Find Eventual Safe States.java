@@ -21,12 +21,6 @@ The number of edges in the graph will not exceed 32000.
 Each graph[i] will be a sorted list of different integers, chosen within the range [0, graph.length - 1].
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/find-eventual-safe-states/solution/ni-zai-jian-shen-fang-lian-si-jing-mei-yong-by-key/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     Boolean[] safe;
 

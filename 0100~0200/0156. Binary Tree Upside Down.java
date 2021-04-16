@@ -49,12 +49,6 @@ Every node has either 0 or 2 children.
  *     }
  * }
  */
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/binary-tree-upside-down/solution/di-gui-zhu-pei-ma-by-keylol-uf14/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public TreeNode upsideDownBinaryTree(TreeNode root) {
         return helper(root, null, null);

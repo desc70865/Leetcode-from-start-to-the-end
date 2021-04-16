@@ -37,12 +37,6 @@ Constraints:
 0 <= grid[i][j] <=1
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/number-of-closed-islands/solution/ji-nian-2077di-san-ci-tiao-piao-by-keylol/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     int[] p;
     int m, n;

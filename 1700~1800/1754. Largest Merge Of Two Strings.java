@@ -34,12 +34,6 @@ Constraints:
 word1 and word2 consist only of lowercase English letters.
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/largest-merge-of-two-strings/solution/java-compareto-by-keylol-yfat/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public String largestMerge(String word1, String word2) {
         StringBuilder sb = new StringBuilder();

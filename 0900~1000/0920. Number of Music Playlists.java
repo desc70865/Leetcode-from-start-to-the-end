@@ -29,12 +29,6 @@ Note:
 0 <= K < N <= L <= 100
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/number-of-music-playlists/solution/mian-xiang-ce-shi-yong-li-bian-cheng-by-keylol/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     int M = 1_000_000_007;
     public int numMusicPlaylists(int N, int L, int K) {

@@ -46,12 +46,6 @@ n == aliceValues.length == bobValues.length
 1 <= aliceValues[i], bobValues[i] <= 100
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/stone-game-vi/solution/java-4ms-by-keylol-wfwf/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     int idx = 200;
 

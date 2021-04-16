@@ -41,12 +41,6 @@ n == watchedVideos.length == friends.length
 if friends[i] contains j, then friends[j] contains i
  */
 
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/get-watched-videos-by-your-friends/solution/ji-ben-cao-zuo-by-keylol-2/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class Solution {
     public List<String> watchedVideosByFriends(List<List<String>> watchedVideos, int[][] friends, int id, int level) {
         Deque<Integer> queue = new LinkedList<>();

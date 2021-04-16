@@ -40,12 +40,6 @@ Every value of a given or inserted node is between 0 and 5000.
  *     }
  * }
  */
-/*
- * 作者：keylol
- * 链接：https://leetcode-cn.com/problems/complete-binary-tree-inserter/solution/jiu-zhe-by-keylol/
- * 来源：力扣（LeetCode）
- * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 class CBTInserter {
     TreeNode root;
     Deque<TreeNode> queue;
