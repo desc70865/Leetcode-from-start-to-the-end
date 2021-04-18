@@ -17,29 +17,78 @@ Output: false
 
 class Solution {
     public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
-        
-    }
-}
-
-// self-balancing binary search tree
-
-class Solution {
-    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
-        TreeSet<Integer> set = new TreeSet<>();
+        TreeSet<Long> set = new TreeSet<>();
         for (int i = 0; i < nums.length; ++i) {
-            // Find the successor of current element
-            Integer s = set.ceiling(nums[i]);
-            if (s != null && s <= nums[i] + t) return true;
-
-            // Find the predecessor of current element
-            Integer g = set.floor(nums[i]);
-            if (g != null && nums[i] <= g + t) return true;
-
-            set.add(nums[i]);
-            if (set.size() > k) {
-                set.remove(nums[i - k]);
+            Long ceiling = set.ceiling((long) nums[i] - t);
+            if (ceiling != null && ceiling <= (long) nums[i] + t) return true;
+            set.add((long) nums[i]);
+            if (i >= k) {
+                // if (j -> [i - k, i]): nums[i - k] == nums[j]
+                // such j doesn't exist
+                set.remove((long) nums[i - k]);
             }
         }
         return false;
+    }
+}
+
+
+
+class Solution {
+    static final long BASE = 1L << 31;
+
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        Map<Long, Long> bucket = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            long id = getId(nums[i], t + 1);
+            if (bucket.containsKey(id)) return true;
+            if (bucket.containsKey(id - 1) && Math.abs(nums[i] - bucket.get(id - 1)) <= t) return true;
+            if (bucket.containsKey(id + 1) && Math.abs(nums[i] - bucket.get(id + 1)) <= t) return true;
+            bucket.put(id, (long) nums[i]);
+            if (i >= k) bucket.remove(getId(nums[i - k], t + 1));
+        }
+        return false;
+    }
+
+    private Long getId(int n, int size) {
+        return (BASE + n) / size;
+    }
+}
+
+// 下面是一种错误的解法
+
+class Solution {
+    static final long BASE = 1L << 31;
+    static final int MOD = 1 << 16;
+
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        if (nums.length > 100) {
+            return containsNearbyAlmostDuplicateHelper(nums, k, t);
+        }
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j <= i + k && j < nums.length; j++) {
+                if (Math.abs((long) nums[i] - nums[j]) <= t) return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean containsNearbyAlmostDuplicateHelper(int[] nums, int k, int t) {
+        int len = nums.length;
+        long[] arr = new long[len];
+        for (int i = 0; i < len; i++) {
+            arr[i] = (BASE + nums[i] << 16) + i;
+        }
+        Arrays.sort(arr);
+        for (int i = 1; i < len; i++) {
+            if (near(arr[i - 1], arr[i], k, t)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean near(long a, long b, int k, int t) {
+        return Math.abs((a >> 16) - (b >> 16)) <= t && Math.abs(a % MOD - b % MOD) <= k;
     }
 }

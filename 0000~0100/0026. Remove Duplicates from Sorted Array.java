@@ -37,47 +37,12 @@ for (int i = 0; i < len; i++) {
 
 class Solution {
     public int removeDuplicates(int[] nums) {
-        if (nums.length == 0) return 0;
-        int i = 0;
-        for (int j = 1; j < nums.length; j++) {
-            if (nums[j] != nums[i]) {
-                i++;
-                nums[i] = nums[j];
+        int ans = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (ans == 0 || nums[ans - 1] != nums[i]) {
+                nums[ans++] = nums[i];
             }
         }
-        return i + 1;
-    }
-}
-
-// 就这???
-
-class Solution {
-    public int removeDuplicates(int[] nums) {
-        int l = 0, r = 1;
-        int N = nums.length;
-        while (r < N) {
-            if (nums[r] == nums[l]) r++;
-            else swap(nums, ++l, r++);
-        }
-        // System.out.println(Arrays.toString(nums));
-        return l + 1;
-    }
-
-    private void swap(int[] A, int i, int j) {
-        if (i == j) return;
-        int t = A[i];
-        A[i] = A[j];
-        A[j] = t;
-    }
-}
-
-
-
-class Solution {
-    public int removeDuplicates(int[] nums) {
-        int l = 0, r = 0;
-        int N = nums.length;
-        while (++r < N) if (nums[r] != nums[l]) nums[++l] = nums[r];
-        return l + 1;
+        return ans;
     }
 }

@@ -53,3 +53,37 @@ class Solution {
         }
     }
 }
+
+
+
+public class Solution {
+    char[][] image;
+
+    public int minArea(char[][] image, int x, int y) {
+        this.image = image;
+        int m = image.length, n = image[0].length;
+        int left = exCols(0, m, 0, y, true);
+        int right = exCols(0, m, y + 1, n, false);
+        return (right - left) * (exRows(x + 1, m, left, right, false) - exRows(0, x, left, right, true));
+    }
+
+    private int exCols(int top, int bottom, int left, int right, boolean order) {
+        while (left < right) {
+            int row = top, mid = left + right >> 1;
+            while (row < bottom && image[row][mid] == '0') row++;
+            if (row < bottom == order) right = mid;
+            else left = mid + 1;
+        }
+        return left;
+    }
+
+    private int exRows(int top, int bottom, int left, int right, boolean order) {
+        while (top < bottom) {
+            int col = left, mid = top + bottom >> 1;
+            while (col < right && image[mid][col] == '0') col++;
+            if (col < right == order) bottom = mid;
+            else top = mid + 1;
+        }
+        return top;
+    }
+}

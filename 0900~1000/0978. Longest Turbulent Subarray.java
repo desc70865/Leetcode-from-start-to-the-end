@@ -36,29 +36,15 @@ Constraints:
 
 class Solution {
     public int maxTurbulenceSize(int[] arr) {
-        int len = arr.length;
-        if (len == 1) return 1;
-        int[] aux = new int[len];
-        for (int i = 1; i < len; i++) {
-            aux[i] = (int) Math.signum(arr[i] - arr[i - 1]);
-        }
-        // System.out.println(Arrays.toString(aux));
-        int max = 1;
-        int size = 0;
-        for (int i = 0; i < len; i++) {
-            if (aux[i] == 0 && i > 0 && aux[i - 1] == 0) {
-                continue;
-            }
-            if (i == 0 || aux[i] == 0 || aux[i] + aux[i - 1] != 0) {
+        int max = 1, size = 0, prev = 0, cur = 0;
+        for (int i = 0; i < arr.length; prev = cur, i++, size++) {
+            cur = i > 0 ? (int) Math.signum(arr[i] - arr[i - 1]) : 0;
+            if (cur == 0 && i > 0 && prev == 0) continue;
+            if (i == 0 || cur == 0 || cur + prev != 0) {
                 max = Math.max(max, size + 1);
-                size = 1;
-            } else {
-                size++;
+                size = 0;
             }
         }
-        if (aux[len - 1] != 0) {
-            max = Math.max(max, size + 1);
-        }
-        return max;
+        return prev == 0 ? max : Math.max(max, size + 1);
     }
 }

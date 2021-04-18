@@ -57,3 +57,38 @@ class Solution {
         return Integer.parseInt(sb.reverse().toString()) != N;
     }
 }
+
+
+
+class Solution {
+    char[] rotate = {'0', '1', '#', '#', '#', '#', '9', '#', '8', '6'};
+
+    public boolean confusingNumber(int N) {
+        char[] chs = String.valueOf(N).toCharArray();
+        boolean ans = false;
+        for (int l = 0, r = chs.length - 1; l <= r; l++, r--) {
+            if (rotate[chs[l] - '0'] == '#' || rotate[chs[r] - '0'] == '#') return false;
+            ans |= chs[l] != rotate[chs[r] - '0'];
+        }
+        return ans;
+    }
+}
+
+
+
+class Solution {
+    int[] rotate = {0, 1, -1, -1, -1, -1, 9, -1, 8, 6};
+
+    public boolean confusingNumber(int N) {
+        long confusing = 0;
+        int intput = N;
+        while (N != 0) {
+            int p = rotate[N % 10];
+            if (p < 0) return false;
+            confusing *= 10;
+            confusing += p;
+            N /= 10;
+        }
+        return confusing != intput;
+    }
+}
