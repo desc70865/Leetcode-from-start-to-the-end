@@ -56,11 +56,7 @@ class Solution {
         for (int k: map.values()) {
             cnt.merge(k, 1, Integer::sum);
         }
-        // for (int k: cnt.keySet()) {
-        //     System.out.println(k + ": " + cnt.get(k));
-        // }
         Arrays.sort(quantity);
-        // System.out.println(Arrays.toString(quantity));
         return dfs(quantity, quantity.length - 1, cnt);
     }
     

@@ -41,31 +41,15 @@ for (int i = 0; i < len; i++) {
 
 class Solution {
     public int removeElement(int[] nums, int val) {
-        int index = 0;
-        for(int i = 0; i < nums.length; i++){
-            if(nums[i] != val)
-                nums[index++] = nums[i];
-        }
-        return index;
-    }
-}
-
-// 画风突然奇怪了起来...
-
-class Solution {
-    public int removeElement(int[] nums, int val) {
-        int N = nums.length;
-        int l = 0, r = N - 1;
-        while (l <= r) {
-            if (nums[l] == val) swap(nums, l, r--);
-            else l++;
+        int l = 0;
+        for (int r = 0; r < nums.length; ) {
+            while (r < nums.length && nums[r] == val) {
+                r++;
+            }
+            if (r < nums.length) {
+                nums[l++] = nums[r++];
+            }
         }
         return l;
-    }
-
-    private void swap(int[] A, int i, int j) {
-        int t = A[i];
-        A[i] = A[j];
-        A[j] = t;
     }
 }
