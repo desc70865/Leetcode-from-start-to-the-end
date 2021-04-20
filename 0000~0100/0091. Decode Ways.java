@@ -35,3 +35,25 @@ class Solution {
         return dp[len];
     }
 }
+
+
+
+class Solution {
+    Integer[] dp = new Integer[101];
+
+    public int numDecodings(String s) {
+        return dfs(s.toCharArray(), 0);
+    }
+
+    private int dfs(char[] chs, int idx) {
+        if (idx == chs.length) return 1;
+        if (dp[idx] != null) return dp[idx];
+        if (chs[idx] == '0') return 0;
+        return dp[idx] = dfs(chs, idx + 1) + (f(chs, idx) ? dfs(chs, idx + 2) : 0);
+    }
+
+    private boolean f(char[] chs, int idx) {
+        if (idx + 1 >= chs.length) return false;
+        return (chs[idx] - '0') * 10 + chs[idx + 1] - '0' <= 26;
+    }
+}
