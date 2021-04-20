@@ -57,92 +57,64 @@ Output:
  */
 
 class Solution {
-    public static List<String> fullJustify(String[] words, int maxWidth) {
-        List<String> res = new ArrayList<String>();
-        int i = 0, index = 0, length = 0;
-        int width = maxWidth+1;
-        while (index < words.length) {
-        	width -= words[index].length();
-            while (index < words.length && (width -= words[index].length()+1) > 0) {
-            	index++;
-                i++;
-            }
-            String temp = "";
-            if (index == words.length) {
-                for (; i > 1; i--) {
-                    temp = words[i] + "" + temp;
-                }
-                temp = words[--i] + temp;
-            } else {
-                int space = width / (i-1);
-                String l = "";
-                for (int k = space; k > 0; k--) {
-                	l += " ";
-                }
-                int first = width - space * i;
-                for (; i > 1; i--) {
-                    temp = words[i] + l + temp;
-                }
-                temp = words[--i] + l + temp;
-            }
-            //System.out.println(temp);
-            System.out.println(index);
-            res.add(temp);
-            width = maxWidth;
-        }
-        return res;
-    }
-}
-
-// 咕咕咕,下次一定
-
-public class Solution {
     public List<String> fullJustify(String[] words, int maxWidth) {
-        
-        List<String> result = new ArrayList<String>();
-        int num = 0, j = 0 ,space = 0,pos = 0,more = 0;
-        int[] ans = new int[maxWidth+1];
-        char[] Ch = new char[maxWidth]; // 存储每行内容的字符数组
-        int i = 0;
-        while (i < words.length) {
-            j = 0; // 计数
-            num = 0;
-            while (i < words.length && num+words[i].length()<=maxWidth) {
-                num += words[i].length(); // 除空格长度
-                ans[j] = i;
-                i++;
-                j++;
-                num++; // 补空格
-            }
-            pos = 0; // Ch[pos]
-            if (i == words.length) { // 最后一行
-                space = 1;
-                more = maxWidth-num; // ??? 公共变量, 末尾补空格
-            } else if (j == 1) { // 仅一个单词
-                space = maxWidth - (num-1);
-                more = 0;
+        List<String> ans = new ArrayList<>();
+        int len = words.length;
+        for (int l = 0, r = 0, size = 0; r < len; r++) {
+            int curSize = words[r].length();
+            if (size + r - l + curSize > maxWidth) {
+                ans.add(justifiedLine(words, l, r - 1, size, maxWidth));
+                l = r;
+                size = curSize;
             } else {
-                space = (maxWidth-num+j) / (j-1); // j-1 段空格的长度
-                more = (maxWidth-num+j) % (j-1); // 其中 m 个需要 +1
+                size += curSize;
             }
-            for (int k = 0; k < j; k++) {
-                for (int a = 0; a < words[ans[k]].length(); a++,pos++)
-                    Ch[pos] = words[ans[k]].charAt(a);
-                for (int a = 0; a < space && pos < maxWidth; a++,pos++)
-                    Ch[pos] = ' ';
-                if (i != words.length && more > 0 && pos < maxWidth) {
-                    Ch[pos] = ' ';
-                    more--;
-                    pos++;
-                }
-                if (i == words.length && k == j-1) {
-                    for (int a = 0; a < more; a++,pos++)
-                        Ch[pos] = ' ';
-                }
-                
+            if (r == len - 1) {
+                ans.add(alignLeft(words, l, r, maxWidth));
             }
-            result.add(String.valueOf(Ch));
         }
-        return result;
+        return ans;
+    }
+
+    private String justifiedLine(String[] words, int l, int r, int size, int maxWidth) {
+        if (l == r) {
+            return alignLeft(words, l, r, maxWidth);
+        }
+        int num = r - l;
+        int spaceLen = maxWidth - size;
+        int fullSpace = spaceLen % num;
+        int base = spaceLen / num;
+        if (fullSpace == 0) {
+            fullSpace = num;
+            base--;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i <= num; i++) {
+            sb.append(words[l + i]);
+            if (i < num) {
+                sb.append(multiSpace(base + (i < fullSpace ? 1 : 0)));
+            }
+        }
+        return sb.toString();
+    }
+
+    private String alignLeft(String[] words, int l, int r, int maxWidth) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = l; i <= r; i++) {
+            sb.append(words[i]);
+            if (i < r) {
+                sb.append(" ");
+            }
+        }
+        sb.append(multiSpace(maxWidth - sb.length()));
+        return sb.toString();
+    }
+
+    private String multiSpace(int n) {
+        StringBuilder space = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            space.append(" ");
+        }
+        return space.toString();
     }
 }

@@ -52,49 +52,42 @@ s consists only of lowercase English letters.
 class Solution {
     public int longestPalindromeSubseq(String s) {
         if (s == null) return 0;
-        int len = s.length();
         char[] chs = s.toCharArray();
+        int len = chs.length;
         int[] dp = new int[len];
-        Arrays.fill(dp, 1);
-        int max = 0;
-        for (int i = len - 1; i >= 0; i--) {
-            char cur = chs[i];
-            int curMax = 0;
-            for (int j = i + 1; j < len; j++) {
-                int mem = dp[j];
-                if (cur == chs[j]) {
-                    dp[j] = curMax + 2;
+        for (int l = len - 1; l >= 0; l--) {
+            dp[l] = 1;
+            for (int r = l + 1, max = 0; r < len; r++) {
+                int cur = dp[r];
+                if (chs[l] == chs[r]) {
+                    dp[r] = max + 2;
                 }
-                curMax = Math.max(mem, curMax);
+                max = Math.max(cur, max);
             }
         }
-        for (int e: dp) max = Math.max(max, e);
+        int ans = 0;
+        for (int e: dp) ans = Math.max(ans, e);
         // System.out.println(Arrays.toString(dp));
-        return max;
+        return ans;
     }
 }
 
 // ith dp[j] -> dp[i][j]
-// curMax: 维护 dp[i+1][k] k ∈ [i+1, j-1] 中的最大值
-// chs[i] == chs[j] dp[j] = curMax + 2;
+// max: 维护 dp[i + 1][k] k ∈ [i + 1, j - 1] 中的最大值
+// chs[i] == chs[j] dp[j] = max + 2;
 
 class Solution {
     public int longestPalindromeSubseq(String s) {
-        if (s == null) {
-            return 0;
-        }
         char[] chs = s.toCharArray();
         int len = chs.length;
         int[][] dp = new int[len][len];
-        for (int i = 0; i < len; i++) {
-            dp[i][i] = 1;
-        }
-        for (int i = len - 1; i >= 0; i--) {
-            for (int j = i + 1; j < len; j++) {
-                if (chs[i] == chs[j]) {
-                    dp[i][j] = dp[i + 1][j - 1] + 2;
+        for (int l = len - 1; l >= 0; l--) {
+            dp[l][l] = 1;
+            for (int r = l + 1; r < len; r++) {
+                if (chs[l] == chs[r]) {
+                    dp[l][r] = dp[l + 1][r - 1] + 2;
                 } else {
-                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+                    dp[l][r] = Math.max(dp[l][r - 1], dp[l + 1][r]);
                 }
             }
         }
@@ -103,3 +96,20 @@ class Solution {
 }
 
 // dp[i][j] longestPalindromeSubseq in [i, j]
+
+class Solution {
+    public int longestPalindromeSubseq(String s) {
+        char[] chs = s.toCharArray();
+        int len = chs.length;
+        int[] dp = new int[len];
+        for (int l = len - 1; l >= 0; l--) {
+            dp[l] = 1;
+            for (int r = l + 1, prev = 0; r < len; r++) {
+                int cur = dp[r];
+                dp[r] = chs[l] == chs[r] ? prev + 2 : Math.max(dp[r], dp[r - 1]);
+                prev = cur;
+            }
+        }
+        return dp[len - 1];
+    }
+}
