@@ -89,7 +89,9 @@ class Solution {
     }
 }
 
-
+// RadixSort == SuffixArray ?
+// 基数排序，后缀数组
+// 1044. Longest Duplicate Substring
 
 class Solution {
     static final int MAX_CHAR = 128;

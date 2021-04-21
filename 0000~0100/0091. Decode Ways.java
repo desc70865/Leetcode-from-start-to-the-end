@@ -39,6 +39,21 @@ class Solution {
 
 
 class Solution {
+    public int numDecodings(String s) {
+        char[] chs = s.toCharArray();
+        int ans = 0;
+        for (int len = chs.length, i = len - 1, b = 1, c = 1; i >= 0 && (b > 0 || c > 0); i--) {
+            ans = chs[i] == '0' ? 0 : b + (i < len - 1 && (chs[i] - '0') * 10 + chs[i + 1] - '0' <= 26 ? c : 0);
+            c = b;
+            b = ans;
+        }
+        return ans;
+    }
+}
+
+
+
+class Solution {
     Integer[] dp = new Integer[101];
 
     public int numDecodings(String s) {
