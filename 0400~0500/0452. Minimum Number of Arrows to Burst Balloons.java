@@ -42,6 +42,7 @@ class Solution {
         int len = points.length;
         if (len == 0) return 0;
         Arrays.sort(points, (a, b) -> a[1] < b[1] ? -1 : 1);
+        // quickSort(points, 0, len - 1);
         int ans = len + 1;
         int end = points[0][1];
         for (int[] p: points) {
@@ -49,5 +50,38 @@ class Solution {
             else ans--;
         }
         return ans;
+    }
+    
+    private void quickSort(int[][] arr, int left, int right) {
+        if (left >= right) return;
+        int pivot = partition(arr, left, right);
+        quickSort(arr, left, pivot - 1);
+        quickSort(arr, pivot + 1, right);
+    }
+    
+    private int partition(int[][] arr, int l, int r) {
+        int[] pivot = arr[l];
+        while (l < r) {
+            while (l < r) {
+                if (cmp(arr[r], pivot)) {
+                    arr[l++] = arr[r];
+                    break;
+                }
+                r--;
+            }
+            while (l < r) {
+                if (cmp(pivot, arr[l])) {
+                    arr[r--] = arr[l];
+                    break;
+                }
+                l++;
+            }
+        }
+        arr[l] = pivot;
+        return l;
+    }
+
+    private boolean cmp(int[] a, int[] b) {
+        return a[1] < b[1];
     }
 }

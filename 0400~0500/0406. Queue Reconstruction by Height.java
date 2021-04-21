@@ -44,14 +44,14 @@ class Solution {
         int[] pivot = arr[l];
         while (l < r) {
             while (l < r) {
-                if (arr[r][0] > pivot[0] || arr[r][0] == pivot[0] && arr[r][1] < pivot[1]) {
+                if (cmp(arr[r], pivot)) {
                     arr[l++] = arr[r];
                     break;
                 }
                 r--;
             }
             while (l < r) {
-                if (arr[l][0] < pivot[0] || arr[l][0] == pivot[0] && arr[l][1] > pivot[1]) {
+                if (cmp(pivot, arr[l])) {
                     arr[r--] = arr[l];
                     break;
                 }
@@ -60,6 +60,10 @@ class Solution {
         }
         arr[l] = pivot;
         return l;
+    }
+
+    private boolean cmp(int[] a, int[] b) {
+        return a[0] == b[0] ? a[1] < b[1] : b[0] < a[0];
     }
 }
 
