@@ -69,7 +69,73 @@ class Solution {
     }
 }
 
-// RadixSort == SuffixArray ?
+// RadixSort -> SuffixArray ?
 // 基数排序，后缀数组
 // 1698. Number of Distinct Substrings in a String.java
+// SA-IS
 
+class Solution {
+    public String longestDupSubstring(String s) {
+        SuffixArray sa = new SuffixArray(s);
+        int maxPos = -1, maxLen = 0;
+        for (int i = 1; i <= s.length(); i++) {
+            if (sa.ht[i] > maxLen) {
+                maxLen = sa.ht[i];
+                maxPos = sa.sa[i];
+            }
+        }
+        return maxPos == -1 ? "" : s.substring(maxPos, maxPos + maxLen);
+    }
+}
+
+class SuffixArray {
+    int m, n;
+    char[] s;
+    int[] sa, rk, ht, c, x, y;
+
+    public SuffixArray(String str) {
+        this.s = str.toCharArray();
+        this.n = s.length + 1;
+        this.m = Math.max(123, n);
+        this.sa = new int[n];
+        this.rk = new int[n];
+        this.ht = new int[n];
+        this.c = new int[m];
+        this.x = new int[n];
+        this.y = new int[n];
+        getSA();
+        getHT();
+    }
+
+    public void getSA() {
+        for (int i = 0; i < n - 1; i++) c[rk[i] = s[i]]++;
+        for (int i = 1; i < m; i++) c[i] += c[i - 1];
+        for (int i = n - 1; i >= 0; i--) sa[c[rk[i]]--] = i;
+        for (int k = 1; k < n; k <<= 1) {
+            for (int i = n - k; i < n; i++) y[i - n + k] = i;
+            int j = 0;
+            for (int i = 0; i < n; i++) if (sa[i] >= k) y[k + j++] = sa[i] - k;
+            for (int i = 0; i < m; i++) c[i] = 0;
+            for (int i = 0; i < n; i++) c[rk[y[i]]]++;
+            for (int i = 1; i < m; i++) c[i] += c[i - 1];
+            for (int i = n - 1; i >= 0; i--) sa[--c[rk[y[i]]]] = y[i];
+            int p = 0;
+            y[sa[0]] = p++;
+            for (int i = 1; i < n; i++) y[sa[i]] = rk[sa[i]] == rk[sa[i - 1]] && rk[sa[i] + k] == rk[sa[i - 1] + k] ? p - 1 : p++;
+            m = p;
+            x = rk;
+            rk = y;
+            y = x;
+            if (m == n) break;
+        }
+    }
+
+    public void getHT() {
+        for (int i = 0, k = 0; i < n - 1; i++) {
+            if (k > 0) k--;
+            int j = sa[rk[i] - 1];
+            while (i + k < n - 1 && j + k < n - 1 && s[i + k] == s[j + k]) k++;
+            ht[rk[i]] = k;
+        }
+    }
+}
