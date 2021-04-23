@@ -40,9 +40,9 @@ Answers within 10^-5 of the actual value will be accepted as correct.
 
 class Solution {
     public double angleClock(int hour, int minutes) {
-        double min = minutes * 6;
-        double h = hour % 12 * 30 + min / 12;
-        double res = Math.abs(h - min);
-        return res > 180 ? 360 - res : res;
+        double m = minutes * 6;
+        double h = hour % 12 * 30 + (double) minutes / 2;
+        double angle = Math.abs(h - m);
+        return Math.min(angle, 360 - angle);
     }
 }
