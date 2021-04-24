@@ -30,17 +30,15 @@ Special thanks to @pbrother for adding this problem and creating all test cases.
  */
 
 class Solution {
-    private static final int MOD = 1_000_000_007;
     public int combinationSum4(int[] nums, int target) {
         int[] dp = new int[target + 1];
         dp[0] = 1;
         for (int i = 1; i <= target; i++) {
             for (int num: nums) {
-                if (i >= num) dp[i] += dp[i - num];
+                if (i < num) continue;
+                dp[i] += dp[i - num];
             }
-            // dp[i] %= MOD;
         }
-        // System.out.println(Arrays.toString(dp));
         return dp[target];
     }
 }
