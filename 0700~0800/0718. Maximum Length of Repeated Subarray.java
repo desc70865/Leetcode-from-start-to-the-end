@@ -53,7 +53,7 @@ class Solution {
     }
 }
 
-
+// suffix array
 
 class Solution {
     public int findLength(int[] nums1, int[] nums2) {
@@ -121,6 +121,65 @@ class SuffixArray {
             int j = sa[rk[i] - 1];
             while (i + k < n - 1 && j + k < n - 1 && s[i + k] == s[j + k]) k++;
             ht[rk[i]] = k;
+        }
+    }
+}
+
+// Rabin-Karp
+
+class Solution {
+    static final int MOD = 1_000_000_007;
+    static final int BASE = 113;
+    static BaseCalc bc = new BaseCalc();
+
+    public int findLength(int[] A, int[] B) {
+        int ans = 0;
+        for (int L = 1, R = Math.min(A.length, B.length) + 1; L < R; ) {
+            int mid = L + R >> 1;
+            if (check(A, B, mid)) {
+                ans = mid;
+                L = mid + 1;
+            } else {
+                R = mid;
+            }
+        }
+        return ans;
+    }
+
+    public boolean check(int[] A, int[] B, int winSize) {
+        long winBase = bc.base[winSize - 1];
+        Set<Long> set = new HashSet<>();
+        checkHelper(A, winSize, winBase, set, false);
+        return checkHelper(B, winSize, winBase, set, true);
+    }
+
+    private boolean checkHelper(int[] arr, int winSize, long winBase, Set<Long> set, boolean checkMode) {
+        long hash = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (i >= winSize) {
+                hash = (hash - arr[i - winSize] * winBase % MOD + MOD) % MOD;
+            }
+            hash = (hash * BASE + arr[i]) % MOD;
+            if (i >= winSize - 1) {
+                if (checkMode) {
+                    if (set.contains(hash))
+                    return true;
+                } else {
+                    set.add(hash);
+                }
+            }
+        }
+        return false;
+    }
+
+    static class BaseCalc {
+        long[] base = new long[1001];
+
+        public BaseCalc() {
+            base[0] = 1;
+            for (int i = 1; i <= 1000; i++) {
+                base[i] = base[i - 1] * BASE % MOD;
+            }
         }
     }
 }
