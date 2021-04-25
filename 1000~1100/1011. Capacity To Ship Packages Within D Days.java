@@ -47,36 +47,30 @@ Constraints:
  */
 
 class Solution {
+    static final int INF = Integer.MAX_VALUE;
+
     public int shipWithinDays(int[] weights, int D) {
-        int sum = 0;
-        int max = Integer.MIN_VALUE;
-        for (int w: weights) {
-            sum += w;
-            max = Math.max(w, max);
-        }
-        if (D == 1) return sum;
-        int N = weights.length;
-        int L = max;
-        int R = sum - D + 1;
+        int L = 1, R = 25000000;
         while (L < R) {
-            int mid = L + R >> 1;
-            if (isValid(weights, mid) <= D) R = mid;
-            else L = mid + 1;
+            int m = L + R >> 1;
+            if (validator(weights, m) <= D) R = m;
+            else L = m + 1;
         }
         return L;
     }
 
-    private int isValid(int[] A, int k) {
-        int cnt = 1;
-        int cur = k;
-        for (int num: A) {
-            if (cur >= num) cur -= num;
-            else {
-                cur = k - num;
-                cnt++;
+    private int validator(int[] weights, int limit) {
+        int ans = 1;
+        int rem = limit;
+        for (int w: weights) {
+            if (w > limit) return INF;
+            if (w > rem) {
+                ans++;
+                rem = limit - w;
+            } else {
+                rem -= w;
             }
         }
-        if (cur < 0) return Integer.MAX_VALUE;
-        return cnt;
+        return ans;
     }
 }

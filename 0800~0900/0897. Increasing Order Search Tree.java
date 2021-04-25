@@ -40,21 +40,22 @@ Each node will have a unique integer value from 0 to 1000.
  */
 
 class Solution {
-    private TreeNode cur;
+    private TreeNode listNode;
     
     public TreeNode increasingBST(TreeNode root) {
-        TreeNode dummy = new TreeNode(0);
-        cur = dummy;
-        inorder(root);
+        TreeNode dummy = new TreeNode(-1);
+        listNode = dummy;
+        dfs(root);
         return dummy.right;
     }
 
-    private void inorder(TreeNode node) {
+    private void dfs(TreeNode node) {
         if (node == null) return;
-        inorder(node.left);
+        dfs(node.left);
         node.left = null;
-        cur.right = node;
-        cur = node;
-        inorder(node.right);
+        // right -> next
+        listNode.right = node;
+        listNode = listNode.right;
+        dfs(node.right);
     }
 }
