@@ -51,3 +51,10 @@ class Solution {
         if (node.val < R) add(node.right, L, R);
     }
 }
+
+
+
+class Solution {public int rangeSumBST(TreeNode root, int low, int high) {
+        return root == null ? 0 : (root.val < low || root.val > high ? 0 : root.val) + rangeSumBST(root.left, low, high) + rangeSumBST(root.right, low, high);
+    }
+}
