@@ -123,37 +123,37 @@ class Solution {
 class Solution {
     int[][] mat;
     int m, n, k;
-    private int counter = 0;
 
     public int kthSmallest(int[][] mat, int k) {
         this.mat = mat;
         this.m = mat.length;
         this.n = mat[0].length;
         this.k = k;
-        int base = 0;
+        int L = 0, R = 0;
         for (int i = 0; i < m; i++) {
-            base += mat[i][0];
+            L += mat[i][0];
+            R += mat[i][n - 1];
         }
-        int L = base, R = 8_000_000;
+        int lowBoundary = L;
         while (L < R) {
             int M = L + R >> 1;
-            counter = 1;
-            dfs(M, 0, base);
-            if (counter < k) L = M + 1;
+            // min case: only lowBoundary -> 1
+            if (dfs(M, 0, lowBoundary, 1) < k) L = M + 1;
             else R = M;
         }
         return L;
     }
 
-    private void dfs(int threshold, int row, int sum) {
-        if (sum > threshold || row == m || counter > k) return;
+    private int dfs(int threshold, int row, int sum, int counter) {
+        if (sum > threshold || row == m || counter > k) return counter;
         for (int col = 0; col < n; col++) {
             if (sum + mat[row][col] - mat[row][0] <= threshold) {
                 if (col > 0) counter++;
-                dfs(threshold, row + 1, sum + mat[row][col] - mat[row][0]);
+                counter = dfs(threshold, row + 1, sum + mat[row][col] - mat[row][0], counter);
             } else {
                 break;
             }
         }
+        return counter;
     }
 }
