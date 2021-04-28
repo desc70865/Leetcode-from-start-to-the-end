@@ -54,9 +54,13 @@ class Solution {
 
 
 class Solution {
+    Boolean[][] dp;
+
     public boolean canCross(int[] stones) {
-        for (int i = 3; i < stones.length; i++) {
-            if (stones[i] > 2 * stones[i - 1]) {
+        int n = stones.length;
+        dp = new Boolean[n][n];
+        for (int i = 1; i < n; i++) {
+            if (stones[i] - stones[i - 1] > i) {
                 return false;
             }
         }
@@ -64,13 +68,42 @@ class Solution {
     }
     
     private boolean dfs(int[] stones, int idx, int k) {
+        if (dp[idx][k] != null) return dp[idx][k];
         if (idx == stones.length - 1) return true;
         if (k == 0) return false;
         for (int next = idx + 1; next < stones.length; next++) {
             if (stones[idx] + k < stones[next]) break;
             if (stones[idx] + k > stones[next]) continue;
             for (int step = k - 1; step <= k + 1; step++) {
-                if (dfs(stones, next, step)) return true;
+                if (dfs(stones, next, step)) return dp[idx][k] = true;
+            }
+        }
+        return dp[idx][k] = false;
+    }
+}
+
+
+
+class Solution {
+    public boolean canCross(int[] stones) {
+        int n = stones.length;
+        boolean[][] dp = new boolean[n][n];
+        dp[0][0] = true;
+        for (int i = 1; i < n; i++) {
+            if (stones[i] - stones[i - 1] > i) {
+                return false;
+            }
+        }
+        for (int r = 1; r < n; r++) {
+            for (int l = r - 1; l >= 0; l--) {
+                int k = stones[r] - stones[l];
+                if (k > l + 1) {
+                    break;
+                }
+                dp[r][k] = dp[l][k - 1] || dp[l][k] || dp[l][k + 1];
+                if (r == n - 1 && dp[r][k]) {
+                    return true;
+                }
             }
         }
         return false;
