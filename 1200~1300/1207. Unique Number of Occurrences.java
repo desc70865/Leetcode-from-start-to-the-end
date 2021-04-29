@@ -63,3 +63,27 @@ class Solution {
         return true;
     }
 }
+
+
+
+class Solution {
+    static final int SIZE = 2000;
+    static final int LEN = 1000;
+
+    public boolean uniqueOccurrences(int[] arr) {
+        int[] bucket = new int[SIZE + 1];
+        int size = 0;
+        for (int e: arr) {
+            if (bucket[e + LEN]++ == 0) {
+                size++;
+            }
+        }
+        if (size * (size + 1) / 2 > arr.length) return false;
+        int[] cnt = new int[LEN];
+        for (int e: bucket) {
+            if (e == 0) continue;
+            if (cnt[e]++ > 0) return false;
+        }
+        return true;
+    }
+}
