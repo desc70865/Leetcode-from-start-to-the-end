@@ -72,21 +72,21 @@ class Solution {
 
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        int[] tmp = merge(nums1, nums2);
-        int N = tmp.length;
-        if (N % 2 == 1) return tmp[N / 2];
-        else return ((double) tmp[N / 2 - 1] + (double) tmp[N / 2]) / 2;
+        return findMedianSortedArrays(merge(nums1, nums2));
+    }
+
+    private double findMedianSortedArrays(int[] nums) {
+        int n = nums.length;
+        if (n % 2 == 1) return nums[n / 2];
+        return (nums[n / 2] + nums[n / 2 - 1]) / 2.0;
     }
 
     private int[] merge(int[] A, int[] B) {
-        int M = A.length, N = B.length;
-        if (M == 0) return B;
-        else if (N == 0) return A;
-        int[] res = new int[M + N];
-        int i = M - 1, j = N - 1, k = M + N - 1;
-        while (k >= 0) {
-            res[k--] = (j < 0 || i >= 0 && A[i] > B[j]) ? A[i--] : B[j--];
+        int m = A.length, n = B.length;
+        int[] ans = new int[m + n];
+        for (int i = 0, j = 0, k = 0; i < m + n; i++) {
+            ans[i] = (k >= n || j < m && A[j] <= B[k]) ? A[j++] : B[k++];
         }
-        return res;
+        return ans;
     }
 }
