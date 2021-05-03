@@ -29,64 +29,49 @@ class Employee {
 */
 
 class Solution {
-    private Map<Integer, Employee> map;
+    Map<Integer, Employee> map = new HashMap<>();
+
     public int getImportance(List<Employee> employees, int id) {
-        map = new HashMap();
-        for (Employee e: employees) map.put(e.id, e);
+        for (Employee e: employees) {
+            map.put(e.id, e);
+        }
         return dfs(id);
     }
-    
+
     private int dfs(int id) {
         Employee employee = map.get(id);
-        int sum = employee.importance;
-        for (Integer subid: employee.subordinates)
-            sum += dfs(subid);
-        return sum;
+        int ans = employee.importance;
+        if (employee.subordinates == null) return ans;
+        for (int subID: employee.subordinates) {
+            ans += dfs(subID);
+        }
+        return ans;
     }
 }
 
 
 
 class Solution {
-    private Map<Integer, Employee> map;
+    Map<Integer, Employee> map = new HashMap<>();
+
     public int getImportance(List<Employee> employees, int id) {
-        map = new HashMap();
-        for (Employee e: employees) map.put(e.id, e);
+        for (Employee e: employees) {
+            map.put(e.id, e);
+        }
         return bfs(id);
     }
+
     private int bfs(int id) {
-        Queue<Integer> q = new LinkedList<Integer>();
-        int sum = 0;
-        q.offer(id);
-        while (!q.isEmpty()) {
-            int t = q.poll();
-            Employee cur = map.get(t);
-            sum += cur.importance;
-            for(int subid : cur.subordinates)
-                q.offer(subid);
+        Deque<Integer> queue = new ArrayDeque<>();
+        int ans = 0;
+        queue.offer(id);
+        while (!queue.isEmpty()) {
+            Employee employee = map.get(queue.poll());
+            ans += employee.importance;
+            for (int subID: employee.subordinates) {
+                queue.offer(subID);
+            }
         }
-        return sum;
-    }
-}
-
-
-
-class Solution {
-    Map<Integer, List<Integer>> map;
-    int[] p;
-    public int getImportance(List<Employee> employees, int id) {
-        map = new HashMap<>();
-        p = new int[2001];
-        for (Employee e: employees) {
-            map.put(e.id, e.subordinates);
-            p[e.id] = e.importance;
-        }
-        return dfs(id);
-    }
-
-    private int dfs(int id) {
-        int res = p[id];
-        for (Integer k: map.get(id)) res += dfs(k);
-        return res;
+        return ans;
     }
 }

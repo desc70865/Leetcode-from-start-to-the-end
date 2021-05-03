@@ -17,14 +17,28 @@ Output: 99
 
 class Solution {
     public int singleNumber(int[] nums) {
-        HashMap<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         for (int num: nums) {
-            map.merge(num, 1, (a, b) -> a + b);
+            map.merge(num, 1, Integer::sum);
         }
         for (int k: map.keySet()) {
             if (map.get(k) == 1) return k;
         }
         return -1;
+    }
+}
+
+
+
+class Solution {
+    public int singleNumber(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int num: nums) set.add(num);
+        long sum = 0;
+        for (int num: set) sum += num;
+        sum *= 3;
+        for (int num: nums) sum -= num;
+        return (int) (sum >> 1);
     }
 }
 

@@ -36,13 +36,15 @@ class Solution {
         int height = wall.size();
         for (List<Integer> line: wall) {
             int cur = 0;
-            for (int i = 0; i < line.size() - 1; i++) {
+            for (int i = 0; i < line.size() - 1; ++i) {
                 cur += line.get(i);
                 map.merge(cur, 1, Integer::sum);
             }
         }
         int max = 0;
-        for (int k: map.values()) max = Math.max(max, k);
+        for (int k: map.values()) {
+            max = Math.max(max, k);
+        }
         return height - max;
     }
 }
