@@ -52,40 +52,35 @@ class Solution {
     static final int INF = 0x7fffffff;
 
     public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
-        int[][][] dp = new int[m][n][target];
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
+        int[][][] dp = new int[m + 1][target + 1][n];
+        for (int i = 0; i <= m; ++i) {
+            for (int j = 0; j <= target; ++j) {
                 Arrays.fill(dp[i][j], INF);
             }
         }
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (houses[i] > 0 && houses[i] - 1 != j) {
+        for (int i = 1; i <= m; ++i) {
+            for (int newColor = 0; newColor < n; ++newColor) {
+                if (houses[i - 1] > 0 && houses[i - 1] != newColor + 1) {
                     continue;
                 }
-                for (int k = 0; k < target; ++k) {
-                    for (int j0 = 0; j0 < n; ++j0) {
-                        if (j == j0) {
-                            if (i == 0) {
-                                if (k == 0) {
-                                    dp[i][j][k] = 0;
-                                }
-                            } else {
-                                dp[i][j][k] = Math.min(dp[i][j][k], dp[i - 1][j][k]);
-                            }
-                        } else if (i > 0 && k > 0) {
-                            dp[i][j][k] = Math.min(dp[i][j][k], dp[i - 1][j0][k - 1]);
+                for (int j = 1; j <= target; ++j) {
+                    for (int oldColor = 0; oldColor < n; ++oldColor) {
+                        if (newColor == oldColor && i == 1 && j == 1) {
+                            dp[i][j][newColor] = 0;
+                        } else {
+                            dp[i][j][newColor] = Math.min(dp[i][j][newColor], 
+                                dp[i - 1][j - (newColor == oldColor ? 0 : 1)][oldColor]);
                         }
                     }
-                    if (dp[i][j][k] != INF && houses[i] == 0) {
-                        dp[i][j][k] += cost[i][j];
+                    if (dp[i][j][newColor] != INF && houses[i - 1] == 0) {
+                        dp[i][j][newColor] += cost[i - 1][newColor];
                     }
                 }
             }
         }
         int ans = INF;
-        for (int j = 0; j < n; ++j) {
-            ans = Math.min(ans, dp[m - 1][j][target - 1]);
+        for (int num: dp[m][target]) {
+            ans = Math.min(ans, num);
         }
         return ans == INF ? -1 : ans;
     }
@@ -97,63 +92,127 @@ class Solution {
     static final int INF = 0x7fffffff;
 
     public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
-        for (int i = 0; i < m; ++i) {
-            --houses[i];
-        }
-        int[][][] dp = new int[m][n][target];
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                Arrays.fill(dp[i][j], INF);
-            }
-        }
-        int[][][] best = new int[m][target][3];
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < target; ++j) {
-                best[i][j][0] = best[i][j][2] = INF;
-                best[i][j][1] = -1;
-            }
-        }
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (houses[i] != -1 && houses[i] != j) {
+        int[][] dp = auto(target + 1, n);
+        for (int i = 1; i <= m; ++i) {
+            int[][] dq = auto(target + 1, n);
+            for (int newColor = 0; newColor < n; ++newColor) {
+                if (houses[i - 1] > 0 && houses[i - 1] != newColor + 1) {
                     continue;
                 }
-                for (int k = 0; k < target; ++k) {
+                for (int j = 1; j <= target; ++j) {
+                    for (int oldColor = 0; oldColor < n; ++oldColor) {
+                        if (newColor == oldColor && i == 1 && j == 1) {
+                            dq[j][newColor] = 0;
+                        } else {
+                            dq[j][newColor] = Math.min(dq[j][newColor], 
+                                dp[j - (newColor == oldColor ? 0 : 1)][oldColor]);
+                        }
+                    }
+                    if (dq[j][newColor] != INF && houses[i - 1] == 0) {
+                        dq[j][newColor] += cost[i - 1][newColor];
+                    }
+                }
+            }
+            dp = dq;
+        }
+        int ans = INF;
+        for (int num: dp[target]) {
+            ans = Math.min(ans, num);
+        }
+        return ans == INF ? -1 : ans;
+    }
+
+    private int[][] auto(int x, int y) {
+        int[][] ans = new int[x][y];
+        for (int i = 0; i < x; ++i) {
+            Arrays.fill(ans[i], INF);
+        }
+        return ans;
+    }
+}
+
+
+
+class Solution {
+    static final int INF = 0x7fffffff;
+
+    public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
+        int[][][] dp = new int[m][target][n];
+        int[][][] optimal = new int[m][target][3];
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < target; ++j) {
+                Arrays.fill(dp[i][j], INF);
+                optimal[i][j] = new int[] {-1, INF, INF};
+            }
+        }
+        for (int i = 0; i < m; ++i) {
+            for (int color = 0; color < n; ++color) {
+                if (houses[i] != 0 && houses[i] - 1 != color) {
+                    continue;
+                }
+                for (int j = 0; j < target; ++j) {
                     if (i == 0) {
-                        if (k == 0) {
-                            dp[i][j][k] = 0;
+                        if (j == 0) {
+                            dp[i][j][color] = 0;
                         }
                     } else {
-                        dp[i][j][k] = dp[i - 1][j][k];
-                        if (k > 0) {
-                            // 使用 best(i - 1, k - 1) 直接得到 dp(i, j, k) 的值
-                            int first = best[i - 1][k - 1][0];
-                            int firstIdx = best[i - 1][k - 1][1];
-                            int second = best[i - 1][k - 1][2];
-                            dp[i][j][k] = Math.min(dp[i][j][k], (j == firstIdx ? second : first));
+                        dp[i][j][color] = dp[i - 1][j][color];
+                        if (j > 0) {
+                            int[] p = optimal[i - 1][j - 1];
+                            dp[i][j][color] = Math.min(dp[i][j][color], 
+                                (color == p[0] ? p[2] : p[1]));
                         }
                     }
-                    if (dp[i][j][k] != INF && houses[i] == -1) {
-                        dp[i][j][k] += cost[i][j];
+                    if (dp[i][j][color] != INF && houses[i] == 0) {
+                        dp[i][j][color] += cost[i][color];
                     }
-                    // 用 dp(i, j, k) 更新 best(i, k)
-                    int first = best[i][k][0];
-                    int firstIdx = best[i][k][1];
-                    int second = best[i][k][2];
-                    if (dp[i][j][k] < first) {
-                        best[i][k][2] = first;
-                        best[i][k][0] = dp[i][j][k];
-                        best[i][k][1] = j;
-                    } else if (dp[i][j][k] < second) {
-                        best[i][k][2] = dp[i][j][k];
+                    int[] p = optimal[i][j];
+                    if (dp[i][j][color] < p[1]) {
+                        optimal[i][j] = new int[] {color, dp[i][j][color], p[1]};
+                    } else if (dp[i][j][color] < p[2]) {
+                        optimal[i][j][2] = dp[i][j][color];
                     }
                 }
             }
         }
         int ans = INF;
-        for (int j = 0; j < n; ++j) {
-            ans = Math.min(ans, dp[m - 1][j][target - 1]);
+        for (int num: dp[m - 1][target - 1]) {
+            ans = Math.min(ans, num);
         }
         return ans == INF ? -1 : ans;
+    }
+}
+
+
+
+class Solution {
+    static final int INF = 0x7fffffff;
+    int[][][] dp;
+    int[] houses;
+    int[][] cost;
+    int m, n;
+    
+    public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
+        this.dp = new int[m][n + 1][target + 1];
+        this.houses = houses;
+        this.cost = cost;
+        this.m = m;
+        this.n = n;
+        return dfs(0, 0, target);
+    }
+    
+    private int dfs(int pos, int lastColor, int target) {
+        if (target < 0 || target > m - pos) return -1;
+        if (pos == m && target == 0) return 0;
+        if (dp[pos][lastColor][target] != 0) return dp[pos][lastColor][target];
+        if (houses[pos] > 0) {
+            return dp[pos][lastColor][target] = dfs(pos + 1, houses[pos], target - (houses[pos] == lastColor ? 0 : 1));
+        }
+        int ans = INF;
+        for (int color = 1; color <= n; ++color) {
+            int val = dfs(pos + 1, color, target - (color == lastColor ? 0 : 1));
+            if (val >= 0) ans = Math.min(ans, cost[pos][color - 1] + val);
+        }
+        return dp[pos][lastColor][target] = ans == INF ? -1 : ans;
     }
 }
