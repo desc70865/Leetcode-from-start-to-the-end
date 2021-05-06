@@ -30,12 +30,11 @@ encoded.length == n - 1
 
 class Solution {
     public int[] decode(int[] encoded, int first) {
-        int len = encoded.length + 1;
-        int[] ans = new int[len];
+        int n = encoded.length;
+        int[] ans = new int[n + 1];
         ans[0] = first;
-        for (int i = 1; i < len; i++) {
-            first ^= encoded[i - 1];
-            ans[i] = first;
+        for (int i = 1; i <= n; ++i) {
+            ans[i] = (first ^= encoded[i - 1]);
         }
         return ans;
     }
