@@ -33,39 +33,32 @@ Constraints:
  */
 
 class Solution {
-    public int stoneGameV(int[] sv) {
-        int n = sv.length;
-        int[][] dp = new int[n + 1][n + 1];
-        int[] sum = new int[n + 1];
-        for(int i = 1; i <= n; i++) {
-            sum[i] = sv[i - 1] + sum[i - 1];
-        }
-        return dfs(sv, 1, n, dp, sum);
-    }
-    
-    private int dfs(int[] sv, int i, int j, int[][] dp, int[] sum) {
-        if(dp[i][j] != 0)
-            return dp[i][j];
-        if(i == j) 
-            return 0;
-        // if(j==i+1) 
-        //     return Math.min(sv[i - 1], sv[j - 1]);
-        int res = 0;
-        for(int k = i; k < j; k++) {
-            int ans = 0;
-            int sum_l = sum[k] - sum[i - 1]; // i-th ... k-th
-            int sum_r = sum[j] - sum[k]; // (k+1)-th ... j-th
-            if(sum_l > sum_r) {
-                ans = sum_r + dfs(sv, k + 1, j, dp, sum);
-            } else if(sum_l < sum_r) {
-                ans = sum_l + dfs(sv, i, k, dp, sum);
-            } else {
-                ans = Math.max(sum_r + dfs(sv, k + 1, j, dp, sum),
-                              sum_l + dfs(sv, i, k, dp, sum));
+    public int stoneGameV(int[] stoneValue) {
+        int n = stoneValue.length;
+        int[][] f = new int[n][n];
+        int[][] maxL = new int[n][n];
+        int[][] maxR = new int[n][n];
+        for (int L = n - 1; L >= 0; --L) {
+            maxL[L][L] = maxR[L][L] = stoneValue[L];
+            int sum = stoneValue[L], sumL = 0;
+            for (int R = L + 1, M = L - 1; R < n; ++R) {
+                sum += stoneValue[R];
+                while (M + 1 < R && (sumL + stoneValue[M + 1]) * 2 <= sum) {
+                    sumL += stoneValue[++M];
+                }
+                if (L <= M) {
+                    f[L][R] = Math.max(f[L][R], maxL[L][M]);
+                }
+                if (M + 1 < R) {
+                    f[L][R] = Math.max(f[L][R], maxR[M + 2][R]);
+                }
+                if (sumL * 2 == sum) {
+                    f[L][R] = Math.max(f[L][R], maxR[M + 1][R]);
+                }
+                maxL[L][R] = Math.max(maxL[L][R - 1], sum + f[L][R]);
+                maxR[L][R] = Math.max(maxR[L + 1][R], sum + f[L][R]);
             }
-            res = Math.max(res, ans);
         }
-        dp[i][j] = res;
-        return res;
+        return f[0][n - 1];
     }
 }
