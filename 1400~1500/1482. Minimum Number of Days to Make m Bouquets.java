@@ -55,29 +55,35 @@ bloomDay.length == n
 
 class Solution {
     public int minDays(int[] bloomDay, int m, int k) {
-        int len = bloomDay.length;
-        if (len < m * k) return -1;
-        int L = 1;
-        int R = 1000000000;
+        int n = bloomDay.length;
+        if (m * k > n) {
+            return -1;
+        }
+        int L = 1, R = 1;
+        for (int d: bloomDay) {
+            R = Math.max(R, d);
+        }
         while (L < R) {
             int M = L + R >> 1;
-            if (isValid(bloomDay, M, m, k)) R = M;
-            else L = M + 1;
+            if (validate(bloomDay, M, k) >= m) {
+                R = M;
+            } else {
+                L = M + 1;
+            }
         }
         return L;
     }
 
-    private boolean isValid(int[] bloomDay, int threshold, int m, int k) {
-        int cnt = 0;
-        int sum = 0;
-        for (int num: bloomDay) {
-            if (num <= threshold) cnt++;
-            else {
-                sum += cnt / k;
-                cnt = 0;
+    private int validate(int[] bloomDay, int threshold, int k) {
+        int ans = 0, sum = 0;
+        for (int d: bloomDay) {
+            if (d > threshold) {
+                ans += sum / k;
+                sum = 0;
+            } else {
+                ++sum;
             }
         }
-        sum += cnt / k;
-        return sum >= m;
+        return ans + sum / k;
     }
 }
