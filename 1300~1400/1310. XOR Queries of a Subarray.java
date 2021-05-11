@@ -34,20 +34,16 @@ queries[i].length == 2
 
 class Solution {
     public int[] xorQueries(int[] arr, int[][] queries) {
-        int N = arr.length;
-        int[] x = new int[N];
-        x[0] = arr[0];
-        for (int i = 1; i < N; i++) x[i] = x[i - 1] ^ arr[i];
-        int M = queries.length;
-        int[] res = new int[M];
-        int idx = 0;
-        for (int[] q: queries) {
-            if (q[0] == q[1]) res[idx++] = arr[q[0]];
-            else {
-                if (q[0] == 0) res[idx++] = x[q[1]];
-                else res[idx++] = x[q[0] - 1] ^ x[q[1]];
-            }
+        int n = arr.length;
+        int[] xor = new int[n + 1];
+        for (int i = 1; i <= n; ++i) {
+            xor[i] = xor[i - 1] ^ arr[i - 1];
         }
-        return res;
+        int m = queries.length;
+        int[] ans = new int[m];
+        for (int i = 0; i < m; ++i) {
+            ans[i] = xor[queries[i][1] + 1] ^ xor[queries[i][0]];
+        }
+        return ans;
     }
 }

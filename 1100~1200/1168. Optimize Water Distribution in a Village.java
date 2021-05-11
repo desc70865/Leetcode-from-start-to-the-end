@@ -80,3 +80,58 @@ class UnionFind {
 // MST 最小生成树
 // Kruskal 稀疏图
 // ~Prim 稠密图
+
+class Solution {
+    static final int MOD = 1 << 30;
+    static final int MMD = 1 << 15;
+
+    public int minCostToSupplyWater(int n, int[] wells, int[][] pipes) {
+        long[] cost = new long[pipes.length + wells.length];
+        for (int i = 0; i < wells.length; ++i) {
+            cost[i] = encode(0, i + 1, wells[i]);
+        }
+        for (int i = 0; i < pipes.length; ++i) {
+            cost[i + wells.length] = encode(pipes[i][0], pipes[i][1], pipes[i][2]);
+        }
+        Arrays.sort(cost);
+        UnionFind uf = new UnionFind(n + 1);
+        int ans = 0;
+        for (int i = 0, cnt = n; i < cost.length && cnt > 0; ++i) {
+            int base = (int) (cost[i] % MOD);
+            if (uf.union(base >> 15 , base % MMD)) {
+                ans += (int) (cost[i] >> 30);
+                --cnt;
+            }
+        }
+        return ans;
+    }
+
+    private long encode(int a, int b, int cost) {
+        return ((long) cost << 30) + (a << 15) + b;
+    }
+}
+
+class UnionFind {
+    int[] p;
+
+    public UnionFind(int n) {
+        this.p = new int[n];
+        for (int i = 1; i < n; i++) {
+            p[i] = i;
+        }
+    }
+
+    public int find(int x) {
+        return p[x] == x ? x : (p[x] = find(p[x]));
+    }
+
+    public boolean union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a == b) {
+            return false;
+        }
+        p[a] = b;
+        return true;
+    }
+}
