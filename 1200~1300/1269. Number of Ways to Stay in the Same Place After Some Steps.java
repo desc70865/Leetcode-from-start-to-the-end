@@ -39,13 +39,13 @@ class Solution {
     static final int MOD = 1_000_000_007;
 
     public int numWays(int steps, int arrLen) {
-        int len = Math.min(steps / 2 + 1, arrLen);
-        long[] dp = new long[len];
+        int n = Math.min(steps / 2 + 1, arrLen);
+        long[] dp = new long[n];
         dp[0] = 1;
-        for (int i = 1; i <= steps; i++) {
-            long[] next = new long[len];
-            for (int j = 0; j <= i && j < len; j++) {
-                next[j] = (dp[j] + (j > 0 ? dp[j - 1] : 0) + (j < len - 1 ? dp[j + 1] : 0)) % MOD;
+        for (int i = 1; i <= steps; ++i) {
+            long[] next = new long[n];
+            for (int j = 0; j <= i && j < n; ++j) {
+                next[j] = (dp[j] + (j > 0 ? dp[j - 1] : 0) + (j < n - 1 ? dp[j + 1] : 0)) % MOD;
             }
             dp = next;
         }
