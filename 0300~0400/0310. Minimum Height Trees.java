@@ -45,21 +45,21 @@ class Solution {
         if (n == 1) return Arrays.asList(0);
         int[] degree = new int[n];
         List<List<Integer>> map = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; ++i) {
             map.add(new ArrayList<>());
         }
-        for (int[] edge: edges) {
-            degree[edge[0]]++;
-            degree[edge[1]]++;
-            map.get(edge[0]).add(edge[1]);
-            map.get(edge[1]).add(edge[0]);
+        for (int[] e: edges) {
+            ++degree[e[0]];
+            ++degree[e[1]];
+            map.get(e[0]).add(e[1]);
+            map.get(e[1]).add(e[0]);
         }
-        Queue<Integer> queue = new LinkedList<>();
+        Deque<Integer> queue = new ArrayDeque<>();
         int rem = n;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; ++i) {
             if (degree[i] == 1) {
                 queue.offer(i);
-                rem--;
+                --rem;
             }
         }
         while (rem > 0) {
@@ -69,7 +69,7 @@ class Solution {
                     degree[next]--;
                     if (degree[next] == 1) {
                         queue.offer(next);
-                        rem--;
+                        --rem;
                     }
                 }
             }
@@ -77,3 +77,5 @@ class Solution {
         return new ArrayList<>(queue);
     }
 }
+
+// topological
