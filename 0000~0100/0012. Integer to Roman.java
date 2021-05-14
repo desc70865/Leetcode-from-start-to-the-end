@@ -46,7 +46,6 @@ Output: "MCMXCIV"
 Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
  */
 
-import java.util.TreeMap;
 class Solution {
     private final static TreeMap<Integer, String> map = new TreeMap<Integer, String>();
     static {
@@ -66,13 +65,7 @@ class Solution {
     }
 
     public String intToRoman(int number) {
-        int l =  map.floorKey(number);
-        if (number == l) {
-            return map.get(number);
-        }
-        return map.get(l) + intToRoman(number-l);
+        int floor =  map.floorKey(number);
+        return floor == number ? map.get(number) : map.get(floor) + intToRoman(number - floor);
     }
 }
-
-// 直接映射可以O(1),但似乎有点作弊
-// 本来就是图一乐
