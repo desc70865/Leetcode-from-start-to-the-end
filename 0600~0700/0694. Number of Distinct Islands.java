@@ -27,35 +27,34 @@ Note: The length of each dimension in the given grid does not exceed 50.
  */
 
 class Solution {
-    int[] dir = new int[] {0, 1, 0, -1, 0};
-    int row;
-    int col;
+    static int[] dir = {0, 1, 0, -1, 0};
+    int m, n;
 
     public int numDistinctIslands(int[][] grid) {
-        if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
-        row = grid.length;
-        col = grid[0].length;
-        Set<String> islands = new HashSet<>();
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if (grid[i][j] == 1) {
-                    StringBuilder path = new StringBuilder();
-                    dfs(grid, path, i, j, i, j);
-                    islands.add(path.toString());
+        Set<String> set = new HashSet<>();
+        this.m = grid.length;
+        this.n = grid[0].length;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (grid[i][j] == 0) {
+                    continue;
                 }
+                StringBuilder island = new StringBuilder();
+                dfs(grid, island, i, j, i, j);
+                set.add(island.toString());
             }
         }
-        return islands.size();
+        return set.size();
     }
-    
-    private void dfs(int[][] grid, StringBuilder path, int firstX, int firstY, int x, int y) {
-        if (x < 0 || x >= row || y < 0 || y >= col || grid[x][y] == 0) {
+
+    private void dfs(int[][] grid, StringBuilder island, int x, int y, int i, int j) {
+        if (i < 0 || i >= m || j < 0 || j >= n || grid[i][j] != 1) {
             return;
         }
-        grid[x][y] = 0;
-        path.append(x - firstX).append(y - firstY);
-        for (int i = 0; i < 4; i++) {
-            dfs(grid, path, firstX, firstY, x + dir[i], y + dir[i + 1]);
+        island.append(i - x).append(j - y);
+        grid[i][j] = 0;
+        for (int k = 0; k < 4; ++k) {
+            dfs(grid, island, x, y, i + dir[k], j + dir[k + 1]);
         }
     }
 }
