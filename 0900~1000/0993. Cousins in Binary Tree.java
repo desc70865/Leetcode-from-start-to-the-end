@@ -49,25 +49,33 @@ Each node has a unique integer value from 1 to 100.
  * }
  */
 class Solution {
-    TreeNode[] nodes = new TreeNode[2];
-    int[] depthes = new int[2];
-    int i = 0;
     public boolean isCousins(TreeNode root, int x, int y) {
-        helper(root, x, 0, null);  
-        helper(root, y, 0, null);
-        return depthes[0] == depthes[1] && nodes[0].val != nodes[1].val;
+        TreeNode dummy = new TreeNode(-1);
+        return dfs(dummy, root, x, 0).isCousins(dfs(dummy, root, y, 0));
     }
-    
-    private void helper(TreeNode root, int tar, int depth, TreeNode pre) {
-        if (root == null) return;
-        if (root.val != tar) {
-            helper(root.left, tar, depth + 1, root);
-            helper(root.right, tar, depth + 1, root);
-        } else {
-            nodes[i] = pre;
-            depthes[i] = depth;
-            i++;
-            return;
+
+    private Node dfs(TreeNode parent, TreeNode node, int target, int level) {
+        if (node == null) {
+            return null;
         }
+        if (node.val == target) {
+            return new Node(parent, level);
+        }
+        Node next = dfs(node, node.left, target, level + 1);
+        return next != null ? next : dfs(node, node.right, target, level + 1);
+    }
+}
+
+class Node {
+    TreeNode parent;
+    int level;
+
+    public Node(TreeNode node, int k) {
+        this.parent = node;
+        this.level = k;
+    }
+
+    public boolean isCousins(Node node) {
+        return this.level == node.level && this.parent != node.parent;
     }
 }
