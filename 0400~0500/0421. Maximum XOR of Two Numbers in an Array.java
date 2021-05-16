@@ -14,30 +14,6 @@ Output: 28
 Explanation: The maximum result is 5 ^ 25 = 28.
  */
 
-public class Solution {
-    public int findMaximumXOR(int[] nums) {
-        int res = 0;
-        int mask = 0;
-        for (int i = 30; i >= 0; i--) {
-            mask |= 1 << i;
-            Set<Integer> prefix = new HashSet<>();
-            for (int num: nums) {
-                prefix.add(num & mask);
-            }
-            int cur = res | (1 << i);
-            for (Integer p: prefix) {
-                if (prefix.contains(p ^ cur)) {
-                    res = cur;
-                    break;
-                }
-            }
-        }
-        return res;
-    }
-}
-
-
-
 class Solution {
     public int findMaximumXOR(int[] nums) {
         int max = 0;
@@ -45,20 +21,21 @@ class Solution {
             max = Math.max(max, num);
         }
         int len = 32 - Integer.numberOfLeadingZeros(max);
-        Set<Integer> prefix = new HashSet<>();
-        int maxXOR = 0;
-        for (int i = len - 1; i >= 0; i--) {
-            maxXOR <<= 1;
-            int curPrefix = maxXOR | 1;
-            prefix.clear();
+        Set<Integer> prefixSet = new HashSet<>();
+        int mask = 0;
+        for (int i = len - 1; i >= 0; --i) {
+            mask <<= 1;
+            int prefix = mask | 1;
+            prefixSet.clear();
             for (int num: nums) {
-                prefix.add(num >> i);
-                if (prefix.contains(num >> i ^ curPrefix)) {
-                    maxXOR |= 1;
+                int cur = num >> i;
+                if (prefixSet.contains(cur ^ prefix)) {
+                    mask |= 1;
                     break;
                 }
+                prefixSet.add(cur);
             }
         }
-        return maxXOR;
+        return mask;
     }
 }

@@ -46,11 +46,11 @@ class Skiplist {
     private static int DEFAULT_MAX_LEVEL = 32;
     private static double DEFAULT_P_FACTOR = 0.25;
 
-    Node head = new Node(null, DEFAULT_MAX_LEVEL);
+    Node head = null;
     int currentLevel = 1;
 
     public Skiplist() {
-        ;
+        this.head = new Node(null, DEFAULT_MAX_LEVEL);
     }
     
     public void add(int num) {
@@ -73,11 +73,11 @@ class Skiplist {
         }
     }
 
-    public boolean search(int target) {
+    public boolean search(int num) {
         Node node = head;
         for (int i = currentLevel - 1; i >= 0; i--) {
-            node = findClosest(node, i, target);
-            if (node.next[i] != null && node.next[i].value == target) {
+            node = findClosest(node, i, num);
+            if (node.next[i] != null && node.next[i].value == num) {
                 return true;
             }
         }
