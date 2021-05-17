@@ -44,13 +44,43 @@ Constraints:
 
 class Solution {
     public int countTriplets(int[] arr) {
-        int res = 0;
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < i; j++) {
-                arr[j] ^= arr[i];
-                if (arr[j] == 0) res += i - j;
+        int n = arr.length;
+        int[] xor = new int[n + 1];
+        for (int i = 1; i <= n; ++i) {
+            xor[i] = xor[i - 1] ^ arr[i - 1];
+        }
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                int m = xor[i] ^ xor[j];
+                for (int k = j; k < n; ++k) {
+                    if (m == (xor[j] ^ xor[k + 1])) {
+                        ++ans;
+                    }
+                }
             }
         }
-        return res;
+        return ans;
+    }
+}
+
+// 值相等 -> 异或为零
+
+class Solution {
+    public int countTriplets(int[] arr) {
+        int n = arr.length;
+        int[] xor = new int[n + 1];
+        for (int i = 1; i <= n; ++i) {
+            xor[i] = xor[i - 1] ^ arr[i - 1];
+        }
+        int ans = 0;
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (xor[i] == xor[j]) {
+                    ans += i - j - 1;
+                }
+            }
+        }
+        return ans;
     }
 }
