@@ -79,3 +79,31 @@ class Node {
         return this.level == node.level && this.parent != node.parent;
     }
 }
+
+
+
+class Solution {
+    int a = -1, b = -1;
+
+    public boolean isCousins(TreeNode root, int x, int y) {
+        dfs(root, x, 0, 0);
+        dfs(root, y, 0, 0);
+        return a / 100 == b / 100 && a % 100 != b % 100;
+    }
+
+    private boolean dfs(TreeNode node, int target, int parent, int level) {
+        if (node == null) {
+            return false;
+        }
+        if (node.val == target) {
+            if (a == -1) {
+                a = level * 100 + parent - 1;
+            } else {
+                b = level * 100 + parent - 1;
+            }
+            return true;
+        }
+        return dfs(node.left, target, node.val, level + 1)
+            || dfs(node.right, target, node.val, level + 1);
+    }
+}
