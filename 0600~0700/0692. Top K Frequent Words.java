@@ -26,16 +26,19 @@ class Solution {
         for (String word: words) {
             map.merge(word, 1, Integer::sum);
         }
-        List<Node> list = new ArrayList<>();
+        PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> a.t == b.t ? b.s.compareTo(a.s) : a.t - b.t);
         for (String key: map.keySet()) {
-            list.add(new Node(key, map.get(key)));
+            pq.offer(new Node(key, map.get(key)));
+            if (pq.size() > k) {
+                pq.poll();
+            }
         }
-        Collections.sort(list, (a, b) -> a.t == b.t ? a.s.compareTo(b.s) : b.t - a.t);
-        List<String> res = new ArrayList<>(k);
+        List<String> ans = new ArrayList<>(k);
         for (int i = 0; i < k; i++) {
-            res.add(list.get(i).s);
+            ans.add(pq.poll().s);
         }
-        return res;
+        Collections.reverse(ans);
+        return ans;
     }
 }
 
