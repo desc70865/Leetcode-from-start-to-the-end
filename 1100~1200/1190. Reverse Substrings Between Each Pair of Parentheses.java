@@ -35,26 +35,64 @@ It's guaranteed that all parentheses are balanced.
  */
 
 class Solution {
-    int idx;
-    int N;
+    char[] t;
+    int n;
+
     public String reverseParentheses(String s) {
-        char[] str = s.toCharArray();
-        idx = 0;
-        N = str.length;
-        return helper(str).toString();
+        t = s.toCharArray();
+        this.n = t.length;
+        return reverseParentheses(0, n - 1).toString();
     }
 
-    private StringBuilder helper(char[] str) {
-        StringBuilder sb = new StringBuilder();
-        while (idx < N && str[idx] != ')') {
-            if (str[idx] == '(') {
-                idx++;
-                sb.append(helper(str).reverse());
+    private StringBuilder reverseParentheses(int left, int right) {
+        StringBuilder ans = new StringBuilder();
+        for (int i = left; i <= right; ++i) {
+            if (t[i] == '(') {
+                int next = findNextBracket(i + 1);
+                ans.append(reverseParentheses(i + 1, next - 1).reverse());
+                i = next;
             } else {
-                sb.append(str[idx++]);
+                ans.append(t[i]);
             }
         }
-        idx++;
+        return ans;
+    }
+
+    private int findNextBracket(int idx) {
+        for (int cnt = 1; idx < n && cnt > 0; ++idx) {
+            if (t[idx] == '(') {
+                ++cnt;
+            } else if (t[idx] == ')') {
+                --cnt;
+            }
+        }
+        return idx - 1;
+    }
+}
+
+
+
+class Solution {
+    int idx = 0;
+    int n;
+
+    public String reverseParentheses(String s) {
+        char[] t = s.toCharArray();
+        this.n = t.length;
+        return reverseParentheses(t).toString();
+    }
+
+    private StringBuilder reverseParentheses(char[] t) {
+        StringBuilder sb = new StringBuilder();
+        while (idx < n && t[idx] != ')') {
+            if (t[idx] == '(') {
+                ++idx;
+                sb.append(reverseParentheses(t).reverse());
+            } else {
+                sb.append(t[idx++]);
+            }
+        }
+        ++idx;
         return sb;
     }
 }
