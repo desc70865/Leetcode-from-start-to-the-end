@@ -42,31 +42,29 @@ location.length == 2
 
 class Solution {
     public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
-        int sz = points.size();
-        List<Double> pts = new ArrayList<>();
-        int x = location.get(0), y = location.get(1);
-        int ans = 0;
-        for (List<Integer> pt : points) {
-            if (pt.equals(location)) ans++;
-            else {
-                double a = Math.atan2(pt.get(1) - y, pt.get(0) - x);
-                if (a < 0) a += 2.0 * Math.PI;
-                pts.add(a);
+        int x = location.get(0);
+        int y = location.get(1);
+        List<Double> list = new ArrayList<>();
+        int cnt = 0;
+        for (List<Integer> p: points) {
+            if (p.get(0) == x && p.get(1) == y) {
+                ++cnt;
+            } else {
+                list.add(Math.atan2(p.get(0) - x, p.get(1) - y) * 180 / Math.PI);
             }
         }
-        Collections.sort(pts);
-        double ang = Math.toRadians(angle);
-        for (int i = 0; i < sz; i++) {
-            double k = pts.get(i);
-            if (k > ang) break;
-            pts.add(k + 2.0 * Math.PI);
+        Collections.sort(list);
+        int size = list.size();
+        for (int i = 0; i < size; ++i) {
+            list.add(list.get(i) + 360.0);
         }
-        int j = 0;
         int max = 0;
-        for (int i = 0; i < sz; i++) {
-            while (j < pts.size() && pts.get(j) <= pts.get(i) + ang) j++;
-            max = Math.max(max, j - i);
+        for (int l = 0, r = 0; l < size; ++l) {
+            while (r + 1 < list.size() && list.get(r + 1) - list.get(l) <= (double) angle + 1e-8) {
+                ++r;
+            }
+            max = Math.max(max, r - l + 1);
         }
-        return max + ans;
+        return max + cnt;
     }
 }
