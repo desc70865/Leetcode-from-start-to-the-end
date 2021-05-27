@@ -18,82 +18,17 @@ Length of the array will not exceed 10^4.
 
 class Solution {
     public int totalHammingDistance(int[] nums) {
-        int res = 0;
-        for (int i = 0; i < nums.length - 1; i++) {
-            for (int j = i + 1; j < nums.length; j++) {
-                res += hammingDistance(nums[i], nums[j]);
+        int n = nums.length;
+        int[] map = new int[31];
+        for (int num: nums) {
+            for (int bit = num, i = 0; i <= 30; ++i, bit >>= 1) {
+                map[i] += bit & 1;
             }
         }
-        return res;
-    }
-    
-    private int hammingDistance(int x, int y) {
-        return hammingWeight(x ^ y);
-    }
-    
-    private int hammingWeight(int n) {
-        int sum = 0;
-        while (n != 0) {
-            sum++;
-            n &= (n - 1);
-        }
-        return sum;
-    }
-}
-
-
-
-class Solution {
-    public int totalHammingDistance(int[] nums) {
         int ans = 0;
-        for (int i = 0; i < 32; i++) {
-            int zero = 0, one = 0;
-            for (int n: nums) {
-                if ((n & 1 << i) == (1 << i)) {
-                    one++;
-                } else {
-                    zero++;
-                }
-            }
-            ans += zero * one;
+        for (int i = 0; i <= 30; ++i) {
+            ans += map[i] * (n - map[i]);
         }
         return ans;
-    }
-}
-
-
-
-class Solution {
-    public int totalHammingDistance(int[] nums) {
-        int res = 0, LEN = nums.length;
-        int[] cnt = new int[32];
-        
-        for (int num: nums) {
-            for (int i = 0; i < 32; i++) {
-                cnt[i] += num & 1;
-                num >>= 1;
-            }
-        }
-        
-        for (int ones: cnt) {
-            res += ones * (LEN - ones);
-        }
-        return res;
-    }
-}
-
-
-
-class Solution {
-    public int totalHammingDistance(int[] nums) {
-        int LEN = nums.length, cnt = 0, total = 0;
-        for (int j = 0, b = 1; j < 31; j++, b <<= 1) {
-            cnt = 0;
-            for (int i = 0; i < LEN; i++) {
-                cnt += (nums[i] & b) >> j;
-            }
-            total += (LEN - cnt) * cnt;
-        }
-        return total;
     }
 }
