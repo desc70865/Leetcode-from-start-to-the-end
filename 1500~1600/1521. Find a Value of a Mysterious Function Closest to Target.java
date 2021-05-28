@@ -32,25 +32,25 @@ Constraints:
 
 class Solution {
     public int closestToTarget(int[] arr, int target) {
-        
-    }
-}
-
-// wrong answer
-// [9,10,11,7,15]
-
-class Solution {
-    public int closestToTarget(int[] arr, int target) {
-        int cur = arr[0], minDiff = Integer.MAX_VALUE;
+        int ans = Math.abs(arr[0] - target);
+        List<Integer> list = new ArrayList<>(20);
+        list.add(arr[0]);
         for (int num: arr) {
-            minDiff = Math.min(minDiff, Math.abs(target - num));
-            if (cur < target) cur = num;
-            // x & y <= min(x, y)
-            else {
-                cur &= num;
-                minDiff = Math.min(minDiff, Math.abs(target - cur));
+            List<Integer> next = new ArrayList<>(20);
+            next.add(num);
+            int prev = num;
+            ans = Math.min(ans, Math.abs(num - target));
+            for (int e: list) {
+                int and = e & num;
+                if (and == prev) {
+                    continue;
+                }
+                next.add(and);
+                ans = Math.min(ans, Math.abs(and - target));
+                prev = and;
             }
+            list = next;
         }
-        return minDiff;
+        return ans;
     }
 }
