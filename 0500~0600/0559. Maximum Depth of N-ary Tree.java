@@ -47,16 +47,18 @@ class Node {
 */
 
 class Solution {
-    int res;
+    int ans = 0;
+
     public int maxDepth(Node root) {
-        if (root == null) return 0;
-        res = 0;
-        getHeight(root, 1);
-        return res;
+        dfs(root, 0);
+        return ans;
     }
 
-    private void getHeight(Node node, int h) {
-        res = Math.max(res, h);
-        for (Node p: node.children) getHeight(p, h + 1);
+    private void dfs(Node node, final int depth) {
+        if (node == null) {
+            return;
+        }
+        ans = Math.max(ans, depth + 1);
+        node.children.forEach(x -> dfs(x, depth + 1));
     }
 }

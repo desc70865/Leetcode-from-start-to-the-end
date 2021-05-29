@@ -32,19 +32,15 @@ One possible answer is: [0,-3,9,-10,null,5], which represents the following heig
  * }
  */
 class Solution {
-    private int[] nums;
     public TreeNode sortedArrayToBST(int[] nums) {
-        this.nums = nums;
-        return build(0, nums.length-1);
+        return dfs(nums, 0, nums.length - 1);
     }
-    
-    private TreeNode build(int start, int end) {
-        if (start > end) return null;
-        int mid = start + (end - start) / 2;
-        int curVal = nums[mid];
-        TreeNode cur = new TreeNode(curVal);
-        cur.left = build(start, mid-1);
-        cur.right = build(mid+1, end);
-        return cur;
+
+    private TreeNode dfs(int[] nums, int left, int right) {
+        if (left > right) {
+            return null;
+        }
+        int mid = left + right >> 1;
+        return new TreeNode(nums[mid], dfs(nums, left, mid - 1), dfs(nums, mid + 1, right));
     }
 }

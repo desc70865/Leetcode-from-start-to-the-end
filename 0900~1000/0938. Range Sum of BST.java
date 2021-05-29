@@ -37,24 +37,16 @@ The final answer is guaranteed to be less than 2^31.
  * }
  */
 class Solution {
-    int sum = 0;
-
-    public int rangeSumBST(TreeNode root, int L, int R) {
-        add(root, L, R);
-        return sum;
-    }
-
-    private void add(TreeNode node, int L, int R) {
-        if (node == null) return ;
-        if (node.val >= L && node.val <= R) sum += node.val;
-        if (node.val > L) add(node.left, L, R);
-        if (node.val < R) add(node.right, L, R);
-    }
-}
-
-
-
-class Solution {public int rangeSumBST(TreeNode root, int low, int high) {
-        return root == null ? 0 : (root.val < low || root.val > high ? 0 : root.val) + rangeSumBST(root.left, low, high) + rangeSumBST(root.right, low, high);
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        if (root == null) {
+            return 0;
+        }
+        if (root.val < low) {
+            return rangeSumBST(root.right, low, high);
+        } else if (root.val > high) {
+            return rangeSumBST(root.left, low, high);
+        } else {
+            return root.val + rangeSumBST(root.left, low, high) + rangeSumBST(root.right, low, high);
+        }
     }
 }

@@ -53,7 +53,7 @@ class Solution {
             list.add(null);
             return list;
         }
-        for (int m = l; m <= r; m++) {
+        for (int m = l; m <= r; ++m) {
             for (TreeNode L: dfs(l, m - 1)) {
                 for (TreeNode R: dfs(m + 1, r)) {
                     list.add(new TreeNode(m, L, R));
