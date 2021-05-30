@@ -26,7 +26,9 @@ class Solution {
 
 
 class Solution {
+    static final int MAX = 1 << 30;
+
     public boolean isPowerOfTwo(int n) {
-        return 1073741824 % n == 0;
+        return n > 0 && MAX % n == 0;
     }
 }
