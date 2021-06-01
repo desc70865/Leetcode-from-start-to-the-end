@@ -23,22 +23,15 @@ You may assume the sum of all the numbers is in the range of a signed 32-bit int
 
 class Solution {
     public boolean checkSubarraySum(int[] nums, int k) {
-        
-    }
-}
-
-
-
-class Solution {
-    Map<Integer, Integer> map = new HashMap<>();
-    public boolean checkSubarraySum(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
         int sum = 0;
         map.put(0, -1);
-        for (int i = 0; i < nums.length; i++) {
-            sum += nums[i];
-            if (k != 0) sum %= k;
-            if (! map.containsKey(sum)) map.put(sum, i);
-            else if (i - map.get(sum) > 1) return true;
+        for (int i = 0; i < nums.length; ++i) {
+            sum = (sum + nums[i]) % k;
+            map.putIfAbsent(sum, i);
+            if (i - map.getOrDefault(sum, i) > 1) {
+                return true;
+            }
         }
         return false;
     }
