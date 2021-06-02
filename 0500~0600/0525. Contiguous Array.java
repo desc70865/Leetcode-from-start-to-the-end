@@ -14,19 +14,15 @@ Note: The length of the given binary array will not exceed 50,000.
 
 class Solution {
     public int findMaxLength(int[] nums) {
-        int cnt = 0;
         Map<Integer, Integer> map = new HashMap<>();
         map.put(0, -1);
-        int N = nums.length;
-        int max = 0;
-        for (int i = 0; i < N; i++) {
-            if (nums[i] == 1) cnt++;
-            else cnt--;
-            int k = map.getOrDefault(cnt, i);
-            max = Math.max(max, i - k);
-            map.put(cnt, k);
+        int ans = 0;
+        for (int i = 0, sum = 0; i < nums.length; ++i) {
+            sum += nums[i] == 1 ? 1 : -1;
+            ans = Math.max(ans, i - map.getOrDefault(sum, i));
+            map.putIfAbsent(sum, i);
         }
-        return max;
+        return ans;
     }
 }
 
@@ -34,21 +30,18 @@ class Solution {
 
 class Solution {
     public int findMaxLength(int[] nums) {
-        int N = nums.length;
-        int sum = 0;
-        int[] pre = new int[N * 2 + 1];
-        Arrays.fill(pre, -2);
-        pre[N] = -1;
-        int max = 0;
-        for (int i = 0; i < N; i++) {
-            if (nums[i] == 1) sum++;
-            else sum--;
-            if (pre[sum + N] > -2) {
-                max = Math.max(max, i - pre[sum + N]);
-            } else {
-                pre[sum + N] = i;
+        int n = nums.length;
+        int[] map = new int[(n << 1) + 1];
+        map[n] = 1;
+        int ans = 0;
+        for (int i = 0, sum = 0; i < nums.length; ++i) {
+            sum += nums[i] == 1 ? 1 : -1;
+            int idx = map[sum + n] > 0 ? map[sum + n] : i + 2;
+            if (map[sum + n] == 0) {
+                map[sum + n] = i + 2;
             }
+            ans = Math.max(ans, i + 2 - idx);
         }
-        return max;
+        return ans;
     }
 }
