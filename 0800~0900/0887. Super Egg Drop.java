@@ -82,17 +82,16 @@ dp[m][k] is the number of combinations and it increase exponentially to N
 
 class Solution {
     public int superEggDrop(int K, int N) {
-        /* int[][] dp = new int[N + 1][K + 1];
         int m = 0;
-        for (; dp[m][K] < N; m++) {
+        /* int[][] dp = new int[N + 1][K + 1];
+        for (; dp[m][K] < N; ++m) {
             for (int k = 1; k <= K; ++k) {
-                dp[m + 1][k] = dp[m][k - 1]+ 1 + dp[m][k] ;
+                dp[m + 1][k] = dp[m][k - 1] + 1 + dp[m][k] ;
             }
         } */
         int[] dp = new int[K + 1];
-        int m = 0;
-        for (; dp[K] < N; m++) {
-            for (int i = K; i > 0; i--) {
+        for (; dp[K] < N; ++m) {
+            for (int i = K; i > 0; --i) {
                 dp[i] += dp[i - 1] + 1;
             }
         }
