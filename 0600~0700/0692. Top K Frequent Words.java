@@ -26,28 +26,8 @@ class Solution {
         for (String word: words) {
             map.merge(word, 1, Integer::sum);
         }
-        PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> a.t == b.t ? b.s.compareTo(a.s) : a.t - b.t);
-        for (String key: map.keySet()) {
-            pq.offer(new Node(key, map.get(key)));
-            if (pq.size() > k) {
-                pq.poll();
-            }
-        }
-        List<String> ans = new ArrayList<>(k);
-        for (int i = 0; i < k; i++) {
-            ans.add(pq.poll().s);
-        }
-        Collections.reverse(ans);
-        return ans;
-    }
-}
-
-class Node {
-    String s;
-    int t;
-
-    public Node(String s, int t) {
-        this.s = s;
-        this.t = t;
+        List<String> list = new ArrayList<>(map.keySet());
+        Collections.sort(list, (a, b) -> map.get(a) == map.get(b) ? a.compareTo(b) : map.get(b) - map.get(a));
+        return list.subList(0, k);
     }
 }
