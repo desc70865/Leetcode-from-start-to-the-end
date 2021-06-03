@@ -39,22 +39,24 @@ The answer will not exceed 2^31 - 1.
  * }
  */
 class Solution {
-    private int sum = 0;
+    int sum = 0;
     
     public int sumRootToLeaf(TreeNode root) {
         dfs(root, 0);
         return sum;
     }
     
-    private void dfs(TreeNode node, int p) {
-        if (node == null) return ;
-        p <<= 1;
-        p += node.val;
-        if (node.left == null && node.right == null) {
-            sum += p;
+    private void dfs(TreeNode node, int path) {
+        if (node == null) {
             return ;
         }
-        dfs(node.left, p);
-        dfs(node.right, p);
+        path <<= 1;
+        path |= node.val;
+        if (node.left == null && node.right == null) {
+            sum += path;
+            return ;
+        }
+        dfs(node.left, path);
+        dfs(node.right, path);
     }
 }
