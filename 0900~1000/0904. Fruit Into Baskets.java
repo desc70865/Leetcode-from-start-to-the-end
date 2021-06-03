@@ -45,27 +45,22 @@ Note:
  */
 
 class Solution {
-    Map<Integer, Integer> map;
-
     public int totalFruit(int[] tree) {
-        map = new HashMap<>();
-        int L = 0;
-        int max = 0;
-        for (int R = 0; R < tree.length; R++) {
-            map.merge(tree[R], 1, Integer::sum);
-            while (map.size() > 2) {
-                remove(tree[L++]);
+        int ans = 1;
+        for (int sum = 1, last = -1, i = 1; i < tree.length; ++i) {
+            if (tree[i] == tree[i - 1]) {
+                ++sum;
+            } else {
+                if (last == -1 || tree[last] == tree[i]) {
+                    ++sum;
+                } else {
+                    sum = i - last;
+                }
+                last = i - 1;
             }
-            max = Math.max(max, R - L + 1);
+            ans = Math.max(ans, sum);
         }
-        return max;
-    }
-
-    private void remove(int x) {
-        map.merge(x, -1, Integer::sum);
-        if (map.get(x) == 0) {
-            map.remove(x);
-        }
+        return ans;
     }
 }
 
@@ -73,23 +68,29 @@ class Solution {
 
 class Solution {
     public int totalFruit(int[] tree) {
-        int A = tree[0];
+        int x = tree[0];
         int R = 1;
-        int N = tree.length;
-        while (R < N && tree[R] == A) R++;
-        if (R == N) return N;
-        int B = tree[R];
+        int n = tree.length;
+        while (R < n && tree[R] == x) {
+            ++R;
+        }
+        if (R == n) {
+            return n;
+        }
+        int y = tree[R];
         int L = 0;
         int max = 0;
-        while (R < N) {
-            if (tree[R] != A && tree[R] != B) {
-                A = tree[R - 1];
-                B = tree[R];
+        while (R < n) {
+            if (tree[R] != x && tree[R] != y) {
+                x = tree[R - 1];
+                y = tree[R];
                 max = Math.max(max, R - L);
                 L = R - 1;
-                while (tree[L - 1] == A) L--;
+                while (tree[L - 1] == x) {
+                    --L;
+                }
             }
-            R++;
+            ++R;
         }
         return Math.max(max, R - L);
     }
