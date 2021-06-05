@@ -48,90 +48,91 @@ positions[i].length == 2
  */
 
 class Solution {
+    static final double epsilon = 1e-6;
+
     public double getMinDistSum(int[][] positions) {
-        
+        double l = 0, r = 100;
+        while (r - l > epsilon) {
+            double mL = l + (r - l) / 3.0;
+            double mR = r - (r - l) / 3.0;
+            if (triSearch(positions, mL) > triSearch(positions, mR)) {
+                l = mL;
+            } else {
+                r = mR;
+            }
+        }
+        return triSearch(positions, l);
+    }
+
+    private double triSearch(int[][] positions, double x) {
+        double d = 0, u = 100;
+        while (u - d > epsilon) {
+            double mD = d + (u - d) / 3;
+            double mU = u - (u - d) / 3;
+            if (sum(positions, x, mD) > sum(positions, x, mU)) {
+                d = mD;
+            } else {
+                u = mU;
+            }
+        }
+        return sum(positions, x, d);
+    }
+
+    private double sum(int[][] positions, double x, double y) {
+        double res = 0;
+        for (int[] p: positions) {
+            res += Math.sqrt((p[0] - x) * (p[0] - x) + (p[1] - y) * (p[1] - y));
+        }
+        return res;
     }
 }
 
-// 随机或指定初始位置及步长
-// 四向搜索更新最小距离和并缩短步长 # 精度限制
+
 
 class Solution {
-    private int[][] positions;
-    private boolean finish = false;
-    private final int LOW = 0, HIGH = 100;
-    private final double E = 0.000001;
-    
-    class Point {
-        double x;
-        double y;
-        double sumDis = 0;
-        
-        public Point(double _x, double _y) {
-            x = _x;
-            y = _y;
-            sumDis = calcDistance(positions, this);
-        }
-        public void update(Point t) {
-            x = t.x;
-            y = t.y;
-            sumDis = t.sumDis;
-        }
-    }
-    
+    static final double epsilon = 1e-8;
+    static final int[] dir = {0, 1, 0, -1, 0};
+
+    double ans = 0.0;
+
     public double getMinDistSum(int[][] positions) {
-        this.positions = positions;
-        
-        int xMin = HIGH, xMax = LOW, yMin = HIGH, yMax = LOW;
-        for (int[] nums: positions) {
-            xMin = Math.min(xMin, nums[0]);
-            xMax = Math.max(xMax, nums[0]);
-            yMin = Math.min(yMin, nums[1]);
-            yMax = Math.max(yMax, nums[1]);
+        double[] centre = new double[2];
+        for (int[] p: positions) {
+            centre[0] += p[0];
+            centre[1] += p[1];
         }
-        
-        int x0 = (xMax + xMin) / 2;
-        int y0 = (yMax + yMin) / 2;
-        double step = (xMax - x0 + yMax - y0) / 2;
-        
-        int x[] = { 1, -1, 0, 0 };
-        int y[] = { 0, 0, 1, -1 };
-        Point res = new Point(x0, y0), t;
-        
-        while (step > E) {
-            finish = false;
-            for (int i = 0; i < 4; i++) {
-                double a = res.x + step * x[i], b = res.y + step * y[i];
-                /* if (check(a) || check(b)) {
-                    continue;
-                } */
-                t = new Point(a, b);
-                if (t.sumDis < res.sumDis) {
-                    res.update(t);
-                    finish = true;
-                    break;
-                }
-            }
-            if (!finish) {
-                step /= 2;
+        int n = positions.length;
+        centre[0] /= n;
+        centre[1] /= n;
+        this.ans = sum(centre,positions);
+        search(centre, positions, 1.0);
+        return ans;
+    }
+
+    private void search(double[] c, int[][] positions, double step) {
+        if (step <= epsilon) {
+            return;
+        }
+        double[] next = new double[2];
+        int k = 0;
+        for (; k < 4; ++k) {
+            next[0] = c[0] + step * dir[k];
+            next[1] = c[1] + step * dir[k + 1];
+            double sum = sum(next, positions);
+            if (sum < ans) {
+                c = next;
+                ans = sum;
+                break;
             }
         }
-        return res.sumDis;
+        search(c, positions, k >= 4 ? step / 2.0 : step);
     }
-    
-    private boolean check(double x) {
-        return x < LOW || x > HIGH;
-    }
-    
-    private double calcDistance(int[][] arr, Point p) {
-        double sum = 0;
-        for (int[] nums: arr) {
-            sum += thisSqrt(p.x - nums[0], p.y - nums[1]);
+
+    public double sum(double[] c, int[][] positions) {
+        double res = 0;
+        for (int[] p: positions) {
+            res += Math.sqrt((p[0] - c[0]) * (p[0] - c[0]) + (p[1] - c[1]) * (p[1] - c[1]));
         }
-        return sum;
-    }
-    
-    private double thisSqrt(double x, double y) {
-        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        return res;
     }
 }

@@ -19,42 +19,10 @@ Output: 1->2->3->4->5
  */
 class Solution {
     public ListNode removeElements(ListNode head, int val) {
-        ListNode dummy = new ListNode();
-        dummy.next = head;
-        ListNode p = dummy;
-        while (p != null && p.next != null) {
-            while (p.next != null && p.next.val == val) {
-                p.next = p.next.next;
-            }
-            p = p.next;
+        ListNode dummy = new ListNode(-1, head);
+        for (ListNode node = dummy; node != null && node.next != null; node = node.next) {
+            for (; node.next != null && node.next.val == val; node.next = node.next.next) ;
         }
         return dummy.next;
-    }
-}
-
-
-
-class Solution {
-    public ListNode removeElements(ListNode head, int val) {
-        
-        while (head != null && head.val == val) {
-            head = head.next;
-        }
-        
-        if (head == null) {
-            return head;
-        }
-        
-        ListNode cur = head;
-        
-        while (cur.next != null) {
-            if (cur.next.val == val) {
-                cur.next = cur.next.next;
-            } else {
-                cur = cur.next;
-            }
-        }
-        
-        return head;
     }
 }
