@@ -26,23 +26,27 @@ Your output answer is guaranteed to be fitted in a 32-bit integer.
  */
 
 class Solution {
-    public int findTargetSumWays(int[] nums, int S) {
+    public int findTargetSumWays(int[] nums, int target) {
         int sum = 0;
-        for (int num: nums) sum += num;
-        if (sum < S || (sum - S) % 2 != 0) return 0;
-
-        int target = (sum + S) / 2;
-        return change(target, nums);
+        for (int num: nums) {
+            sum += num;
+        }
+        if (sum < target || (sum + target) % 2 == 1) {
+            return 0;
+        }
+        return match(nums, sum + target >> 1);
     }
 
-    public int change(int amount, int[] coins) {
+    public int match(int[] coins, int amount) {
         int[] dp = new int[amount + 1];
         dp[0] = 1;
         for (int coin: coins) {
-            for (int x = amount; x >= coin; x--) {
+            for (int x = amount; x >= coin; --x) {
                 dp[x] += dp[x - coin];
             }
         }
         return dp[amount];
     }
 }
+
+// 0518. Coin Change 2
