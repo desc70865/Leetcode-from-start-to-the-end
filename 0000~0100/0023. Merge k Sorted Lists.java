@@ -50,3 +50,27 @@ public class Solution {
 }
 
 // 分治
+
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        int n = lists.length;
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> lists[a].val - lists[b].val);
+        for (int i = 0; i < n; ++i) {
+            if (lists[i] != null) {
+                pq.offer(i);
+            }
+        }
+        ListNode dummy = new ListNode(-1);
+        ListNode node = dummy;
+        while (pq.size() > 0) {
+            int idx = pq.poll();
+            node.next = new ListNode(lists[idx].val);
+            node = node.next;
+            lists[idx] = lists[idx].next;
+            if (lists[idx] != null) {
+                pq.offer(idx);
+            }
+        }
+        return dummy.next;
+    }
+}

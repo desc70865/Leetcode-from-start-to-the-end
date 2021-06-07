@@ -32,82 +32,22 @@ strs[i] consists only of digits '0' and '1'.
 class Solution {
     public int findMaxForm(String[] strs, int m, int n) {
         int[][] dp = new int[m + 1][n + 1];
-        for (int i = 0; i < strs.length; i++) {
-            int zero = 0;
-            int one = 0;
-            for (char c: strs[i].toCharArray()) {
-                if (c == '0') zero++;
-                else one++;
-            }
-            for (int j = m; j >= zero; j--) {
-                for (int k = n; k >= one; k--) {
-                    dp[j][k] = Math.max(dp[j][k], 1 + dp[j - zero][k - one]);
+        for (String s: strs) {
+            int[] cnt = count(s);
+            for (int zero = m; zero >= cnt[0]; --zero) {
+                for (int one = n; one >= cnt[1]; --one) {
+                    dp[zero][one] = Math.max(dp[zero][one], 1 + dp[zero - cnt[0]][one - cnt[1]]);
                 }
             }
         }
         return dp[m][n];
     }
-}
 
-// ???
-
-class Solution {
-    boolean[] v;
-    double w;
-    int N;
-    public int findMaxForm(String[] strs, int m, int n) {
-        if (m == 100 && n == 6) return 4;
-        N = strs.length;
-        v = new boolean[N];
-        int[][] A = init(strs);
-        w = (double) m / n;
-        Arrays.sort(A, new MyComparator());
-        // for (int[] p: A) System.out.println(Arrays.toString(p));
-
-        int res = 0;
-        for (int i = 0; i < N; i++) {
-            if (v[i]) continue;
-            int[] P = A[i];
-            if (P[0] > m || P[1] > n) continue;
-            int cnt = 1;
-            int a = m - P[0], b = n - P[1];
-            for (int j = 0; j < N; j++) {
-                if (i == j) continue;
-                int[] Q = A[j];
-                if (Q[0] > a || Q[1] > b) continue;
-                cnt++;
-                a -= Q[0];
-                b -= Q[1];
-                v[j] = true;
-            }
-            res = Math.max(res, cnt);
+    private int[] count(String s) {
+        int[] ans = new int[2];
+        for (char c: s.toCharArray()) {
+            ++ans[c - '0'];
         }
-        return res;
-    }
-    
-    public class MyComparator implements Comparator<int[]> {
-        @Override
-        public int compare(int[] a, int[] b) {
-            int d = (int) (f(a) - f(b));
-            return d == 0 ? d(a, b) : d;
-        }
-    }
-
-    private int d(int[] A, int[] B) {
-        return Math.abs(A[0] - A[1]) - Math.abs(B[0] - B[1]);
-    }
-    
-    private double f(int[] A) {
-        return w * A[1] + A[0];
-    }
-
-    private int[][] init(String[] strs) {
-        int[][] A = new int[N][2];
-        for (int i = 0; i < N; i++) {
-            for (char c: strs[i].toCharArray()) {
-                A[i][c - 48]++;
-            }
-        }
-        return A;
+        return ans;
     }
 }
