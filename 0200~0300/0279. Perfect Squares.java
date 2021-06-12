@@ -15,19 +15,20 @@ Explanation: 13 = 4 + 9.
 
 class Solution {
     public int numSquares(int n) {
-        if (this.isSquare(n))
+        if (this.isSquare(n)) {
             return 1;
-        
-        while (n % 4 == 0)
-            n >>= 2;
-        if (n % 8 == 7)
-            return 4;
-        
-        for (int i = 1; i * i < n; ++i) {
-            if (this.isSquare(n - i * i))
-                return 2;
         }
-        
+        while (n % 4 == 0) {
+            n >>= 2;
+        }
+        if (n % 8 == 7) {
+            return 4;
+        }
+        for (int i = 1; i * i < n; ++i) {
+            if (this.isSquare(n - i * i)) {
+                return 2;
+            }
+        }
         return 3;
     }
 

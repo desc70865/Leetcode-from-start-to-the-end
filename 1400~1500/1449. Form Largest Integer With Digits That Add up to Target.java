@@ -50,36 +50,34 @@ cost.length == 9
 
 class Solution {
     public String largestNumber(int[] cost, int target) {
-        StringBuilder[] f = new StringBuilder[target + 1];
-        int n = cost.length;
-        f[0] = new StringBuilder();
-        for (int i = 0; i < n; ++i) {
-            for (int j = cost[i]; j <= target; ++j) {
-                if (f[j - cost[i]] == null) {
-                    continue;
-                }
-                StringBuilder next = new StringBuilder(String.valueOf(i + 1)).append(f[j - cost[i]]);
-                if (compare(next, f[j])) {
-                    f[j] = next;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < 9; ++i) {
+            map.put(cost[i], i + 1);
+        }
+        int[] maxSize = new int[target + 1];
+        Arrays.fill(maxSize, Integer.MIN_VALUE);
+        maxSize[0] = 0;
+        for (int k: map.keySet()) {
+            for (int c = k; c <= target; ++c) {
+                maxSize[c] = Math.max(maxSize[c], maxSize[c - k] + 1);
+            }
+        }
+        if (maxSize[target] < 0) {
+            return "0";
+        }
+        List<Integer> list = new ArrayList<>(map.values());
+        Collections.sort(list, Collections.reverseOrder());
+        StringBuilder ans = new StringBuilder();
+        while (target > 0) {
+            for (int num: list) {
+                int expend = cost[num - 1];
+                if (target >= expend && maxSize[target - expend] + 1 == maxSize[target]) {
+                    ans.append(num);
+                    target -= expend;
+                    break;
                 }
             }
         }
-        return f[target] == null ? "0" : f[target].toString();
-    }
-	
-    private boolean compare(StringBuilder a, StringBuilder b) {
-        if (b == null) return true;
-        int n = a.length(), m = b.length();
-        if (n != m) {
-            return n > m;
-        }
-        for (int i = 0; i < n; ++i) {
-            if (a.charAt(i) > b.charAt(i)) {
-                return true;
-            } else if (a.charAt(i) < b.charAt(i)) {
-                return false;
-            }
-        }
-        return true;
+        return ans.toString();
     }
 }
