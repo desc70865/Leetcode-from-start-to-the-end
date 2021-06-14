@@ -38,15 +38,6 @@ class Solution {
     public int minFlips(String s) {
         char[] t = s.toCharArray();
         int n = t.length;
-        if (n % 2 == 0) {
-            int x = 0;
-            for (int i = 0; i < n; ++i) {
-                if (t[i] - '0' != i % 2) {
-                    ++x;
-                }
-            }
-            return Math.min(x, n - x);
-        }
         int min = 0, max = 0;
         int c = 0, r = 0;
         for (int i = 0; i < n; ++i) {
@@ -56,6 +47,6 @@ class Solution {
                 min = Math.min(min, --r + c);
             }
         }
-        return Math.min(min - r, n - (max - r));
+        return n % 2 == 0 ? Math.min(c, -r) : Math.min(min - r, n - (max - r));
     }
 }

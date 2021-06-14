@@ -27,38 +27,18 @@ Output: 6
 
 public class Solution extends GuessGame {
     public int guessNumber(int n) {
-        return guessN(0, n);
-    }
-    
-    private int guessN(int start, int end) {
-        int mid = start + (end - start) / 2;
-        int p = this.guess(mid);
-        if (p < 0) {
-            return guessN(start, mid - 1);
-        } else if (p > 0) {
-            return guessN(mid + 1, end);
-        } else {
-            return mid;
-        }
-    }
-}
-
-
-
-public class Solution extends GuessGame {
-    public int guessNumber(int n) {
-        int l = 0, r = n, mid, p;
-        while (l <= r) {
-            mid = l + (r - l) / 2;
-            p = guess(mid);
-            if (p < 0) {
-                r = mid - 1;
-            } else if (p > 0) {
-                l = mid + 1;
+        int l = 1, r = n;
+        while (l < r) {
+            int m = l + (r - l >> 1);
+            int x = guess(m);
+            if (x == 1) {
+                l = m + 1;
+            } else if (x == -1) {
+                r = m - 1;
             } else {
-                return mid;
+                return m;
             }
         }
-        return -1;
+        return l;
     }
 }

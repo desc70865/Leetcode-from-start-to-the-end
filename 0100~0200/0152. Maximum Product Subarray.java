@@ -1,34 +1,56 @@
 /* 
-Given an integer array nums, find the contiguous subarray within an array (containing at least one number) which has the largest product.
+Given an integer array nums, find a contiguous non-empty subarray within the array that has the largest product, and return the product.
+
+It is guaranteed that the answer will fit in a 32-bit integer.
+
+A subarray is a contiguous subsequence of the array.
+
+ 
 
 Example 1:
 
-Input: [2,3,-2,4]
+Input: nums = [2,3,-2,4]
 Output: 6
 Explanation: [2,3] has the largest product 6.
 Example 2:
 
-Input: [-2,0,-1]
+Input: nums = [-2,0,-1]
 Output: 0
 Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+ 
+
+Constraints:
+
+1 <= nums.length <= 2 * 104
+-10 <= nums[i] <= 10
+The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
  */
 
 class Solution {
     public int maxProduct(int[] nums) {
-        int len = nums.length;
-        if (len == 1) return nums[0];
-        return Math.max(cal(nums, 0, len - 1, 1), cal(nums, len - 1, 0, -1));
+        int n = nums.length;
+        if (n == 1) {
+            return nums[0];
+        }
+        return Math.max(
+            maxProduct(nums, 0, n - 1, 1),
+            maxProduct(nums, n - 1, 0, -1)
+        );
     }
 
-    private int cal(int[] nums, int l, int r, int step) {
-        int max = 0;
-        int multi = 1;
-        for (; ; l += step) {
+    private int maxProduct(int[] nums, int l, int r, int s) {
+        int ans = 0;
+        for (int multi = 1; ; l += s) {
             multi *= nums[l];
-            if (multi == 0) multi = 1;
-            else max = Math.max(max, multi);
-            if (l == r) break;
+            if (multi == 0) {
+                multi = 1;
+            } else {
+                ans = Math.max(ans, multi);
+            }
+            if (l == r) {
+                break;
+            }
         }
-        return max;
+        return ans;
     }
 }

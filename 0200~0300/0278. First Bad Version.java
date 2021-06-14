@@ -21,13 +21,13 @@ Then 4 is the first bad version.
 
 public class Solution extends VersionControl {
     public int firstBadVersion(int n) {
-        int l = 0, r = n;
-        while (l <= r) {
-            int mid = l + (r - l) / 2;
-            if (this.isBadVersion(mid)) {
-                r = mid - 1;
+        int l = 1, r = n;
+        while (l < r) {
+            int m = (r - l >> 1) + l;
+            if (this.isBadVersion(m)) {
+                r = m;
             } else {
-                l = mid + 1;
+                l = m + 1;
             }
         }
         return l;
