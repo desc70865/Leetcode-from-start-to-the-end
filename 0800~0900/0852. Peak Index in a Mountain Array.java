@@ -41,7 +41,9 @@ arr is guaranteed to be a mountain array.
 class Solution {
     public int peakIndexInMountainArray(int[] arr) {
         int p = 1;
-        while (arr[p] < arr[p + 1]) p++;
+        while (arr[p] < arr[p + 1]) {
+            ++p;
+        }
         return p;
     }
 }
