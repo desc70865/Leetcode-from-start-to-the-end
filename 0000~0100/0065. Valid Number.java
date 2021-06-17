@@ -30,94 +30,38 @@ The signature of the C++ function had been updated. If you still see your functi
  */
 
 class Solution {
-    public static boolean isNumber(String s) {
-        if (s == null || s.trim().equals("")) {
-            return false;
-        }
-        s = s.trim();
-        boolean num = false;
-        boolean e = false;
-        boolean point = false;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            // 非法字母排除
-            if ((c <'0' || c >'9') && c!='e' && c!='+' && c!='-' && c!='.') {
-                return false;
-            }
-            if (c>='0' && c<='9') {
-                num =true;
-            }
-            // e只能出现一次。且在数字之间
-            else if (c == 'e') {
-                e = true;
-                if (i == 0 || i!= s.lastIndexOf("e") || i==s.length()-1 || !num) {
-                    return false;
-                }
-                num = false;
-            }
-            else if (c == '+'|| c == '-') { // 符号只能出现在首位或者e之后
-                if (i > 0 && s.charAt(i - 1) != 'e') {
-                    return false;
-                }
-            } else if (c == '.') { // e之后不能有小数点,不能重复
-                if ((e && i > s.indexOf("e")) || point ) {
-                    return false;
-                }
-                point = true;
-            }
-        }
-       return num;
-    }
-}
-
-
-class Solution {
+    static final int MASK = 0b101101000;
+    static final int[][] FSM = {{ 0,  1,  6,  2, -1},
+                                {-1, -1,  6,  2, -1},
+                                {-1, -1,  3, -1, -1},
+                                { 8, -1,  3, -1,  4},
+                                {-1,  7,  5, -1, -1},
+                                { 8, -1,  5, -1, -1},
+                                { 8, -1,  6,  3,  4},
+                                {-1, -1,  5, -1, -1},
+                                { 8, -1, -1, -1, -1}};
+    
     public boolean isNumber(String s) {
-        String regex = "\\s*(\\+|-)?(\\d+|(\\d+\\.\\d*)|(\\d*\\.\\d+))(e(\\+|-)?\\d+)?\\s*";
-        return s.matches(regex);
+        int state = 0;
+        for (char c: s.toCharArray()) {
+            int next = map(c);
+            if (next < 0) return false;
+            state = FSM[state][next];
+            if (state < 0) return false;
+        }
+        return (MASK & (1 << state)) > 0;
+    }
+
+    public int map(char c) {
+        switch (c) {
+            case ' ': return 0;
+            case '+':
+            case '-': return 1;
+            case '.': return 3;
+            case 'e': 
+            case 'E': return 4;
+            default: if (c >= '0' && c <= '9') return 2;
+        }
+        return -1;
     }
 }
-
-// https://blog.csdn.net/kenden23/article/details/18696083
-// Finite automata machine
-
-
-/* class Solution {
-public:
-	bool isNumber(const char *s) {
-		enum InputType {
-			INVALID,		// 0 Include: Alphas, '(', '&' ans so on
-			SPACE,		// 1
-			SIGN,		// 2 '+','-'
-			DIGIT,		// 3 numbers
-			DOT,			// 4 '.'
-			EXPONENT,		// 5 'e' 'E'
-		};
-		int transTable[][6] = {
-		//0INVA,1SPA,2SIG,3DI,4DO,5E
-			-1,  0,  3,  1,  2, -1,//0初始无输入或者只有space的状态
-			-1,  8, -1,  1,  4,  5,//1输入了数字之后的状态
-			-1, -1, -1,  4, -1, -1,//2前面无数字，只输入了Dot的状态
-			-1, -1, -1,  1,  2, -1,//3输入了符号状态
-			-1,  8, -1,  4, -1,  5,//4前面有数字和有dot的状态
-			-1, -1,  6,  7, -1, -1,//5'e' or 'E'输入后的状态
-			-1, -1, -1,  7, -1, -1,//6输入e之后输入Sign的状态
-			-1,  8, -1,  7, -1, -1,//7输入e后输入数字的状态
-			-1,  8, -1, -1, -1, -1,//8前面有有效数输入之后，输入space的状态
-		};
-		int state = 0;
-		while (*s)
-		{
-			InputType input = INVALID;
-			if (*s == ' ') input = SPACE;
-			else if (*s == '+' || *s == '-') input = SIGN;
-			else if (isdigit(*s)) input = DIGIT;
-			else if (*s == '.') input = DOT;
-			else if (*s == 'e' || *s == 'E') input = EXPONENT;
-			state = transTable[state][input];
-			if (state == -1) return false;
-			++s;
-		}
-		return state == 1 || state == 4 || state == 7 || state == 8;
-	}
-}; */
