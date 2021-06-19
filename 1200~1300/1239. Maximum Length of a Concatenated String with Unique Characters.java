@@ -30,29 +30,39 @@ arr[i] contains only lower case English letters.
  */
 
 class Solution {
+    Set<Integer> set = new HashSet<>();
+
     public int maxLength(List<String> arr) {
-        return dfs(arr, 0, 0);
+        for (String word: arr) {
+            encode(word);
+        }
+        return dfs(new ArrayList<>(set), 0, 0);
     }
 
-    private int dfs(List<String> arr, int idx, int map) {
-        if (idx == arr.size()) {
+    private int dfs(List<Integer> list, int idx, int mask) {
+        if (idx == list.size()) {
             return 0;
         }
-        int code = encode(arr.get(idx));
-        if (code < 0 || (code & map) > 0) return dfs(arr, idx + 1, map);
-        return Math.max(dfs(arr, idx + 1, map | code) + arr.get(idx).length(), dfs(arr, idx + 1, map));
+        int code = list.get(idx);
+        if ((code & mask) > 0) {
+            return dfs(list, idx + 1, mask);
+        }
+        return Math.max(
+            dfs(list, idx + 1, mask | code) + Integer.bitCount(list.get(idx)),
+            dfs(list, idx + 1, mask)
+        );
     }
 
-    private int encode(String s) {
-        int bit = 0;
+    private void encode(String s) {
+        int mask = 0;
         for (char c: s.toCharArray()) {
-            int cur = 1 << c - 97;
-            if ((bit & cur) == 0) {
-                bit |= cur;
+            int bit = 1 << c - 97;
+            if ((mask & bit) == 0) {
+                mask |= bit;
             } else {
-                return -1;
+                return;
             }
         }
-        return bit;
+        set.add(mask);
     }
 }
