@@ -34,71 +34,24 @@ Explanation: All root-to-leaf paths are: 1->2->5, 1->3
  * }
  */
 class Solution {
-    List<String> res = new ArrayList<>();
+    List<String> ans = new ArrayList<>();
+
     public List<String> binaryTreePaths(TreeNode root) {
-        search(root, "");
-        return res;
+        dfs(root, new ArrayList<>());
+        return ans;
     }
 
-    private boolean search(TreeNode node, String sb) {
+    private void dfs(TreeNode node, List<String> path) {
         if (node == null) {
-            return true;
+            return;
         }
-        if (sb.length() > 0) sb += "->";
-        sb += node.val;
-        boolean l = search(node.left, sb), r = search(node.right, sb);
-        if (l && r) {
-            res.add(sb);
-        }
-        return false;
-    }
-}
-
-
-
-class Solution {
-    List<String> res = new ArrayList<>();
-    public List<String> binaryTreePaths(TreeNode root) {
-        search(root, "");
-        return res;
-    }
-
-    private void search(TreeNode node, String sb) {
-        if (node == null) {
-            return ;
-        }
-        sb += node.val;
+        path.add(String.valueOf(node.val));
         if (node.left == null && node.right == null) {
-            res.add(sb);
-            return ;
-        }
-        sb += "->";
-        search(node.left, sb);
-        search(node.right, sb);
-    }
-}
-
-
-
-class Solution {
-    List<String> res = new ArrayList<>();
-    Stack<String> p = new Stack<String>();
-    public List<String> binaryTreePaths(TreeNode root) {
-        search(root);
-        return res;
-    }
-
-    private void search(TreeNode node) {
-        if (node == null) {
-            return ;
-        }
-        p.push("" + node.val);
-        if (node.left == null && node.right == null) {
-            res.add(String.join("->", p));
+            ans.add(String.join("->", path));
         } else {
-            search(node.left);
-            search(node.right);
+            dfs(node.left, path);
+            dfs(node.right, path);
         }
-        p.pop();
+        path.remove(path.size() - 1);
     }
 }

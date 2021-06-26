@@ -33,7 +33,7 @@ class Solution {
     private String parseWatch(int hour, int minute) {
         StringBuilder sb = new StringBuilder();
         sb.append(hour).append(":");
-        if(minute < 10) {
+        if (minute < 10) {
             sb.append(0);
         }
         sb.append(minute);

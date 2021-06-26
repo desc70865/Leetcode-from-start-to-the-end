@@ -58,20 +58,16 @@ At most 10 calls will be made to getInheritanceOrder.
  */
 
 class ThroneInheritance {
-    Map<String, List<String>> Inheritance;
-    Set<String> death;
-    List<String> inheritanceOrder;
-    String ancestor;
+    Map<String, List<String>> tree = new HashMap<>();
+    Set<String> death = new HashSet<>();
+    String root;
 
     public ThroneInheritance(String kingName) {
-        Inheritance = new HashMap<>();
-        Inheritance.put(kingName, new ArrayList<>());
-        this.ancestor = kingName;
-        death = new HashSet<>();
+        this.root = kingName;
     }
     
     public void birth(String parentName, String childName) {
-        Inheritance.computeIfAbsent(parentName, x -> new ArrayList<>()).add(childName);
+        tree.computeIfAbsent(parentName, x -> new ArrayList<>()).add(childName);
     }
     
     public void death(String name) {
@@ -79,15 +75,17 @@ class ThroneInheritance {
     }
     
     public List<String> getInheritanceOrder() {
-        inheritanceOrder = new ArrayList<>();
-        dfs(ancestor);
-        return inheritanceOrder;
+        return dfs(new ArrayList<>(), root);
     }
 
-    private void dfs(String cur) {
-        if (! death.contains(cur)) inheritanceOrder.add(cur);
-        if (! Inheritance.containsKey(cur)) return;
-        for (String child: Inheritance.get(cur)) dfs(child);
+    private List<String> dfs(List<String> inheritanceOrder, String cur) {
+        if (! death.contains(cur)) {
+            inheritanceOrder.add(cur);
+        }
+        for (String child: tree.getOrDefault(cur, new ArrayList<>())) {
+            dfs(inheritanceOrder, child);
+        }
+        return inheritanceOrder;
     }
 }
 

@@ -45,85 +45,51 @@ target and deadends[i] consist of digits only.
  */
 
 class Solution {
-    private int[] x = {1, 10, 100, 1000};
-    private int[] vis = new int[10000]; // 索引表示密码，值为1时，为死亡数字
-    private int[] dis1 = new int[10000]; // 索引表示密码，值表示步数
-    private int[] dis2 = new int[10000];
-    private int touch = 0; // 相交
-    private boolean flag = false;
-    private Queue<Integer> q1 = new LinkedList<>();
-    private Queue<Integer> q2 = new LinkedList<>();
+    static final int MAX = 10000;
+    static final int[] increments = {1, -1, 10, -10, 100, -100, 1000, -1000};
 
     public int openLock(String[] deadends, String target) {
-        int t1, t2;
-        int[] temp = new int[2];
-        for (String s : deadends)
-            vis[Integer.parseInt(s)] = 1; // 死亡数字
-        // q1从0000开始
-        if (vis[0] == 1)
+        Set<Integer> deadSet = new HashSet<>();
+        for (String deadend: deadends) {
+            deadSet.add(Integer.parseInt(deadend));
+        }
+        int end = Integer.parseInt(target);
+        if (deadSet.contains(0)) {
             return -1;
-        q1.offer(0);
-        vis[0] = 1;
-        dis1[0] = 1;
-        // q2从target开始
-        int tar = Integer.parseInt(target);
-        if (tar == 0)
+        } else if (end == 0) {
             return 0;
-        if (vis[tar] == 1)
-            return -1;
-        q2.offer(tar);
-        vis[tar] = 1;
-        dis2[tar] = 1;
-        while (q1.size() > 0 && q2.size() > 0) {
-            t1 = q1.poll();
-            t2 = q2.poll();
-            if (flag) {
-                return dis1[touch];
-            }
-            for (int i = 0; i < 4; i++) {
-                temp = js(t1, i);
-                add(temp[0], dis1[t1], 1);
-                add(temp[1], dis1[t1], 1);
-            }
-            for (int i = 0; i < 4; i++) {
-                temp = js(t2, i);
-                add(temp[0], dis2[t2], 2);
-                add(temp[1], dis2[t2], 2);
+        }
+        Deque<Integer> queue = new ArrayDeque<>();
+        Set<Integer> set = new HashSet<>();
+        queue.offer(0);
+        set.add(0);
+        int step = 0;
+        while (queue.size() > 0) {
+            ++step;
+            int size = queue.size();
+            while (--size >= 0) {
+                int curState = queue.poll();
+                for (int i = 0; i < 8; ++i) {
+                    int pow = (int) Math.pow(10, i / 2);
+                    int bit = curState / pow % 10;
+                    int nextState = curState + increments[i];
+                    if (i % 2 == 0) {
+                        if (bit == 9) {
+                            nextState -= pow * 10;
+                        }
+                    } else {
+                        if (bit == 0) {
+                            nextState += pow * 10;
+                        }
+                    }
+                    if (end == nextState) {
+                        return step;
+                    } else if (! deadSet.contains(nextState) && set.add(nextState)) {
+                        queue.offer(nextState);
+                    }
+                }
             }
         }
         return -1;
-    }
-
-    int[] js(int t, int i) {
-        int mid = t / x[i] % 10; // 返回第i位的数字
-        int des = t - mid * x[i]; // 返回数字t，且第i位为0
-        int i1 = 0, i2 = 0;
-        i1 = (mid - 1 + 10) % 10;
-        i2 = (mid + 1) % 10;
-        i1 = des + i1 * x[i]; // 第i位的数-1，遇0为9
-        i2 = des + i2 * x[i]; // 第i位的数+1，遇9为0
-        return new int[]{i1, i2};
-    }
-
-    void add(int t, int d, int type) {
-        if (vis[t] == 1) {
-            if (!flag) {
-                if ((type == 1 && dis2[t] != 0) || (type == 2 && dis1[t] != 0)) {
-                    dis1[t] += dis2[t] + d - 1;
-                    touch = t;
-                    flag = true;
-                }
-            }
-            return;
-        }
-        vis[t] = 1;
-        if (type == 1) {
-            q1.offer(t);
-            dis1[t] = d + 1;
-        } else if (type == 2) {
-            q2.offer(t);
-            dis2[t] = d + 1;
-        }
-        return;
     }
 }
