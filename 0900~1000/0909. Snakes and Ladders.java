@@ -40,37 +40,46 @@ The board square with number N*N has no snake or ladder.
 
 class Solution {
     public int snakesAndLadders(int[][] board) {
-        int N = 0;
-        if ( (N = board.length) == 0 ) return 0;
-        int[] nBoard = new int[N * N + 1];
-        int t = 1;
-        boolean order = true;
-        for (int i = N - 1; i >= 0; i--) {
-            if (order) {
-                for (int j = 0; j < N; j++) nBoard[t++] = board[i][j];
-            } else {
-                for (int j = N - 1; j >= 0; j--) nBoard[t++] = board[i][j];
-            }
-            order = !order;
+        int n = board.length;
+        if (n == 0) {
+            return 0;
         }
-
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(1);
-        int steps = 0;
-        boolean[] v = new boolean[N * N + 1];
+        int[] arr = new int[n * n + 1];
+        int idx = 1;
+        for (int i = n - 1; i >= 0; --i) {
+            if (i % 2 == (n - 1) % 2) {
+                for (int j = 0; j < n; ++j) {
+                    arr[idx++] = board[i][j];
+                }
+            } else {
+                for (int j = n - 1; j >= 0; --j) {
+                    arr[idx++] = board[i][j];
+                }
+            }
+        }
+        Deque<Integer> queue = new ArrayDeque<>();
+        queue.offer(1);
+        int step = 0;
+        boolean[] v = new boolean[n * n + 1];
         v[1] = true;
-        while (!q.isEmpty()) {
-            steps++;
-            int size = q.size();
-            while (size-- > 0) {
-                int square = q.poll();
-                for (int j = 1; j <= 6; j++) {
-                    int next_square = square + j;
-                    if (nBoard[next_square] != -1) next_square = nBoard[next_square];
-                    if (v[next_square]) continue;
-                    if (next_square == N * N) return steps;
-                    v[next_square] = true;
-                    q.offer(next_square);
+        while (queue.size() > 0) {
+            ++step;
+            int size = queue.size();
+            while (--size >= 0) {
+                int cell = queue.poll();
+                for (int x = 1; x <= 6; ++x) {
+                    int next = cell + x;
+                    if (arr[next] != -1) {
+                        next = arr[next];
+                    }
+                    if (v[next]) {
+                        continue;
+                    }
+                    if (next == n * n) {
+                        return step;
+                    }
+                    v[next] = true;
+                    queue.offer(next);
                 }
             }
         }
