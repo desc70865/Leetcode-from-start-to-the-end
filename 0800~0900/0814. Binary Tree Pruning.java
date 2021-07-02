@@ -50,15 +50,11 @@ The value of each node will only be 0 or 1.
  */
 class Solution {
     public TreeNode pruneTree(TreeNode root) {
-        if (dfs(root)) root = null;
-        return root;
-    }
-
-    private boolean dfs(TreeNode node) {
-        if (node == null) return true;
-        if (dfs(node.left)) node.left = null;
-        if (dfs(node.right)) node.right = null;
-        if (node.left == null && node.right == null) return node.val == 0;
-        return false;
+        if (root == null) {
+            return null;
+        }
+        root.left = pruneTree(root.left);
+        root.right = pruneTree(root.right);
+        return root.val == 0 && root.left == null && root.right == null ? null : root;
     }
 }

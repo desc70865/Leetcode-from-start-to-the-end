@@ -41,7 +41,7 @@ class Solution {
         for (int i = 0; i < costs.length; i++) {
             if (coins >= costs[i]) {
                 coins -= costs[i];
-                ans++;
+                ++ans;
             } else {
                 break;
             }

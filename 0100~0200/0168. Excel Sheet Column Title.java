@@ -29,13 +29,9 @@ class Solution {
     public String convertToTitle(int n) {
         StringBuilder sb = new StringBuilder();
         while (n > 0) {
-            int c = n % 26;
-            if (c == 0) {
-                c = 26;
-                n -= 1;
-            }
+            int c = (n - 1) % 26 + 1;
             sb.insert(0, (char) ('@' + c));
-            // sb.insert(0, (char) ('A' + c - 1));
+            n -= c / 26;
             n /= 26;
         }
         return sb.toString();
