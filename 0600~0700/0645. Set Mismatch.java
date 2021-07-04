@@ -12,58 +12,19 @@ The given array's numbers won't have any order.
  */
 
 class Solution {
-    Set<Integer> set = new HashSet<>();
     public int[] findErrorNums(int[] nums) {
-        int a = 0, b = 0, c = 0;
-        for (int i = 0; i < nums.length; i++) {
-            a ^= (i + 1);
-            b ^= nums[i];
-            if (! set.add(nums[i])) c = nums[i];
+        int n = nums.length;
+        int sum = 0;
+        int[] bucket = new int[n + 1];
+        for (int i = 0; i < n; ++i) {
+            sum ^= nums[i] ^ (i + 1);
+            ++bucket[nums[i]];
         }
-        return new int[] {c, a ^ b ^ c};
-    }
-}
-
-
-
-class Solution {
-    public int[] findErrorNums(int[] nums) {
-        int a = 0, b = 0, c = 0;
-        int N = nums.length;
-        int[] cnt = new int[N];
-        for (int i = 0; i < N; i++) {
-            a ^= (i + 1);
-            b ^= nums[i];
-            cnt[nums[i] - 1]++;
-        }
-        for (int i = 0; i < N; i++) {
-            if (cnt[i] == 2) {
-                c = i + 1;
-                break;
+        for (int x = 1; x <= n; ++x) {
+            if (bucket[x] == 2) {
+                return new int[] {x, sum ^ x};
             }
         }
-        return new int[] {c, a ^ b ^ c};
-    }
-}
-
-
-
-class Solution {
-    public int[] findErrorNums(int[] nums) {
-        int a = 0, b = 0, c = 0;
-        int N = nums.length;
-        int[] cnt = new int[N];
-        for (int i = 0; i < N; i++) {
-            a ^= (i + 1) ^ nums[i];
-            cnt[nums[i] - 1]++;
-        }
-        for (int i = 0; i < N; i++) {
-            if (cnt[i] == 1) continue;
-            b = i + 1;
-            c = a ^ b;
-            if (cnt[i] == 2) return new int[] {b, c};    
-            else return new int[] {c, b};
-        }
-        return new int[] {};
+        return new int[0];
     }
 }
