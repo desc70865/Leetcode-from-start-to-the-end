@@ -33,17 +33,11 @@ class Solution {
     static final int MAX = 1 << 21;
     
     public int countPairs(int[] deliciousness) {
-        long sum = 0;
+        long sum = 0L;
         Map<Integer, Integer> map = new HashMap<>();
         for (int num: deliciousness) {
-            int cur = MAX;
-            for (int i = 21; i >= 0; i--) {
-                if (cur >= num) {
-                    sum += map.getOrDefault(cur - num, 0);
-                    cur >>= 1;
-                } else {
-                    break;
-                }
+            for (int mask = MAX; mask >= num && mask > 0; mask >>= 1) {
+                sum += map.getOrDefault(mask - num, 0);
             }
             map.merge(num, 1, Integer::sum);
         }
