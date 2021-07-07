@@ -23,30 +23,18 @@ A[i] is either 0 or 1.
  */
 
 class Solution {
-    public int numSubarraysWithSum(int[] A, int S) {
-        List<Integer> list = new ArrayList<>();
-        int cnt = 0, sum = 0;
-        for (int num: A) {
-            if (num == 0) {
-                cnt++;
-            } else {
-                if (S == 0) {
-                    sum += cnt * (cnt + 1) / 2;
-                } else  {
-                    list.add(cnt);
-                }
-                cnt = 0;
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        int[] map = new int[30001];
+        map[0] = 1;
+        int sum = 0;
+        int ans = 0;
+        for (int num: nums) {
+            sum += num;
+            if (sum >= goal) {
+                ans += map[sum - goal];
             }
+            ++map[sum];
         }
-        if (S == 0) {
-            sum += cnt * (cnt + 1) / 2;
-            return sum;
-        } else {
-            list.add(cnt);
-        }
-        for (int i = 0; i < list.size() - S; i++) {
-            sum += (1 + list.get(i)) * (1 + list.get(i + S));
-        }
-        return sum;
+        return ans;
     }
 }
