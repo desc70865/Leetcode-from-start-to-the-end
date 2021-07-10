@@ -40,12 +40,10 @@ TimeMap.set and TimeMap.get functions will be called a total of 120000 times (co
  */
 
 class TimeMap {
-    Map<String, TreeMap<Integer, String>> map;
+    Map<String, TreeMap<Integer, String>> map = new HashMap();
 
     /** Initialize your data structure here. */
-    public TimeMap() {
-        map = new HashMap();
-    }
+    public TimeMap() {}
     
     public void set(String key, String value, int timestamp) {
         map.computeIfAbsent(key, x -> new TreeMap<>()).put(timestamp, value);
