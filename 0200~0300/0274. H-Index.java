@@ -33,10 +33,10 @@ class Solution {
     public int hIndex(int[] citations) {
         int[] bucket = new int[1001];
         for (int c: citations) {
-            bucket[c]++;
+            ++bucket[c];
         }
         int sum = 0;
-        for (int i = 1000; i >= 0; i--) {
+        for (int i = 1000; i >= 0; --i) {
             sum += bucket[i];
             if (sum >= i) {
                 return i;

@@ -23,13 +23,13 @@ Could you solve it in logarithmic time complexity?
 
 class Solution {
     public int hIndex(int[] citations) {
-        int N = citations.length;
-        int L = 0, R = N;
+        int n = citations.length;
+        int L = 0, R = n;
         while (L < R) {
             int M = L + R >> 1;
-            if (citations[M] + M >= N) R = M;
+            if (citations[M] + M >= n) R = M;
             else L = M + 1;
         }
-        return N - R;
+        return n - R;
     }
 }
