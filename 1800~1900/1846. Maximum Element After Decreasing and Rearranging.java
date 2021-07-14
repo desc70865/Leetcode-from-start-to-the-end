@@ -45,10 +45,9 @@ Constraints:
 class Solution {
     public int maximumElementAfterDecrementingAndRearranging(int[] arr) {
         Arrays.sort(arr);
-        int n = arr.length;
-        int level = 1;
-        for (int i = 1; i < n; ++i) {
-            if (arr[i] - level >= 1) {
+        int level = 0;
+        for (int e: arr) {
+            if (e > level) {
                 ++level;
             }
         }
