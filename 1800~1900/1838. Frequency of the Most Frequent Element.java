@@ -37,11 +37,12 @@ Constraints:
 class Solution {
     public int maxFrequency(int[] nums, int k) {
         Arrays.sort(nums);
-        int n = nums.length;
         int ans = 1;
-        for (int l = 0, r = 1; r < n; r++) {
+        for (int l = 0, r = 1; r < nums.length; ++r) {
             k -= (nums[r] - nums[r - 1]) * (r - l);
-            while (k < 0) k += nums[r] - nums[l++];
+            while (k < 0) {
+                k += nums[r] - nums[l++];
+            }
             ans = Math.max(ans, r - l + 1);
         }
         return ans;

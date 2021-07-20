@@ -38,14 +38,16 @@ class Solution {
     public int longestBeautifulSubstring(String word) {
         char[] s = word.toCharArray();
         int ans = 0;
-        for (int i = 1, type = 1, size = 1; i < s.length; i++) {
-            if (s[i] < s[i - 1]) {
+        for (int i = 1, type = 1, size = 1; i < s.length; ++i) {
+            if (s[i - 1] > s[i]) {
                 type = 1;
                 size = 1;
                 continue;
             }
-            size++;
-            if (s[i] > s[i - 1] && ++type == 5 || type == 5) ans = Math.max(ans, size);
+            ++size;
+            if (s[i - 1] < s[i] && ++type == 5 || type == 5) {
+                ans = Math.max(ans, size);
+            }
         }
         return ans;
     }
